@@ -23,7 +23,7 @@
   --default-color: #fff; /* WHITE -> Default color used for the majority of the text content across the entire website */
   --heading-color: #fff; /* WHITE -> Color for headings, subheadings and title throughout the website */
   --accent-color: #ed18c6; /* PINK -> Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
-  --surface-color: #858585; /* GRAY -> The surface color is used as a background of boxed elements within sections, such as cards, icon boxes, or other elements that require a visual separation from the global background. */
+  --surface-color: #858585; /* GREY -> The surface color is used as a background of boxed elements within sections, such as cards, icon boxes, or other elements that require a visual separation from the global background. */
   --contrast-color: #1c1c1c; /* BLACK -> Contrast color for text, ensuring readability against backgrounds of accent, heading, or default colors. */
 }
 
