@@ -3019,3 +3019,12 @@ section,
   color: #fff;
 }
 
+/* Control the colour of box titles in rejections.html */
+#rej-grid .btn-link {
+    color: #ed18c6 !important; /* PINK */
+}
+#rej-grid .btn-link:hover, 
+#rej-grid .btn-link:focus {
+    color: #c215a8 !important; /* slightly darker PINK for hover/focus */
+}
+
