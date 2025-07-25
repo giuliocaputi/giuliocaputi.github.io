@@ -3008,3 +3008,14 @@ section,
   color: color-mix(in srgb, var(--default-color), transparent 60%);
   font-size: 14px;
 }
+
+/* Rejection‑page tweaks */
+#rej-grid .card button {
+  font-family: "Poppins", sans-serif;
+  background: var(--bs-white);
+}
+#rej-grid .card button:hover {
+  background: var(--main-color);
+  color: #fff;
+}
+
