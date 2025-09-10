@@ -217,7 +217,7 @@ body.bg-stars::before{
 .header{
   display:flex;align-items:center;justify-content:space-between;
   padding:12px var(--wrap-pad);
-  backdrop-filter:blur(8px);
+  backdrop-filter:blur(5px);
   background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,0));
   position:sticky;top:0;z-index:50; /* keep over content; below loader */
 }
@@ -274,7 +274,7 @@ body.bg-stars::before{
 
 /* ====== Mobile Nav Overlay ====== */
 #nav-backdrop{
-  position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(2px);
+  position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(1px);
   opacity:0;pointer-events:none;transition:opacity .25s ease;z-index:96;
 }
 #nav-backdrop[aria-hidden="false"]{opacity:1;pointer-events:auto}
@@ -338,7 +338,7 @@ main{padding:16px var(--wrap-pad) 48px}
 .grid{display:grid;grid-template-columns:repeat(var(--cols),1fr);column-gap:var(--col-gap);row-gap:var(--row-gap);align-items:stretch}
 
 /* Cards */
-.card{background:rgba(18,18,22,.55);backdrop-filter:blur(5px);border:1px solid rgba(237,24,198,.2);border-radius:16px;
+.card{background:rgba(18,18,22,.55);backdrop-filter:blur(0.3px);border:1px solid rgba(237,24,198,.2);border-radius:16px;
   padding:18px 20px 22px;min-height:var(--card-h);height:var(--card-h);display:flex;flex-direction:column;position:relative;
   box-shadow:0 10px 30px rgba(0,0,0,.3);transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease}
 /* Hover effect only for content cards, not the 3 section title tabs */
@@ -381,7 +381,7 @@ main{padding:16px var(--wrap-pad) 48px}
 
 /* Drawer */
 #drawer-backdrop{
-  position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(2px);
+  position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(0.3px);
   opacity:0;pointer-events:none;transition:opacity .3s ease;z-index:70;
 }
 #drawer{
@@ -394,7 +394,7 @@ main{padding:16px var(--wrap-pad) 48px}
   display:flex;
   flex-direction:column;
   background:linear-gradient(180deg, rgba(18,18,22,.95), rgba(18,18,22,.85));
-  backdrop-filter:blur(12px);border:1px solid rgba(237,24,198,.2);border-radius:18px;
+  backdrop-filter:blur(5px);border:1px solid rgba(237,24,198,.2);border-radius:18px;
   box-shadow:0 10px 30px rgba(0,0,0,.35);opacity:0;transition:transform 500ms cubic-bezier(.2,.8,.2,1), opacity 500ms ease;
   padding:18px 20px;
 }
@@ -426,8 +426,8 @@ main{padding:16px var(--wrap-pad) 48px}
   align-items:center;
   justify-content:center;
   background: radial-gradient(120% 100% at 50% 40%, rgba(14,0,36,0.95) 0%, rgba(8,0,20,0.98) 60%, rgba(5,0,14,1) 100%);
-  -webkit-backdrop-filter: blur(2px);
-  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(0.3px);
+  backdrop-filter: blur(0.3px);
   z-index:9999;
   opacity:1;
   visibility:visible;
@@ -507,8 +507,8 @@ main{padding:16px var(--wrap-pad) 48px}
   grid-column: 1 / -1;
   width: 100%;             /* fill the grid like the title tab */
   justify-self: stretch;   /* ensure it spans the full column width */
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px); /* Safari/iOS */
+  backdrop-filter: blur(0.3px);
+  -webkit-backdrop-filter: blur(0.3px); /* Safari/iOS */
 }
 
 /* success banner */
