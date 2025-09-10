@@ -1,0 +1,757 @@
+/* ==== Start of Fonts ==== */
+/* Body text: EB Garamond */
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;700&display=swap');
+
+/* Menu: CMU Serif
+   If you have the WOFF2 files, drop them into assets/fonts/ and leave this on.
+   If not, it will fall back to Latin Modern/Times until you add them. */
+@font-face{
+  font-family: "CMU Serif";
+  src: url("fonts/CMUSerif-Regular.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face{
+  font-family: "CMU Serif";
+  src: url("fonts/CMUSerif-Bold.woff2") format("woff2");
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+
+/* Mappings (so you can change families in one place later) */
+:root{
+  --font-title: "Academy Engraved LET", "Cinzel Decorative", "Cinzel",
+              "EB Garamond", Garamond, "Times New Roman", Times, serif;
+  --font-menu: "CMU Serif", "Latin Modern Roman", "Times New Roman", Times, serif;
+  --font-body: "EB Garamond", Garamond, "Times New Roman", Times, serif;
+}
+
+/* Titles → Segoe UI */
+/* Display titles → Academy Engraved LET (with fallbacks) */
+.footer-name,            /* big "Giulio Caputi" in the footer */
+.section-title,          /* the pink section tabs like Work Experience */
+.essay h1,               /* page-level H1 on Essentials */
+#drawer h2               /* slide-up drawer title */
+{
+  font-family: var(--font-title);
+  font-weight: 400;
+  letter-spacing: .4px;
+}
+/* ==== End of Fonts ==== */
+
+
+/* Tabs on mobile phone (+ general info) */
+:root{
+  --accent:#ed18c6; --text:#f6f7fb; --muted:#b7bbc7;  /* Colours */
+  --cols:1; --wrap-pad:16px; --maxw:1400px;
+  --col-gap:16px; --row-gap:14px;
+  --card-h:auto; --cat-h:64px;   
+  --cat-fs-compact:25px;          /* size of text of title boxes */
+  --cat-h-compact:var(--cat-h);   /* size of title boxes */
+  --card-meta-fs: 16px;           /* size of city & dates on cards */
+
+  /* text inside the boxes once opened */
+  --drawer-title-fs: 25px;  /* title */
+  --drawer-meta-fs: 19px;   /* place and dates */
+  --drawer-body-fs: 16px;   /* paragraph */
+
+  /* Header font sizes */
+  --brand-fs: 22px;   /* "Giulio Caputi" on the left */
+  --nav-fs: 18px;     /* "Intro", "Essentials" in the center */
+
+  /* "Contact Me" button: */
+  --contact-fs: 15px;             /* size of text */
+  --contact-py: 8px;              /* vertical padding */
+  --contact-px: 14px;             /* horizontal padding */
+  --contact-radius: 10px;         /* corner roundness */
+}
+
+/* Tabs on tablet and desktop */
+@media (min-width:641px){
+  :root{
+    --cols:3; --wrap-pad:24px; --maxw:1920px; 
+    --col-gap:64px; --row-gap:12px; 
+    --card-h:auto; --cat-h:50px;
+    --cat-fs-compact:26px;         /* size of title boxes */
+    --cat-h-compact:var(--cat-h);  /* size of title boxes */
+    --card-meta-fs: 18px;          /* size of city & dates on cards */
+
+    /* text inside the boxes once opened */
+    --drawer-title-fs: 30px;  /* title */
+    --drawer-meta-fs: 22px;   /* place and dates */
+    --drawer-body-fs: 19px;   /* paragraph */
+
+    /* Header font sizes (tablet/desktop) */
+    --brand-fs: 28px;
+    --nav-fs: 20px;
+
+    /* "Contact Me" button: */
+    --contact-fs: 18px;             /* size of text */
+    --contact-py: 8px;              /* vertical padding */
+    --contact-px: 14px;             /* horizontal padding */
+    --contact-radius: 10px;         /* corner roundness */
+  }
+}
+
+/* Layout normalisation */
+*, *::before, *::after { box-sizing: border-box; }
+
+/* Stuff for the title tabs */
+.category.category--compact{
+  height: var(--cat-h-compact);     /* controls the content box height */
+  font-size: var(--cat-fs-compact); /* leave as-is if you set this earlier */
+  padding: 8px 16px;                /* reduce vertical padding on phones */
+  display: grid;
+  place-items: center;
+}
+
+@media (min-width:641px){
+  .category.category--compact{ padding: 10px 18px; } /* slightly more room on larger screens */
+}
+
+/* Background */
+
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: var(--font-body);
+  color:var(--text);
+  background:#0b0b0c url('img/cosmic-bg.jpg') no-repeat center center fixed; /* path is relative to /assets/main.css */
+  background-size:cover;} 
+body::after{content:'';position:fixed;inset:0;z-index:-1;
+  background:radial-gradient(80% 80% at 50% 50%,rgba(0,0,0,0) 40%,rgba(0,0,0,.35) 100%)}
+
+
+/* Header */
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size: var(--brand-fs);line-height:1.1}
+
+
+
+
+.avatar{ /* this is the photo of me */
+  width: var(--avatar-size, 48px);
+  height: var(--avatar-size, 48px);
+  border-radius:50%;
+  border:2px solid rgba(237,24,198,.25);
+  object-fit:cover;
+  box-shadow:0 10px 24px rgba(237,24,198,.25);
+  margin-right:10px;
+}
+
+
+/* bigger avatar on the home page, responsive by screen size */
+.avatar{ --avatar-size: 80px; }          /* phones */
+@media (min-width:641px){
+  .avatar{ --avatar-size: 110px; }        /* tablets & desktops */
+}
+
+
+
+.left{display:flex;align-items:center;gap:10px}
+
+
+/* ====  Start of navigation menu ==== */
+.header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px var(--wrap-pad);
+  backdrop-filter:blur(8px);
+  background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,0));
+  position:sticky;top:0;z-index:50; /* keep over content; below loader */
+}
+.header .right{display:flex;align-items:center;gap:12px}
+
+.nav{display:none;align-items:center;gap:32px}
+.nav a{
+  position:relative;
+  text-decoration:none;
+  color:var(--text);
+  font-weight:800;
+  font-size: var(--nav-fs);       /* controls "Intro" / "Essentials" size */
+  opacity:.9;
+  letter-spacing:.2px;
+}
+
+.nav a:hover{opacity:1}
+.nav a.active::after{
+  content:"";position:absolute;left:0;right:0;bottom:-10px;height:3px;
+  background:var(--accent);border-radius:3px;
+}
+
+/* Contact button */
+.btn-contact{
+  display:inline-block;text-decoration:none;
+  background:var(--accent);border:1px solid rgba(237,24,198,.35);
+  color:#111;font-weight:800;
+  box-shadow:0 10px 20px rgba(237,24,198,.25);
+  transition:transform .2s ease, box-shadow .2s ease, opacity .2s ease;
+  font-size: var(--contact-fs); padding: var(--contact-py) var(--contact-px); border-radius: var(--contact-radius);    /* uses the sizes set above */
+}
+.btn-contact:hover{transform:translateY(-1px);box-shadow:0 16px 32px rgba(237,24,198,.35);opacity:.95}
+
+/* Hamburger (mobile only) */
+.hamburger{
+  width:44px;height:44px;display:grid;place-items:center;
+  background:transparent;border:0;cursor:pointer;
+}
+.hamburger span{
+  display:block;width:22px;height:2px;background:#fff;border-radius:2px;
+}
+.hamburger span + span{margin-top:5px}
+
+/* Desktop/tablet: show nav and center it relative to the whole header */
+@media (min-width:641px){
+  .nav{
+    display:flex;
+    position:absolute;       /* anchor to the header */
+    left:50%; top:50%;       /* go to header center */
+    transform:translate(-50%, -50%); /* center precisely */
+  }
+  .hamburger{display:none}
+}
+
+/* ====== Mobile Nav Overlay ====== */
+#nav-backdrop{
+  position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(2px);
+  opacity:0;pointer-events:none;transition:opacity .25s ease;z-index:96;
+}
+#nav-backdrop[aria-hidden="false"]{opacity:1;pointer-events:auto}
+
+#nav-drawer{
+  position:fixed;inset:0;display:flex;justify-content:center;align-items:flex-start;
+  opacity:0;pointer-events:none;transition:opacity .3s ease;z-index:100;
+}
+#nav-drawer[aria-hidden="false"]{opacity:1;pointer-events:auto}
+
+#nav-drawer .nav-panel{
+  position:relative;margin-top:72px;
+  width:min(92vw,720px);
+  background:linear-gradient(180deg, rgba(18,18,22,.95), rgba(18,18,22,.88));
+  border:1px solid rgba(237,24,198,.25);border-radius:18px;
+  box-shadow:0 10px 30px rgba(0,0,0,.35);
+  padding:24px 24px 28px;
+}
+#nav-drawer .nav-list{
+  list-style:none;margin:6px 0 0;padding:0;
+  display:flex;flex-direction:column;gap:28px;
+}
+#nav-drawer .nav-list a{
+  text-decoration:none;color:#fff;font-weight:900;
+  font-size:clamp(20px,7vw,34px);opacity:.95;
+}
+#nav-drawer .nav-list a:hover{opacity:1}
+
+/* Highlight the current page inside the mobile drawer */
+#nav-drawer .nav-list a[aria-current="page"]{
+  text-decoration: underline;
+  text-decoration-color: var(--accent);   /* pink */
+  text-decoration-thickness: 3px;
+  text-underline-offset: 8px;
+}
+
+/* slightly thicker underline on larger screens, just in case */
+@media (min-width: 641px){
+  #nav-drawer .nav-list a[aria-current="page"]{
+    text-decoration-thickness: 4px;
+    text-underline-offset: 10px;
+  }
+}
+
+.nav-close{
+  position:absolute;top:10px;right:12px;
+  width:40px;height:40px;background:transparent;border:0;cursor:pointer;
+  color:#fff;font-size:28px;line-height:1;
+}
+
+/* Keep page from scrolling when any drawer is open (re-uses existing class) */
+body.drawer-open{overflow:hidden}
+
+/* ==== End of navigation menu ====  */
+
+
+
+/* Layout */
+main{padding:16px var(--wrap-pad) 48px}
+.wrap{width:min(var(--maxw), calc(100vw - 2*var(--wrap-pad)));margin:0 auto}
+.grid{display:grid;grid-template-columns:repeat(var(--cols),1fr);column-gap:var(--col-gap);row-gap:var(--row-gap);align-items:stretch}
+
+/* Cards */
+.card{background:rgba(18,18,22,.55);backdrop-filter:blur(5px);border:1px solid rgba(237,24,198,.2);border-radius:16px;
+  padding:18px 20px 22px;min-height:var(--card-h);height:var(--card-h);display:flex;flex-direction:column;position:relative;
+  box-shadow:0 10px 30px rgba(0,0,0,.3);transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease}
+/* Hover effect only for content cards, not the 3 section title tabs */
+.card:not(.category):hover{
+  transform: translateY(-3px);
+  box-shadow: 0 20px 60px rgba(237,24,198,.25);
+  border-color: var(--accent);
+}
+
+/* Text on the tabs on mobile phone (+ general info) */
+.title{margin:0 0 6px; line-height:1.2; display:flex; flex-direction:column; gap:2px;}
+.title .company{color:var(--text);font-weight:800; font-size:25px;}
+.title .role{color:var(--text); opacity:.98; font-weight:500; font-size:18px;}
+.meta{color:var(--muted);font-size:15px; 
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.age{position:absolute;top:10px;right:10px;background:var(--accent);color:#fff;font-weight:800;font-size:12px;letter-spacing:.4px;padding:6px 10px;border-radius:999px;box-shadow:0 10px 22px rgba(237,24,198,.4)}
+
+.category{display:grid;place-items:center;font-weight:900;color:var(--accent);font-size:18px;height:var(--cat-h)}
+.category{grid-column:1 / -1}
+
+/* Text on the tabs on computer and tablet */
+@media (min-width:641px){
+.title .company{ font-size:30px; }
+.title .role{ font-size:21px; }
+}
+
+/* City and Dates */
+.card .meta{ display:inline; margin-top:0; font-size: var(--card-meta-fs); }
+.card .meta:first-of-type{ display:block; margin-top:2px; } /* gives spacing below title */
+
+/* Tabs logos on mobile phone (+ general info) */
+.logo{position:absolute; opacity:.9;
+  right:3px; bottom:1px; width:100px; height:auto;
+  pointer-events:none; filter:drop-shadow(0 4px 10px rgba(0,0,0,.5)); mix-blend-mode:screen; user-select:none}
+
+/* Tabs logos on tablet and desktop */
+@media (min-width:641px){
+  .logo{right:3px; bottom:3px; width:110px; height:auto;}
+}
+
+/* Drawer */
+#drawer-backdrop{
+  position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(2px);
+  opacity:0;pointer-events:none;transition:opacity .3s ease;z-index:70;
+}
+#drawer{
+  position:fixed;left:50%;bottom:18px;transform:translate(-50%,120%);
+  z-index:80;max-width:900px;width:clamp(320px,90vw,900px);
+  background:linear-gradient(180deg, rgba(18,18,22,.95), rgba(18,18,22,.85));
+  backdrop-filter:blur(12px);border:1px solid rgba(237,24,198,.2);border-radius:18px;
+  box-shadow:0 10px 30px rgba(0,0,0,.35);opacity:0;transition:transform 500ms cubic-bezier(.2,.8,.2,1), opacity 500ms ease;
+  padding:18px 20px;
+}
+#drawer[aria-hidden="false"]{transform:translate(-50%,0%);opacity:1}
+#drawer-backdrop[aria-hidden="false"]{opacity:1;pointer-events:auto}
+#drawer h2{margin:0 0 6px;font-size: var(--drawer-title-fs);}
+.drawer-meta{color:var(--muted);margin-bottom:12px;font-size: var(--drawer-meta-fs);}
+.drawer-body{ margin-top:8px; }
+#drawer p{
+  margin:8px 0;
+  line-height:1.55;
+  font-size: var(--drawer-body-fs); 
+}
+#drawer p{font-size: var(--drawer-body-fs);} /* in case any box uses paragraphs */
+#drawer-close{
+  position:absolute;top:8px;right:10px;border:none;background:transparent;
+  color:#fff;font-size:24px;cursor:pointer;line-height:1
+}
+
+
+/* === Loader Overlay === */
+#loader{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: radial-gradient(120% 100% at 50% 40%, rgba(14,0,36,0.95) 0%, rgba(8,0,20,0.98) 60%, rgba(5,0,14,1) 100%);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  z-index:9999;
+  opacity:1;
+  visibility:visible;
+  transition:opacity .4s ease, visibility .4s ease;
+}
+#loader.fade{
+  opacity:0;
+  visibility:hidden;
+}
+
+.loader-planet{
+  width:88px;
+  height:88px;
+  border-radius:50%;
+  background: var(--accent);
+  position:relative;
+  animation: loader-spin 1.6s linear infinite;
+  box-shadow: 0 0 24px rgba(237,24,198,.6), inset -8px -12px 24px rgba(0,0,0,.25);
+}
+/* subtle highlight */
+.loader-planet::after{
+  content:"";
+  position:absolute;
+  top:14%;
+  left:18%;
+  width:40%;
+  height:40%;
+  border-radius:50%;
+  background: rgba(255,255,255,.18);
+  filter: blur(2px);
+}
+
+/* the ring */
+.loader-ring{
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:140px;
+  height:36px;
+  transform: translate(-50%, -50%) rotate(24deg);
+  border:4px solid var(--accent);
+  border-radius:50%;
+  box-shadow: 0 0 18px rgba(237,24,198,.5);
+}
+/* mask back half of the ring behind the planet */
+.loader-ring::before{
+  content:"";
+  position:absolute;
+  inset:-6px;
+  border-radius:50%;
+  background: transparent;
+  -webkit-mask:
+    radial-gradient(closest-side, transparent 66%, black 67%);
+  mask:
+    radial-gradient(closest-side, transparent 66%, black 67%);
+}
+
+@keyframes loader-spin{
+  from{ transform: rotate(0deg); }
+  to{ transform: rotate(360deg); }
+}
+
+/* Size tweak on larger screens */
+@media (min-width: 800px){
+  .loader-planet{ width:108px; height:108px; }
+  .loader-ring{ width:172px; height:44px; }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .loader-planet{ animation: none; }
+}
+
+
+/* ===== Start of contact form ===== */
+.form-card{
+  grid-column: 1 / -1;
+  width: 100%;             /* fill the grid like the title tab */
+  justify-self: stretch;   /* ensure it spans the full column width */
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px); /* Safari/iOS */
+}
+
+/* success banner */
+.form-status{
+  margin-bottom:12px;
+  padding:12px 14px;
+  border-radius:12px;
+  border:1px solid rgba(46, 204, 113, .45);
+  background:linear-gradient(180deg, rgba(16, 80, 44, .55), rgba(16, 80, 44, .35));
+  color:#c9f7e2; font-weight:700;
+}
+
+.form-status[hidden]{ display:none; }
+
+.form-grid{
+  display: grid;
+  grid-template-columns: 1fr;     /* phones: single column */
+  gap: 14px;
+  width: 100%;
+  margin: 0;                       /* align with the card padding */
+}
+
+/* tablets/desktop: two flexible columns that can actually shrink */
+@media (min-width:641px){
+  .form-grid{ grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
+}
+
+/* allow grid children to shrink so long placeholders don't cause overflow */
+.form-field{ min-width: 0; }
+
+.form-field label{
+  display:block; margin:0 0 6px;
+  font-size:13px; color:var(--muted); font-weight:700; letter-spacing:.2px;
+}
+.form-field input,
+.form-field textarea{
+  width:100%;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(237,24,198,.2);
+  color:var(--text);
+  padding:12px 14px;
+  border-radius:12px;
+  outline:none;
+  transition:border-color .2s ease, box-shadow .2s ease, background .2s ease;
+}
+.form-field input::placeholder,
+.form-field textarea::placeholder{ color:#9aa0ae; opacity:.9; }
+
+.form-field input:focus,
+.form-field textarea:focus{
+  border-color:var(--accent);
+  background:rgba(255,255,255,.06);
+  box-shadow:0 0 0 4px rgba(237,24,198,.15);
+}
+
+.span-2{ grid-column:1 / -1; }
+
+.form-actions{
+  display:flex; justify-content:flex-end; gap:12px; margin-top:2px;
+}
+
+/* ===== End of contact form ===== */
+
+/* Close button */
+.lightbox__close{
+  position:absolute; top:8px; right:8px;
+  width:40px; height:40px; border:0; border-radius:999px;
+  background:rgba(0,0,0,.55); color:#fff;
+  font-size:26px; line-height:1; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+}
+.lightbox__close:hover{ background:rgba(0,0,0,.7); }
+
+/* Make the avatar obviously clickable */
+.avatar{ cursor: zoom-in; }
+
+/* Prevent background scroll when the lightbox is open */
+body.modal-open { overflow:hidden; }
+
+/* Lightbox base */
+.lightbox{
+  position:fixed; inset:0; z-index:1000;
+  display:flex; align-items:center; justify-content:center;
+  padding:clamp(12px, 3vw, 24px);
+  background:rgba(0,0,0,0.85);
+  opacity:0; visibility:hidden;
+  transition:opacity .2s ease, visibility .2s ease;
+}
+
+/* Show state */
+.lightbox[aria-hidden="false"]{ opacity:1; visibility:visible; }
+
+/* Inner container */
+.lightbox__inner{
+  position:relative;
+  transform:scale(.98);
+  transition:transform .2s ease;
+  max-width:min(92vw, 920px);
+  max-height:min(92vh, 92dvh); /* dvh for mobile chrome/ios */
+}
+
+/* Pop animation when visible */
+.lightbox[aria-hidden="false"] .lightbox__inner{ transform:scale(1); }
+
+/* The enlarged image */
+#photo-lightbox-img{
+  display:block;
+  width:auto; height:auto;
+  max-width:100%; max-height:100%;
+  border-radius:14px;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+  touch-action: pinch-zoom; /* allow pinch-zoom on mobile */
+}
+
+/* ===== Start of Footer ===== */
+.site-footer{
+  background:#000000;              /* dark rectangle */
+  padding:clamp(22px,4vw,40px);
+  color:var(--accent);              /* pink text */
+}
+.site-footer a{ color:var(--accent); text-decoration:none; }
+.site-footer a:hover{ opacity:.85; }
+
+.site-footer .footer-inner{
+  max-width: var(--maxw, 1200px);
+  margin:0 auto;
+  display:grid;
+  grid-template-columns: 1fr;
+  gap:16px 24px;
+}
+
+.site-footer .footer-name{
+  margin:0 0 8px 0;
+  font-size:clamp(28px, 5vw, 48px);
+  line-height:1.15;
+}
+
+.site-footer p{ margin:6px 0; }
+
+
+@media (min-width:700px){
+  .site-footer .footer-inner{
+    grid-template-columns: 1fr auto;
+    align-items:center;
+  }
+}
+
+:root{
+  --social-tile-size: clamp(56px, 7.2vw, 80px);
+  --social-glyph-size: clamp(24px, 3.2vw, 32px);
+}
+
+/* layout + spacing */
+.footer .social-links.social-tiles{
+  display: flex;
+  gap: clamp(14px, 2vw, 22px);
+}
+
+/* the tile */
+.footer .social-links.social-tiles a{
+  position: relative;
+  width: var(--social-tile-size);
+  height: var(--social-tile-size);
+  border-radius: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  /* pink tile (uses your --accent-color) */
+  
+  border: 1px solid rgba(255,255,255,.16);
+
+  transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease, opacity .15s ease;
+  text-decoration: none;
+}
+
+/* icon inside the tile */
+.footer .social-links.social-tiles a i{
+  font-size: var(--social-glyph-size);
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  color: #fff;
+  position: relative;   /* NEW */
+  z-index: 1;           /* NEW: keep the glyph above ::before */
+}
+
+/* hover & keyboard focus */
+.footer .social-links.social-tiles a:hover{
+  transform: translateY(-2px);
+  background: #fff; /* invert tile so pink glyph is visible */
+}
+.footer .social-links.social-tiles a:focus-visible{
+  outline: none;
+  background: #fff; /* same inversion as hover */
+  transform: translateY(-1px);
+}
+
+.footer .social-links.social-tiles a:hover i,
+.footer .social-links.social-tiles a:focus-visible i{
+  color: var(--accent-color);
+}
+
+/* ensure our tile styles win over the older footer rule */
+.footer .social-links.social-tiles a{
+  padding: 0;
+  margin-right: 0;
+  width: var(--social-tile-size) !important;
+  height: var(--social-tile-size) !important;
+  background-clip: padding-box;
+}
+
+/* ===== End of footer ===== */
+
+
+/* === Start of scroll-to-top button === */
+#scroll-top{
+  position: fixed;
+  inset-inline-end: clamp(12px, 2vw, 24px);
+  inset-block-end: calc(clamp(12px, 2vw, 24px) + env(safe-area-inset-bottom));
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  display: grid;           /* centers the icon */
+  place-items: center;
+  background: var(--accent, #333);
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 6px 16px rgba(0,0,0,.18);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: opacity .25s ease, transform .25s ease, visibility 0s linear .25s;
+  z-index: 1000;           /* above page UI */
+  pointer-events: none;    /* avoid clicks while hidden */
+}
+#scroll-top.show{
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+#scroll-top i{
+  font-size: 1.5rem;
+  line-height: 1;
+}
+#scroll-top:focus-visible{
+  outline: 3px solid rgba(255,255,255,.8);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent, #333), white 55%), 0 6px 16px rgba(0,0,0,.18);
+}
+@media (hover:hover){
+  #scroll-top:hover{ transform: translateY(-2px); }
+}
+@media (prefers-reduced-motion: reduce){
+  #scroll-top{ transition: none; }
+}
+
+/* === End of scroll-to-top button === */
+
+
+/* === Start of typewriter for "Giulio Caputi" on the main page === */
+.hero-typing{
+  padding: clamp(12px, 3.5vw, 24px) 0 0;
+  margin-bottom: clamp(8px, 2vw, 18px);
+  text-align: center;
+}
+.hero-typing__text{
+  margin: 0;
+  font-family: var(--font-title);
+  font-weight: 400;
+  color: var(--accent);
+  font-size: clamp(60px, 7vw, 60px);
+  line-height: 1.15;
+  letter-spacing: .4px;
+  white-space: nowrap; /* keeps the name on one line on phones */
+}
+.hero-typing .caret{
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: currentColor;
+  margin-left: 0px;  /* distance between the typing bar and the last character typed */
+  transform: translateY(2px);
+  animation: hero-blink 1s step-end infinite;
+}
+
+@keyframes hero-blink{
+  50% { opacity: 0; }
+}
+
+/* Respect users who prefer reduced motion (show static title) */
+@media (prefers-reduced-motion: reduce){
+  .hero-typing .caret{ animation: none; }
+}
+
+/* Second line under the hero title */
+.hero-typing__subtext{
+  margin: clamp(10px, 1.6vw, 12px) 0 0;
+  text-align: center;
+  font-family: inherit;      /* use standard site text font */
+  font-weight: 400;
+  color: #fff;               /* white text as requested */
+  font-size: clamp(23px, 3.8vw, 22px);
+  line-height: 1.35;
+  /* allow wrapping on small screens */
+  white-space: normal;
+}
+
+/* caret already styled via .hero-typing .caret
+   ensure no extra gap beside the sub caret as well */
+.hero-typing .caret--sub{
+  margin-left: 0;
+}
+
+/* === End of typewriter for "Giulio Caputi" on the main page === */
+
+
+
+
