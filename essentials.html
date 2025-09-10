@@ -11,17 +11,15 @@
 
 <style>
   /* Essentials page layout + colors + RESPONSIVE TYPE SIZES */
-  .essay{
-    width:100%;
-    max-width:none;
-    margin:clamp(18px,4vw,36px) auto;
-    padding:0 var(--wrap-pad);
+.essay{
+  width:100%;
+  max-width:none;
+  margin:clamp(18px,4vw,36px) auto;
+  padding:0 var(--wrap-pad);
 
-    /* >>> EDIT THESE to change sizes (mobile-first defaults) */
-    --ess-title-size: 30px; --ess-text-size: 16px;  /* phones */
-   position: relative;
-   isolation: isolate;
-  }
+  /* >>> EDIT THESE to change sizes (mobile-first defaults) */
+  --ess-title-size: 30px; --ess-text-size: 16px;  /* phones */
+}
 
   /* Breakpoints: tweak values as you like */
   @media (min-width: 641px){   /* tablets and desktops */
@@ -48,24 +46,6 @@
   .essay .accent{
     font-weight:800;
   }
-   /* --- Scrim layer that ONLY affects what's behind the text block --- */
- .essay::before{
-   content:"";
-   position:absolute;
-   inset:0;
-   z-index:0;
-   pointer-events:none;
-   /* subtle dark scrim */
-   background: rgba(0,0,0,.34);
-   /* blur + slight dim ONLY behind the text area */
-   backdrop-filter: blur(0.4px) brightness(.88) saturate(.92);
-   -webkit-backdrop-filter: blur(2.5px) brightness(.88) saturate(.92);
-   /* feather the edges so it blends into the space background */
-   mask-image: radial-gradient(140% 110% at 50% 40%, black 60%, transparent 100%);
-   -webkit-mask-image: radial-gradient(140% 110% at 50% 40%, black 60%, transparent 100%);
- }
- /* keep all real content above the scrim */
- .essay > *{ position:relative; z-index:1; }
 
  /* Caret for the one-time typing of the whole essay */
 .typing-caret{
@@ -86,7 +66,7 @@
 
 
 </head>
-<body class="essentials">
+<body class="essentials bg-stars">
 <!-- Loader Overlay -->
   <div id="loader" aria-hidden="true">
     <div class="loader-planet" role="img" aria-label="Loading">
