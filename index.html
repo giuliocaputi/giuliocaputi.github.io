@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Giulio Caputi — Home</title>  <!-- Titolo del sito -->
+  <link rel="icon" href="assets/img/giulio.jpg" type="image/jpeg">
+  <link rel="apple-touch-icon" href="assets/img/giulio.jpg">
+  <link rel="stylesheet" href="assets/main.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body class="home">
+<!-- Loader Overlay -->
+  <div id="loader" aria-hidden="true">
+    <div class="loader-planet" role="img" aria-label="Loading">
+      <div class="loader-ring"></div>
+    </div>
+  </div>
+
+
+  <header class="header">
+  <!-- LEFT: photo + brand -->
+  <div class="left">
+    <img class="avatar" src="assets/img/giulio.jpg" alt="Giulio Caputi">
+    <div class="brand"><span class="dot"></span><span>Giulio Caputi</span></div>
+  </div>
+
+  <!-- CENTER (desktop/tablet only): inline nav -->
+  <nav class="nav" aria-label="Primary">
+    <a href="index.html" class="active" aria-current="page">Home</a>
+    <a href="essentials.html">Essentials</a>
+  </nav>
+
+  <!-- RIGHT: Contact button + hamburger (mobile shows hamburger; desktop hides it) -->
+  <div class="right">
+    <a href="contact_me.html" class="btn-contact" role="button" aria-label="Contact Me">Contact Me</a>
+    <button id="nav-toggle" class="hamburger" aria-label="Open menu" aria-controls="nav-drawer" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- Mobile menu overlay (hidden on desktop; opened by hamburger) -->
+<div id="nav-backdrop" aria-hidden="true"></div>
+<aside id="nav-drawer" aria-hidden="true" role="dialog" aria-label="Navigation menu">
+  <div class="nav-panel">
+    <button id="nav-close" class="nav-close" aria-label="Close navigation">×</button>
+    <ul class="nav-list">
+      <li><a href="index.html" aria-current="page">Home</a></li>
+      <li><a href="essentials.html">Essentials</a></li>
+    </ul>
+  </div>
+</aside>
+
+
+
+  <main>
+  <div class="wrap">
+
+    <!-- Hero typewriter -->
+<section class="hero-typing" aria-label="Animated page heading">
+  <h1 class="hero-typing__text">
+    <span id="typewriter" aria-live="polite"></span><!--
+    --><span class="caret" aria-hidden="true"></span>
+  </h1>
+
+  <p class="hero-typing__subtext">
+    <span id="typewriter-sub" aria-live="polite"></span><!--
+    --><span class="caret caret--sub" aria-hidden="true"></span>
+  </p>
+</section>
+
+    <section class="grid">
+        <!-- Work Experience -->
+        <article class="card category category--compact section-title" aria-hidden="true"><div>Work Experience</div></article>
+
+        <article class="card" data-key="point72" tabindex="0" role="button" aria-label="Open details for Point72">
+          <div class="age">age 22 onwards</div>
+          <h3 class="title">
+          <span class="company">Point72</span>
+          <span class="role">Quantitative Researcher (Intern)</span>
+          </h3>
+          <div class="meta">London, UK</div>
+          <div class="meta">Sep 2025 - present</div>
+          <img class="logo" src="assets/img/point72_pink.png" alt="Point72 logo">
+        </article>
+
+        <article class="card" data-key="amazon" tabindex="0" role="button" aria-label="Open details for Amazon">
+          <div class="age">age 20</div>
+          <h3 class="title">
+          <span class="company">Amazon</span>
+          <span class="role">Business Intelligence Engineer (Intern)</span>
+          </h3>
+          <div class="meta">Luxembourg, Luxembourg</div>
+          <div class="meta">Jun 2023 - Nov 2023 (6 months)</div>
+          <img class="logo" src="assets/img/amazon_pink.png" alt="Amazon logo">
+        </article>
+
+        <article class="card" data-key="deloitte" tabindex="0" role="button" aria-label="Open details for Deloitte">
+          <div class="age">age 20</div>
+          <h3 class="title">
+          <span class="company">Deloitte</span>
+          <span class="role">Cyber Security Analyst (Intern)</span>
+          </h3>
+          <div class="meta">Milan, Italy</div>
+          <div class="meta">Jan 2023 - Apr 2023 (3 months)</div>
+          <img class="logo" src="assets/img/deloitte_pink.png" alt="Deloitte logo">
+        </article>
+
+        <!-- Education -->
+        <article class="card category category--compact section-title" aria-hidden="true"><div>Education</div></article>
+
+        <article class="card" data-key="oxford" tabindex="0" role="button" aria-label="Open details for Oxford">
+          <div class="age">age 21-22</div>
+          <h3 class="title">
+          <span class="company">University of Oxford</span>
+          <span class="role">MSc in Statistical Science</span>
+          </h3>
+          <div class="meta">Oxford, UK</div>
+          <div class="meta">Sep 2024 - Sep 2025 (1 year)</div>
+          <img class="logo" src="assets/img/oxford_pink.png" alt="Oxford logo">
+        </article>
+
+        <article class="card" data-key="bocconi" tabindex="0" role="button" aria-label="Open details for Bocconi University">
+          <div class="age">age 18-21</div>
+          <h3 class="title">
+          <span class="company">Bocconi University</span>
+          <span class="role">BSc in Computer Science &amp; Economics</span>
+          </h3>
+          <div class="meta">Milan, Italy</div>
+          <div class="meta">Sep 2021 - Jul 2024 (3 years)</div>
+          <img class="logo" src="assets/img/bocconi_pink.png" alt="Bocconi logo">
+        </article>
+
+        <article class="card" data-key="gatech" tabindex="0" role="button" aria-label="Open details for Georgia Tech">
+          <div class="age">age 21</div>
+          <h3 class="title">
+          <span class="company">Georgia Tech</span>
+          <span class="role">Exchange Semester</span>
+          </h3>
+          <div class="meta">Atlanta, USA</div>
+          <div class="meta">Jan 2024 - May 2024 (4 months)</div>
+          <img class="logo" src="assets/img/georgia_tech_pink.png" alt="Georgia Tech logo">
+        </article>
+
+        <!-- Other -->
+        <article class="card category category--compact section-title" aria-hidden="true"><div>Other</div></article>
+
+        <article class="card" data-key="bsml" tabindex="0" role="button" aria-label="Open details for BSML">
+          <div class="age">age 20-21</div>
+          <h3 class="title">
+          <span class="company">Bocconi Students for</span>
+          <span class="company">Machine Learning</span>
+          <span class="role">President &amp; Co-Founder</span>
+          </h3>
+          <div class="meta">Milan, Italy</div>
+          <div class="meta">Jun 2023 - Jun 2024</div>
+          <img class="logo" src="assets/img/bsml_pink.png" alt="BSML logo">
+        </article>
+
+        <article class="card" data-key="hobbies" tabindex="0" role="button" aria-label="Open details for Hobbies">
+          <div class="age">-</div>
+          <h3 class="title">
+          <span class="company">Hobbies</span>
+          <span class="role">Gym, music, websites, riddles, print-on-demand, books</span>
+          </h3>
+          <img class="logo" src="assets/img/hobbies_pink.png" alt="Hobbies">
+        </article>
+
+        <article class="card" data-key="cooking" tabindex="0" role="button" aria-label="Open details for Cooking">
+          <div class="age">-</div>
+          <h3 class="title">
+          <span class="company">Cooking</span>
+          <span class="role">...</span>
+          </h3>
+          <img class="logo" src="assets/img/question_mark_pink.png" alt="Cooking icon">
+        </article>
+
+      </section>
+    </div>
+  </main>
+
+  <!-- Detail Drawer -->
+  <aside id="drawer" aria-hidden="true" role="dialog" aria-labelledby="drawer-title">
+    <button id="drawer-close" aria-label="Close details">×</button>
+    <h2 id="drawer-title">—</h2>
+    <div class="drawer-meta">—</div>
+    <div id="drawer-body" class="drawer-body"></div>
+  </aside>
+  <div id="drawer-backdrop" aria-hidden="true"></div>
+
+  <script>
+    // Detail content map
+    const DETAILS = {
+      point72: {
+        title: "Point72 — Incoming Quantitative Researcher (Intern)",
+        meta: "London, UK • Sep 2025 – Mar 2026 (expected)",
+        body: `
+        Will employ techniques from machine learning and statistics to create and backtest automatic trading 
+        strategies. Hope to carry out meaningful alpha research for signal generation to use in real-time 
+        trading systems.
+        `
+      },
+      amazon: {
+        title: "Amazon — Business Intelligence Engineer (Intern)",
+        meta: "Luxembourg • Jun 2023 – Nov 2023",
+        body: `
+        I applied Bayesian optimisation to improve the performance of database systems. These are complex 
+        black-box programs, sometimes with 100+ inputs, whose main characteristic is that they are extremely 
+        expensive to evaluate (a single run can take hours). This means brute-force or gradient-based approaches 
+        aren’t practical. Bayesian optimisation is appealing here because it is derivative-free and uses 
+        sample-efficient exploration. This became the core of my BSc thesis. The schedule wasn’t ideal: the 
+        internship lasted six months; three of those overlapped with term time while I was in another country. 
+        To make things more manageable, I sat only two exams that semester (still graduating in the first 
+        session, <em>Cum Laude</em>).
+        `
+      },
+      deloitte: {
+        title: "Deloitte — Cyber Security Analyst (Intern)",
+        meta: "Milan, Italy • Jan 2023 – Apr 2023",
+        body: `
+        I am a strong believer of the idea according to which everyone has to start somewhere. I started at
+        Deloitte because consulting looked like a panoramic balcony: many companies from tons of different sectors hire
+        consultants, so I figured I’d sample many industries before choosing my lane. Plot twist: this was false. I picked
+        the most STEM-ish role I could find and did some stats/ML, but my real superpowers became Excel and PowerPoint.
+        Totally useless. The upside: (i) clarity about what I don’t want to do, and (ii) a slightly improved CV and higher
+        chances of getting in somewhere else. Also, pulling ~40 hours a week during my bachelor’s wasn’t exactly spa day, but
+        that was probably the most valuable part.
+        `
+      },
+      oxford: {
+        title: "University of Oxford — MSc in Statistical Science",
+        meta: "Oxford, UK • Sep 2024 – Sep 2025",
+        body: `
+        <a href="https://www.stats.ox.ac.uk/msc-statistical-science" target="_blank" rel="noopener" style="color: var(--accent-color, 
+        var(--accent)); text-decoration: underline; text-underline-offset: 3px;">Official MSc page</a>
+
+
+        I left the program with a solid, in-depth grounding in statistics and machine learning, in both theory and hands-on 
+        work. Just as important, I met some of the brightest people I know and made great friends.
+        
+
+        My coursework included: Statistical Machine Learning, Advanced Statistical Machine Learning, Applied Statistics, 
+        Computational Statistics, Foundations of Statistical Inference, Statistical Programming, Stochastic Models in Mathematical 
+        Genetics, Graphical Models, and Advanced Simulation Methods.
+        
+
+        I wrote a dissertation titled “Equity Options Trading with Payoff-Aligned Asymmetric Loss: Methodology and Empirical 
+        Validation”. In it, I explored ways to train predictive models with loss functions mirroring the payoff structure 
+        of the option positions based on those models’ forecasts. I also ran extensive backtests.
+        
+
+        I’m still waiting for the final grade.
+        `
+      },
+      bocconi: {
+        title: "Bocconi University — BSc in Computer Science & Economics",
+        meta: "Milan, Italy • Sep 2021 – Jul 2024",
+        body: `
+        <a href="https://www.unibocconi.it/en/programs/bachelor-science/economics-management-and-computer-science/study-plan" 
+        target="_blank" rel="noopener" style="color: var(--accent-color, var(--accent)); text-decoration: underline; 
+        text-underline-offset: 3px;">Official BSc page</a>
+
+        
+        This was a magnificent experience. I met some of my closest friends and learned to study with intent and passion, 
+        graduating with 110 <em>Cum Laude</em>.
+
+
+        My coursework included:
+        Machine Learning, Finance, Computer Programming, Game Theory, Computer Science, Big Data and Databases, Applied 
+        Mathematics, Statistics, Advanced Statistics, Microeconomics, Macroeconomics, IT Law, Econometrics.
+        I definitely enjoyed the math/stats/CS classes more than the econ ones.
+
+
+        My thesis, titled “Bayesian Optimization for Database Management,” grew out of my Amazon internship and explored 
+        statistical techniques to improve the performance of Database Management Systems. Since these are complex, 
+        expensive-to-evaluate black-box functions, this task is tackled with Bayesian Optimization, an optimization technique 
+        that does not use derivatives of the objective. Instead, it employs a cheap-to-evaluate probabilistic model (aka 
+        surrogate model) to predict function values in unexplored regions, and then maximizes an acquisition function to 
+        decide where to evaluate next (i.e., smart sampling), thus collecting new data during the tuning itself.
+
+
+        At Bocconi I was part of some student associations before co-founding (and presiding over) 
+        Bocconi Students for Machine Learning, together with some of my best friends.
+        `
+      },
+      gatech: {
+        title: "Georgia Institute of Technology — Exchange Semester",
+        meta: "Atlanta, USA • Jan 2024 – May 2024",
+        body: `
+        I spent my final bachelor’s semester at Georgia Tech in Atlanta. As an exchange student, the pace eased 
+        compared with a regular term, which gave me room to explore (on campus and across North America).
+
+
+        Regarding academics, the relevant course I attended were Understanding Markets with Data Science, 
+        Network Science, and Labor Economics, and I completed the semester with a 4.0/4.0 GPA.
+        `
+      },
+      bsml: {
+        title: "Bocconi Students for Machine Learning — President & Co‑Founder",
+        meta: "Milan, Italy • Jun 2023 – Jun 2024",
+        body: `
+        <a href="https://bsmachinelearning.com/" target="_blank" rel="noopener" style="color: var(--accent-color, 
+        var(--accent)); text-decoration: underline; text-underline-offset: 3px;">BSML website</a>
+
+
+        BSML is Bocconi’s first student association dedicated to machine learning. We’re a strong community of problem-solvers who apply AI across disciplines–from finance, genetics and healthcare to real estate and sports betting.
+
+
+        What we do:
+
+        •⁠ Research & Publishing: Student-led projects exploring real-world machine learning applications, with results shared through papers and reports.
+
+        •⁠ Events: Hackathons, workshops, and expert talks with leaders from academia and industry.
+
+        •⁠ Transfer Learning Mentorship Program: Selected participants are matched 1:1 with a mentor active in their 
+        area of interest. These areas include Quantitative Finance, Data Science, Machine Learning Research, Master’s 
+        admissions, and PhD admissions. All mentors are current or former Bocconi students. I myself am a mentor in 
+        the Quantitative Finance and Master’s Admissions areas. More info <a href="https://bsmachinelearning.com/transfer_learning.html" 
+        target="_blank" rel="noopener" style="color: var(--accent-color, var(--accent)); text-decoration: underline; text-underline-offset: 3px;">here</a>.
+        `
+      },
+      hobbies: {
+        title: "Hobbies",
+        meta: "",
+        body: `
+        I hit the gym 4x/week for strength and hypertrophy training and I listen to plenty of music (mainly trap/rap, 
+        lo-fi, and contemporary classical, but I periodically explore new genres). I also love creating websites 
+        (this one is the one I’m proudest of), and solving both logical and mathematical riddles (something I discovered 
+        while preparing for interviews). In high school I created a fully automated print-on-demand online shop, and I 
+        occasionally still make some sells. Lastly, I like reading books (mostly non-fiction, occasionally a novel).
+        `
+      },
+      cooking: {
+        title: "Cooking",
+        meta: "",
+        body: `
+        Soon to be added.
+        `
+      }
+    };
+
+    const drawer = document.getElementById('drawer');
+    const titleEl = document.getElementById('drawer-title');
+    const metaEl = document.querySelector('.drawer-meta');
+    const bodyEl = document.getElementById('drawer-body');
+    const backdrop = document.getElementById('drawer-backdrop');
+    const closeBtn = document.getElementById('drawer-close');
+
+    function openDrawer(key){
+      const d = DETAILS[key];
+      if(!d) return;
+      titleEl.textContent = d.title;
+      metaEl.innerHTML = d.meta.replace(' • ', '<br>');
+      bodyEl.innerHTML = d.body
+        ? '<p>' + d.body.replace(/\n{2,}/g, '</p><p>') + '</p>'
+        : d.bullets.map(b => '<p>'+b+'</p>').join('');
+      drawer.setAttribute('aria-hidden', 'false');
+      backdrop.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('drawer-open');
+      closeBtn.focus();
+    }
+    function closeDrawer(){
+      drawer.setAttribute('aria-hidden', 'true');
+      backdrop.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('drawer-open');
+    }
+
+    document.querySelectorAll('.card[data-key]').forEach(card => {
+      card.addEventListener('click', () => openDrawer(card.dataset.key));
+      card.addEventListener('keydown', (e) => { if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openDrawer(card.dataset.key); } });
+    });
+    backdrop.addEventListener('click', closeDrawer);
+    closeBtn.addEventListener('click', closeDrawer);
+    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeDrawer(); });
+  </script>
+
+  <script>
+    // Fade-out loader once all assets are loaded
+    window.addEventListener('load', () => {
+      const loader = document.getElementById('loader');
+      if (!loader) return;
+      // trigger CSS transition
+      loader.classList.add('fade');
+      // remove from DOM after transition for better performance
+      loader.addEventListener('transitionend', () => loader.remove(), { once: true });
+    });
+  </script>
+
+<!-- Avatar Lightbox (home page) -->
+<div id="photo-lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-label="Profile photo (enlarged)">
+  <div class="lightbox__inner" role="document">
+    <button id="photo-lightbox-close" class="lightbox__close" aria-label="Close enlarged photo">×</button>
+    <img id="photo-lightbox-img" alt="Giulio Caputi">
+  </div>
+</div>
+
+<!-- this opens and closes the navigation menu -->
+<script>
+  (function(){
+    const toggle = document.getElementById('nav-toggle');
+    const drawer = document.getElementById('nav-drawer');
+    const backdrop = document.getElementById('nav-backdrop');
+    const closeBtn = document.getElementById('nav-close');
+
+    function openNav(){
+      drawer.setAttribute('aria-hidden','false');
+      backdrop.setAttribute('aria-hidden','false');
+      document.body.classList.add('drawer-open');
+      toggle.setAttribute('aria-expanded','true');
+      closeBtn && closeBtn.focus();
+    }
+    function closeNav(){
+      drawer.setAttribute('aria-hidden','true');
+      backdrop.setAttribute('aria-hidden','true');
+      document.body.classList.remove('drawer-open');
+      toggle.setAttribute('aria-expanded','false');
+      toggle && toggle.focus();
+    }
+
+    toggle && toggle.addEventListener('click', openNav);
+    closeBtn && closeBtn.addEventListener('click', closeNav);
+    backdrop && backdrop.addEventListener('click', closeNav);
+    /* Close when clicking anywhere outside the panel (on the dimmed area) */
+    drawer && drawer.addEventListener('click', (e)=>{ 
+    if(!e.target.closest('.nav-panel')) closeNav(); });
+    window.addEventListener('keydown', (e)=>{ if(e.key === 'Escape'){ closeNav(); }});
+  })();
+</script>
+
+<script>
+  (function(){
+    const avatar   = document.querySelector('.avatar');               // the small photo in header
+    const lb       = document.getElementById('photo-lightbox');
+    const lbImg    = document.getElementById('photo-lightbox-img');
+    const lbClose  = document.getElementById('photo-lightbox-close');
+
+    if(!avatar || !lb || !lbImg || !lbClose) return;
+
+    // Make the image keyboard-accessible like a button
+    avatar.setAttribute('tabindex','0');
+    avatar.setAttribute('role','button');
+    avatar.setAttribute('aria-label','Enlarge profile photo');
+
+    function openLB(){
+      // use currentSrc to respect any srcset, else fall back to src
+      lbImg.src = avatar.currentSrc || avatar.src;
+      lb.setAttribute('aria-hidden','false');
+      document.body.classList.add('modal-open');
+      lbClose.focus();
+    }
+
+    function closeLB(){
+      lb.setAttribute('aria-hidden','true');
+      document.body.classList.remove('modal-open');
+      avatar.focus();
+    }
+
+    // Open on click or keyboard (Enter/Space)
+    avatar.addEventListener('click', openLB);
+    avatar.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        openLB();
+      }
+    });
+
+    // Close controls: button, click outside, ESC
+    lbClose.addEventListener('click', closeLB);
+    lb.addEventListener('click', (e)=>{ if(e.target === lb) closeLB(); });
+    window.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeLB(); });
+  })();
+</script>
+
+<footer class="site-footer footer">
+  <div class="footer-inner">
+    <div>
+      <h2 class="footer-name">Giulio Caputi</h2>
+      <p>London, United Kingdom</p>
+      <p>Email: <a href="mailto:giulio.caputi@st-hughs.ox.ac.uk" target="_blank">giulio.caputi@st-hughs.ox.ac.uk</a></p>
+      <p>© Copyright <strong>Giulio Caputi</strong> <span class="js-year"></span>. All Rights Reserved.</p>
+    </div>
+
+  <nav class="social-links social-tiles" aria-label="Social links">
+  <a href="https://www.linkedin.com/in/giulio-caputi/" target="_blank" rel="noopener" title="LinkedIn">
+    <i class="bi bi-linkedin" aria-hidden="true"></i>
+  </a>
+  <a href="https://www.instagram.com/giulio_caputi/" target="_blank" rel="noopener" title="Instagram">
+    <i class="bi bi-instagram" aria-hidden="true"></i>
+  </a>
+</nav>
+
+  
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.js-year').forEach(function(el){
+    el.textContent = new Date().getFullYear();
+  });
+</script>
+
+<!-- Scroll-to-top arrow -->
+<a href="#" id="scroll-top" class="scroll-top" aria-label="Back to top" title="Back to top">
+  <i class="bi bi-arrow-up-short" aria-hidden="true"></i>
+</a>
+<script>
+  (function(){
+    const btn = document.getElementById('scroll-top');
+    if(!btn) return;
+    const toggle = () => {
+      const y = window.scrollY || document.documentElement.scrollTop;
+      btn.classList.toggle('show', y > 120);
+    };
+    window.addEventListener('scroll', toggle, { passive: true });
+    window.addEventListener('resize', toggle, { passive: true });
+    toggle();
+    btn.addEventListener('click', function(e){
+      e.preventDefault();
+      try{
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }catch(_){
+        window.scrollTo(0, 0);
+      }
+    });
+  })();
+</script>
+
+
+<script>
+  // Two-line synchronized typing with different speeds
+  // main types → (no pause) → sub types → LONG HOLD → delete sub → delete main → loop
+  document.addEventListener('DOMContentLoaded', () => {
+    const elMain = document.getElementById('typewriter');
+    const elSub  = document.getElementById('typewriter-sub');
+    if (!elMain || !elSub) return;
+
+    const textMain = 'Giulio Caputi';
+    const textSub  = 'Rumor has it they used to call him “Cap”';
+
+    const motionOK = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Static fallback for reduced motion
+    elMain.textContent = textMain;
+    elSub.textContent  = textSub;
+    if (!motionOK) return;
+
+    // ── Timing ────────────────────────────────────────────────────────────────
+    const TYPE_MS_MAIN = 180;   // typing speed for pink title (slower)
+    const TYPE_MS_SUB  = 60;    // typing speed for white subtext (faster)
+    const DEL_MS       = 20;    // deletion speed for both
+    const PAUSE_AFTER_MAIN_MS = 0;     // start sub immediately after main finishes
+    const HOLD_AFTER_BOTH_MS  = 4000;  // long hold after both lines are fully typed
+    const GAP_MS       = 50;   // small gap after each deletion
+    // ─────────────────────────────────────────────────────────────────────────
+
+    const wait = (ms) => new Promise(r => setTimeout(r, ms));
+
+    async function typeTo(el, str, stepMs){
+      for (let i = 1; i <= str.length; i++){
+        el.textContent = str.slice(0, i);
+        await wait(stepMs);
+      }
+    }
+    async function deleteFrom(el, str, stepMs){
+      for (let i = str.length - 1; i >= 0; i--){
+        el.textContent = str.slice(0, i);
+        await wait(stepMs);
+      }
+    }
+
+    async function cycle(){
+      elMain.textContent = '';
+      elSub.textContent  = '';
+
+      // 1) Type main at its speed
+      await typeTo(elMain, textMain, TYPE_MS_MAIN);
+      await wait(PAUSE_AFTER_MAIN_MS);
+
+      // 2) Type sub at its (different) speed
+      await typeTo(elSub, textSub, TYPE_MS_SUB);
+
+      // 3) Hold after both are complete
+      await wait(HOLD_AFTER_BOTH_MS);
+
+      // 4) Delete sub, then main
+      await deleteFrom(elSub, textSub, DEL_MS);
+      await wait(GAP_MS);
+      await deleteFrom(elMain, textMain, DEL_MS);
+      await wait(GAP_MS);
+
+      // Loop
+      cycle();
+    }
+
+    cycle();
+  });
+</script>
+
+
+</body>
+</html>
