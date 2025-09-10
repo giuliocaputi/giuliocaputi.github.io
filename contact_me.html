@@ -65,14 +65,20 @@
           </div>
 
           <!-- Form posts to FormSubmit to send an email to your address -->
-          <form id="contact-form" action="https://formsubmit.co/giulio.caputi@st-hughs.ox.ac.uk" method="POST">
-            <!-- FormSubmit options -->
-            <input type="hidden" name="_subject" value="Website Contact"/>
-            <input type="hidden" name="_template" value="table"/>
-            <input type="hidden" name="_captcha" value="false"/>
-            <input type="hidden" name="_next" value=""/> <!-- filled by JS -->
-            <!-- Honeypot (spam protection) -->
-            <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off"/>
+          <form id="contact-form" action="https://api.web3forms.com/submit" method="POST" accept-charset="UTF-8">
+            <!-- Web3Forms options -->
+            <input type="hidden" name="access_key" value="5a751d71-6286-455a-b6f8-80715d14fcdd" />
+            <input type="hidden" name="subject" value="Website Contact" />
+            <input type="hidden" name="from_name" value="giuliocaputi.com" />
+
+            <!-- Web3Forms will redirect here after success (filled by JS below) -->
+            <input type="hidden" name="redirect" value="" />
+
+            <!-- Spam trap (honeypot) -->
+            <input type="text" name="botcheck" style="display:none" tabindex="-1" autocomplete="off"/>
+
+            <!-- Ensure replies go to the sender -->
+            <input type="hidden" name="replyto" id="replyto" value="" />
 
             <div class="form-grid">
               <div class="form-field">
@@ -135,18 +141,29 @@
       window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeNav(); });
     })();
 
-    // Redirect back here with a success flag after submission
-    (function(){
-      const next = document.querySelector('input[name="_next"]');
-      if(next){
-        next.value = window.location.origin + window.location.pathname + '?sent=1';
-      }
-      const status = document.getElementById('form-status');
-      const params = new URLSearchParams(window.location.search);
-      if(params.get('sent') === '1' && status){
-        status.hidden = false;
-      }
-    })();
+// Redirect back here with a success flag after submission (Web3Forms)
+(function(){
+  // set the post-success redirect
+  const redirect = document.querySelector('input[name="redirect"]');
+  if(redirect){
+    redirect.value = window.location.origin + window.location.pathname + '?sent=1';
+  }
+
+  // show the green success banner if ?sent=1 is present
+  const status = document.getElementById('form-status');
+  const params = new URLSearchParams(window.location.search);
+  if(params.get('sent') === '1' && status){
+    status.hidden = false;
+  }
+
+  // ensure replies go to the sender
+  const form = document.getElementById('contact-form');
+  const emailEl = document.getElementById('email');
+  const replyto = document.getElementById('replyto');
+  form && form.addEventListener('submit', () => {
+    if(replyto && emailEl){ replyto.value = emailEl.value; }
+  });
+})();
   </script>
 
 <!-- Avatar Lightbox -->
