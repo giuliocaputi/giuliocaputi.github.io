@@ -10,13 +10,140 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body class="home bg-stars">
+<div class="bg-twinkle-layer" aria-hidden="true"></div>
+
 <!-- Loader Overlay -->
   <div id="loader" aria-hidden="true">
     <div class="loader-planet" role="img" aria-label="Loading">
       <div class="loader-ring"></div>
     </div>
+    <div class="loader-percentage" aria-live="polite">0%</div>
   </div>
+  <script>
+  // Enhanced loader with percentage counter and smooth exit
+  (function() {
+    const loader = document.getElementById('loader');
+    const percentageEl = document.querySelector('.loader-percentage');
+    if (!loader || !percentageEl) return;
 
+    let progress = 0;
+    let isLoaded = false;
+
+    function updateProgress() {
+      if (!isLoaded) {
+        const target = 90;
+        const increment = (target - progress) * 0.08;
+        progress = Math.min(progress + increment, target);
+        percentageEl.textContent = Math.floor(progress) + '%';
+        requestAnimationFrame(updateProgress);
+      } else {
+        if (progress < 100) {
+          progress += (100 - progress) * 0.2;
+          percentageEl.textContent = Math.floor(progress) + '%';
+
+          if (progress > 99.5) {
+            progress = 100;
+            percentageEl.textContent = '100%';
+            setTimeout(() => {
+              loader.classList.add('fade');
+              loader.addEventListener('transitionend', () => {
+                loader.remove();
+                // Trigger content reveal (appearance from abyss)
+                document.body.classList.add('content-reveal');
+              }, { once: true });
+            }, 400);
+          } else {
+            requestAnimationFrame(updateProgress);
+          }
+        }
+      }
+    }
+
+    updateProgress();
+
+    window.addEventListener('load', () => {
+      isLoaded = true;
+    });
+  })();
+</script>
+
+<script>
+  // Hero text scramble effect - wait for DOM to be ready
+  document.addEventListener('DOMContentLoaded', function(){
+    const title = document.querySelector('.hero-title');
+    const subtitle = document.querySelector('.hero-subtitle');
+    if (!title || !subtitle) return;
+
+    const titleText = title.dataset.text || '';
+    const subtitleText = subtitle.dataset.text || '';
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*';
+    const scrambleDuration = 3000; // 3 seconds of scrambling
+    const scrambleInterval = 50; // How fast the random letters change
+
+    // Check for reduced motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      title.textContent = titleText;
+      subtitle.textContent = subtitleText;
+      return;
+    }
+
+    function getRandomChar() {
+      return chars[Math.floor(Math.random() * chars.length)];
+    }
+
+    function scrambleText(text) {
+      return text.split('').map(char => char === ' ' ? ' ' : getRandomChar()).join('');
+    }
+
+    function animateScramble(element, finalText, duration) {
+      let interval;
+
+      // Start with scrambled text
+      element.textContent = scrambleText(finalText);
+
+      // Keep scrambling for the full duration
+      interval = setInterval(() => {
+        element.textContent = scrambleText(finalText);
+      }, scrambleInterval);
+
+      // After duration, reveal the correct text all at once
+      setTimeout(() => {
+        clearInterval(interval);
+        element.textContent = finalText;
+      }, duration);
+    }
+
+    function startScramble() {
+      // Small delay to let the hero fade in first
+      setTimeout(() => {
+        // Start both animations together
+        animateScramble(title, titleText, scrambleDuration);
+        animateScramble(subtitle, subtitleText, scrambleDuration);
+      }, 500);
+    }
+
+    // Watch for content-reveal class to be added to body
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          if (document.body.classList.contains('content-reveal')) {
+            observer.disconnect();
+            startScramble();
+          }
+        }
+      });
+    });
+
+    observer.observe(document.body, { attributes: true });
+
+    // Fallback if content-reveal is already present
+    if (document.body.classList.contains('content-reveal')) {
+      observer.disconnect();
+      startScramble();
+    }
+  });
+</script>
 
   <header class="header">
   <!-- LEFT: photo + brand -->
@@ -52,131 +179,171 @@
   </div>
 </aside>
 
-
-
   <main>
-  <div class="wrap">
 
-    <!-- Hero typewriter -->
-<section class="hero-typing" aria-label="Animated page heading">
-  <h1 class="hero-typing__text">
-    <span id="typewriter" aria-live="polite"></span><!--
-    --><span class="caret" aria-hidden="true"></span>
-  </h1>
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section" aria-label="Introduction">
+      <div class="hero-content">
+        <h1 class="hero-title" data-text="Giulio Caputi"></h1>
+        <p class="hero-subtitle" data-text="Rumor has it they used to call him &quot;Cap&quot;"></p>
+      </div>
+    </section>
 
-  <p class="hero-typing__subtext">
-    <span id="typewriter-sub" aria-live="polite"></span><!--
-    --><span class="caret caret--sub" aria-hidden="true"></span>
-  </p>
-</section>
+    <!-- Content Section -->
+    <section class="content-section">
+      <div class="wrap">
 
-    <section class="grid">
-        <!-- Work Experience -->
-        <article class="card category category--compact section-title" aria-hidden="true"><div>Work Experience</div></article>
+        <!-- Work Experience Section -->
+        <section id="work" class="subsection" data-section="work">
+          <div class="subsection-header">
+            <div class="subsection-title-3d">
+              <h2 class="subsection-title">Work Experience</h2>
+              <p class="subsection-subtitle">Per aspera ad astra</p>
+            </div>
+            <button class="subsection-toggle" aria-label="Toggle Work Experience details" aria-expanded="false">
+              <span class="toggle-text toggle-text-explore">Explore</span>
+              <span class="toggle-text toggle-text-close">Close</span>
+              <i class="bi bi-chevron-down toggle-icon"></i>
+            </button>
+          </div>
+          <div class="subsection-cards">
+            <div class="grid">
+              <article class="card" data-key="point72" tabindex="0" role="button" aria-label="Open details for Point72">
+                <div class="age">age 22 onwards</div>
+                <h3 class="title">
+                  <span class="company">Point72</span>
+                  <span class="role">Quantitative Researcher (Intern)</span>
+                </h3>
+                <div class="meta">London, UK</div>
+                <div class="meta">Sep 2025 - present</div>
+                <img class="logo" src="assets/img/point72_pink.png" alt="Point72 logo">
+              </article>
 
-        <article class="card" data-key="point72" tabindex="0" role="button" aria-label="Open details for Point72">
-          <div class="age">age 22 onwards</div>
-          <h3 class="title">
-          <span class="company">Point72</span>
-          <span class="role">Quantitative Researcher (Intern)</span>
-          </h3>
-          <div class="meta">London, UK</div>
-          <div class="meta">Sep 2025 - present</div>
-          <img class="logo" src="assets/img/point72_pink.png" alt="Point72 logo">
-        </article>
+              <article class="card" data-key="amazon" tabindex="0" role="button" aria-label="Open details for Amazon">
+                <div class="age">age 20</div>
+                <h3 class="title">
+                  <span class="company">Amazon</span>
+                  <span class="role">Business Intelligence Engineer (Intern)</span>
+                </h3>
+                <div class="meta">Luxembourg, Luxembourg</div>
+                <div class="meta">Jun 2023 - Nov 2023 (6 months)</div>
+                <img class="logo" src="assets/img/amazon_pink.png" alt="Amazon logo">
+              </article>
 
-        <article class="card" data-key="amazon" tabindex="0" role="button" aria-label="Open details for Amazon">
-          <div class="age">age 20</div>
-          <h3 class="title">
-          <span class="company">Amazon</span>
-          <span class="role">Business Intelligence Engineer (Intern)</span>
-          </h3>
-          <div class="meta">Luxembourg, Luxembourg</div>
-          <div class="meta">Jun 2023 - Nov 2023 (6 months)</div>
-          <img class="logo" src="assets/img/amazon_pink.png" alt="Amazon logo">
-        </article>
+              <article class="card" data-key="deloitte" tabindex="0" role="button" aria-label="Open details for Deloitte">
+                <div class="age">age 20</div>
+                <h3 class="title">
+                  <span class="company">Deloitte</span>
+                  <span class="role">Cyber Security Analyst (Intern)</span>
+                </h3>
+                <div class="meta">Milan, Italy</div>
+                <div class="meta">Jan 2023 - Apr 2023 (3 months)</div>
+                <img class="logo" src="assets/img/deloitte_pink.png" alt="Deloitte logo">
+              </article>
+            </div>
+          </div>
+        </section>
 
-        <article class="card" data-key="deloitte" tabindex="0" role="button" aria-label="Open details for Deloitte">
-          <div class="age">age 20</div>
-          <h3 class="title">
-          <span class="company">Deloitte</span>
-          <span class="role">Cyber Security Analyst (Intern)</span>
-          </h3>
-          <div class="meta">Milan, Italy</div>
-          <div class="meta">Jan 2023 - Apr 2023 (3 months)</div>
-          <img class="logo" src="assets/img/deloitte_pink.png" alt="Deloitte logo">
-        </article>
+        <!-- Education Section -->
+        <section id="education" class="subsection" data-section="education">
+          <div class="subsection-header">
+            <div class="subsection-title-3d">
+              <h2 class="subsection-title">Education</h2>
+              <p class="subsection-subtitle">Scientia potentia est</p>
+            </div>
+            <button class="subsection-toggle" aria-label="Toggle Education details" aria-expanded="false">
+              <span class="toggle-text toggle-text-explore">Explore</span>
+              <span class="toggle-text toggle-text-close">Close</span>
+              <i class="bi bi-chevron-down toggle-icon"></i>
+            </button>
+          </div>
+          <div class="subsection-cards">
+            <div class="grid">
+              <article class="card" data-key="oxford" tabindex="0" role="button" aria-label="Open details for Oxford">
+                <div class="age">age 21-22</div>
+                <h3 class="title">
+                  <span class="company">University of Oxford</span>
+                  <span class="role">MSc in Statistical Science</span>
+                </h3>
+                <div class="meta">Oxford, UK</div>
+                <div class="meta">Sep 2024 - Sep 2025 (1 year)</div>
+                <img class="logo" src="assets/img/oxford_pink.png" alt="Oxford logo">
+              </article>
 
-        <!-- Education -->
-        <article class="card category category--compact section-title" aria-hidden="true"><div>Education</div></article>
+              <article class="card" data-key="bocconi" tabindex="0" role="button" aria-label="Open details for Bocconi University">
+                <div class="age">age 18-21</div>
+                <h3 class="title">
+                  <span class="company">Bocconi University</span>
+                  <span class="role">BSc in Computer Science &amp; Economics</span>
+                </h3>
+                <div class="meta">Milan, Italy</div>
+                <div class="meta">Sep 2021 - Jul 2024 (3 years)</div>
+                <img class="logo" src="assets/img/bocconi_pink.png" alt="Bocconi logo">
+              </article>
 
-        <article class="card" data-key="oxford" tabindex="0" role="button" aria-label="Open details for Oxford">
-          <div class="age">age 21-22</div>
-          <h3 class="title">
-          <span class="company">University of Oxford</span>
-          <span class="role">MSc in Statistical Science</span>
-          </h3>
-          <div class="meta">Oxford, UK</div>
-          <div class="meta">Sep 2024 - Sep 2025 (1 year)</div>
-          <img class="logo" src="assets/img/oxford_pink.png" alt="Oxford logo">
-        </article>
+              <article class="card" data-key="gatech" tabindex="0" role="button" aria-label="Open details for Georgia Tech">
+                <div class="age">age 21</div>
+                <h3 class="title">
+                  <span class="company">Georgia Tech</span>
+                  <span class="role">Exchange Semester</span>
+                </h3>
+                <div class="meta">Atlanta, USA</div>
+                <div class="meta">Jan 2024 - May 2024 (4 months)</div>
+                <img class="logo" src="assets/img/georgia_tech_pink.png" alt="Georgia Tech logo">
+              </article>
+            </div>
+          </div>
+        </section>
 
-        <article class="card" data-key="bocconi" tabindex="0" role="button" aria-label="Open details for Bocconi University">
-          <div class="age">age 18-21</div>
-          <h3 class="title">
-          <span class="company">Bocconi University</span>
-          <span class="role">BSc in Computer Science &amp; Economics</span>
-          </h3>
-          <div class="meta">Milan, Italy</div>
-          <div class="meta">Sep 2021 - Jul 2024 (3 years)</div>
-          <img class="logo" src="assets/img/bocconi_pink.png" alt="Bocconi logo">
-        </article>
+        <!-- Other Section -->
+        <section id="other" class="subsection" data-section="other">
+          <div class="subsection-header">
+            <div class="subsection-title-3d">
+              <h2 class="subsection-title">Other</h2>
+              <p class="subsection-subtitle">Carpe diem, quam minimum credula postero</p>
+            </div>
+            <button class="subsection-toggle" aria-label="Toggle Other details" aria-expanded="false">
+              <span class="toggle-text toggle-text-explore">Explore</span>
+              <span class="toggle-text toggle-text-close">Close</span>
+              <i class="bi bi-chevron-down toggle-icon"></i>
+            </button>
+          </div>
+          <div class="subsection-cards">
+            <div class="grid">
+              <article class="card" data-key="bsml" tabindex="0" role="button" aria-label="Open details for BSML">
+                <div class="age">age 20-21</div>
+                <h3 class="title">
+                  <span class="company">Bocconi Students for</span>
+                  <span class="company">Machine Learning</span>
+                  <span class="role">President &amp; Co-Founder</span>
+                </h3>
+                <div class="meta">Milan, Italy</div>
+                <div class="meta">Jun 2023 - Jun 2024</div>
+                <img class="logo" src="assets/img/bsml_pink.png" alt="BSML logo">
+              </article>
 
-        <article class="card" data-key="gatech" tabindex="0" role="button" aria-label="Open details for Georgia Tech">
-          <div class="age">age 21</div>
-          <h3 class="title">
-          <span class="company">Georgia Tech</span>
-          <span class="role">Exchange Semester</span>
-          </h3>
-          <div class="meta">Atlanta, USA</div>
-          <div class="meta">Jan 2024 - May 2024 (4 months)</div>
-          <img class="logo" src="assets/img/georgia_tech_pink.png" alt="Georgia Tech logo">
-        </article>
+              <article class="card" data-key="hobbies" tabindex="0" role="button" aria-label="Open details for Hobbies">
+                <h3 class="title">
+                  <span class="company">Hobbies</span>
+                  <span class="role">Gym, music, websites,</span>
+                  <span class="role">riddles, print-on-demand, books</span>
+                </h3>
+                <img class="logo" src="assets/img/hobbies_pink.png" alt="Hobbies">
+              </article>
 
-        <!-- Other -->
-        <article class="card category category--compact section-title" aria-hidden="true"><div>Other</div></article>
+              <article class="card" data-key="cooking" tabindex="0" role="button" aria-label="Open details for Cooking">
+                <h3 class="title">
+                  <span class="company">Cooking</span>
+                  <span class="role">...</span>
+                </h3>
+                <img class="logo" src="assets/img/question_mark_pink.png" alt="Cooking icon">
+              </article>
+            </div>
+          </div>
+        </section>
 
-        <article class="card" data-key="bsml" tabindex="0" role="button" aria-label="Open details for BSML">
-          <div class="age">age 20-21</div>
-          <h3 class="title">
-          <span class="company">Bocconi Students for</span>
-          <span class="company">Machine Learning</span>
-          <span class="role">President &amp; Co-Founder</span>
-          </h3>
-          <div class="meta">Milan, Italy</div>
-          <div class="meta">Jun 2023 - Jun 2024</div>
-          <img class="logo" src="assets/img/bsml_pink.png" alt="BSML logo">
-        </article>
-
-        <article class="card" data-key="hobbies" tabindex="0" role="button" aria-label="Open details for Hobbies">
-          <h3 class="title">
-          <span class="company">Hobbies</span>
-          <span class="role">Gym, music, websites,</span>
-          <span class="role">riddles, print-on-demand, books</span>
-          </h3>
-          <img class="logo" src="assets/img/hobbies_pink.png" alt="Hobbies">
-        </article>
-
-        <article class="card" data-key="cooking" tabindex="0" role="button" aria-label="Open details for Cooking">
-          <h3 class="title">
-          <span class="company">Cooking</span>
-          <span class="role">...</span>
-          </h3>
-          <img class="logo" src="assets/img/question_mark_pink.png" alt="Cooking icon">
-        </article>
-
-      </section>
-    </div>
+      </div>
+    </section>
   </main>
 
   <!-- Detail Drawer -->
@@ -377,17 +544,6 @@
     window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeDrawer(); });
   </script>
 
-  <script>
-    // Fade-out loader once all assets are loaded
-    window.addEventListener('load', () => {
-      const loader = document.getElementById('loader');
-      if (!loader) return;
-      // trigger CSS transition
-      loader.classList.add('fade');
-      // remove from DOM after transition for better performance
-      loader.addEventListener('transitionend', () => loader.remove(), { once: true });
-    });
-  </script>
 
 <!-- Avatar Lightbox (home page) -->
 <div id="photo-lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-label="Profile photo (enlarged)">
@@ -512,7 +668,7 @@
     if(!btn) return;
     const toggle = () => {
       const y = window.scrollY || document.documentElement.scrollTop;
-      btn.classList.toggle('show', y > 120);
+      btn.classList.toggle('show', y > 150);
     };
     window.addEventListener('scroll', toggle, { passive: true });
     window.addEventListener('resize', toggle, { passive: true });
@@ -530,75 +686,225 @@
 
 
 <script>
-  // Two-line synchronized typing with different speeds
-  // main types → (no pause) → sub types → LONG HOLD → delete sub → delete main → loop
+  // Hero scroll behavior and content reveal with staggered card animations
   document.addEventListener('DOMContentLoaded', () => {
-    const elMain = document.getElementById('typewriter');
-    const elSub  = document.getElementById('typewriter-sub');
-    if (!elMain || !elSub) return;
+    const heroScroll = document.querySelector('.hero-scroll');
+    const contentSection = document.querySelector('.content-section');
 
-    const textMain = 'Giulio Caputi';
-    const textSub  = 'Rumor has it they used to call him “Cap”';
+    // Smooth scroll to content when clicking the scroll indicator
+    if (heroScroll && contentSection) {
+      heroScroll.addEventListener('click', () => {
+        contentSection.scrollIntoView({ behavior: 'smooth' });
+      });
+    }
 
-    const motionOK = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Intersection Observer to reveal content section when it enters viewport
+    if (contentSection) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+      });
 
-    // Static fallback for reduced motion
-    elMain.textContent = textMain;
-    elSub.textContent  = textSub;
-    if (!motionOK) return;
+      observer.observe(contentSection);
+    }
 
-    // ── Timing ────────────────────────────────────────────────────────────────
-    const TYPE_MS_MAIN = 180;   // typing speed for pink title (slower)
-    const TYPE_MS_SUB  = 60;    // typing speed for white subtext (faster)
-    const DEL_MS       = 20;    // deletion speed for both
-    const PAUSE_AFTER_MAIN_MS = 0;     // start sub immediately after main finishes
-    const HOLD_AFTER_BOTH_MS  = 4000;  // long hold after both lines are fully typed
-    const GAP_MS       = 50;   // small gap after each deletion
-    // ─────────────────────────────────────────────────────────────────────────
+    // Staggered reveal for individual cards
+    const cards = document.querySelectorAll('.card');
+    if (cards.length > 0) {
+      const cardObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('card-visible');
+            cardObserver.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.15,
+        rootMargin: '0px 0px -80px 0px'
+      });
 
-    const wait = (ms) => new Promise(r => setTimeout(r, ms));
+      cards.forEach((card, index) => {
+        card.style.transitionDelay = `${index * 0.08}s`;
+        cardObserver.observe(card);
+      });
+    }
 
-    async function typeTo(el, str, stepMs){
-      for (let i = 1; i <= str.length; i++){
-        el.textContent = str.slice(0, i);
-        await wait(stepMs);
+    // Parallax effect for hero section
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrolled = window.scrollY;
+          const heroSection = document.querySelector('.hero-section');
+
+          if (heroSection && scrolled < window.innerHeight) {
+            const heroContent = heroSection.querySelector('.hero-content');
+
+            if (heroContent) {
+              heroContent.style.transform = `translateY(${scrolled * 0.5}px)`;
+              heroContent.style.opacity = 1 - (scrolled / window.innerHeight) * 1.5;
+            }
+          }
+
+          ticking = false;
+        });
+
+        ticking = true;
+      }
+    }, { passive: true });
+
+    // Section navigation active state tracking
+    const sections = document.querySelectorAll('#hero, #work, #education, #other');
+    const navItems = document.querySelectorAll('.section-nav-item');
+
+    // Track which section is most visible
+    function updateActiveSection() {
+      const scrollTop = window.scrollY;
+      const windowHeight = window.innerHeight;
+
+      // If at the very top, select hero
+      if (scrollTop < windowHeight * 0.3) {
+        navItems.forEach(item => {
+          item.classList.toggle('active', item.dataset.section === 'hero');
+        });
+        return;
+      }
+
+      // Find which section is most in view
+      let bestSection = null;
+      let bestVisibility = 0;
+
+      sections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        const sectionTop = rect.top;
+        const sectionBottom = rect.bottom;
+        const sectionHeight = rect.height;
+
+        // Calculate how much of the section is visible in the viewport
+        const visibleTop = Math.max(0, sectionTop);
+        const visibleBottom = Math.min(windowHeight, sectionBottom);
+        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+        const visibility = visibleHeight / Math.min(sectionHeight, windowHeight);
+
+        // Prefer sections that are more centered in viewport
+        const sectionCenter = (sectionTop + sectionBottom) / 2;
+        const viewportCenter = windowHeight / 2;
+        const centerBonus = 1 - Math.abs(sectionCenter - viewportCenter) / windowHeight;
+
+        const score = visibility * 0.7 + centerBonus * 0.3;
+
+        if (score > bestVisibility) {
+          bestVisibility = score;
+          bestSection = section.id;
+        }
+      });
+
+      if (bestSection) {
+        navItems.forEach(item => {
+          item.classList.toggle('active', item.dataset.section === bestSection);
+        });
       }
     }
-    async function deleteFrom(el, str, stepMs){
-      for (let i = str.length - 1; i >= 0; i--){
-        el.textContent = str.slice(0, i);
-        await wait(stepMs);
+
+    // Update on scroll
+    window.addEventListener('scroll', updateActiveSection, { passive: true });
+    updateActiveSection(); // Initial call
+
+    // Smooth scroll on click with offset for header
+    navItems.forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = item.getAttribute('href').substring(1);
+        const targetSection = document.getElementById(targetId);
+
+        if (targetSection) {
+          // For hero, scroll to top; for others, add offset for header
+          if (targetId === 'hero') {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          } else {
+            const headerOffset = 150; // Account for sticky header and some padding
+            const elementPosition = targetSection.getBoundingClientRect().top + window.scrollY;
+            const offsetPosition = elementPosition - headerOffset;
+            window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+          }
+
+          // Immediately update active state
+          navItems.forEach(nav => {
+            nav.classList.toggle('active', nav.dataset.section === targetId);
+          });
+        }
+      });
+    });
+  });
+
+  // Subsection toggle functionality
+  const allSubsections = document.querySelectorAll('.subsection');
+
+  document.querySelectorAll('.subsection-toggle').forEach(button => {
+    button.addEventListener('click', (e) => {
+      e.stopPropagation(); // Prevent document click from immediately closing
+      const subsection = button.closest('.subsection');
+      const isExpanded = subsection.classList.contains('expanded');
+
+      // Close all other subsections first
+      allSubsections.forEach(other => {
+        if (other !== subsection && other.classList.contains('expanded')) {
+          other.classList.remove('expanded');
+          other.querySelector('.subsection-toggle').setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      // Toggle the current subsection
+      subsection.classList.toggle('expanded');
+      button.setAttribute('aria-expanded', !isExpanded);
+    });
+  });
+
+  // Close subsections when clicking outside
+  document.addEventListener('click', (e) => {
+    // Don't close if clicking inside a subsection, on a card, or on the drawer/backdrop
+    if (e.target.closest('.subsection') ||
+        e.target.closest('.card') ||
+        e.target.closest('#drawer') ||
+        e.target.closest('#drawer-backdrop') ||
+        e.target.closest('#drawer-close')) return;
+
+    // Close all expanded subsections
+    allSubsections.forEach(subsection => {
+      if (subsection.classList.contains('expanded')) {
+        subsection.classList.remove('expanded');
+        subsection.querySelector('.subsection-toggle').setAttribute('aria-expanded', 'false');
       }
-    }
-
-    async function cycle(){
-      elMain.textContent = '';
-      elSub.textContent  = '';
-
-      // 1) Type main at its speed
-      await typeTo(elMain, textMain, TYPE_MS_MAIN);
-      await wait(PAUSE_AFTER_MAIN_MS);
-
-      // 2) Type sub at its (different) speed
-      await typeTo(elSub, textSub, TYPE_MS_SUB);
-
-      // 3) Hold after both are complete
-      await wait(HOLD_AFTER_BOTH_MS);
-
-      // 4) Delete sub, then main
-      await deleteFrom(elSub, textSub, DEL_MS);
-      await wait(GAP_MS);
-      await deleteFrom(elMain, textMain, DEL_MS);
-      await wait(GAP_MS);
-
-      // Loop
-      cycle();
-    }
-
-    cycle();
+    });
   });
 </script>
 
+<!-- Vertical Section Navigation (fixed to viewport) -->
+<nav class="section-nav" aria-label="Page sections">
+  <div class="section-nav-line"></div>
+  <a href="#hero" class="section-nav-item active" data-section="hero">
+    <span class="section-nav-dot"></span>
+    <span class="section-nav-label">Intro</span>
+  </a>
+  <a href="#work" class="section-nav-item" data-section="work">
+    <span class="section-nav-dot"></span>
+    <span class="section-nav-label">Work Experience</span>
+  </a>
+  <a href="#education" class="section-nav-item" data-section="education">
+    <span class="section-nav-dot"></span>
+    <span class="section-nav-label">Education</span>
+  </a>
+  <a href="#other" class="section-nav-item" data-section="other">
+    <span class="section-nav-dot"></span>
+    <span class="section-nav-label">Other</span>
+  </a>
+</nav>
 
 </body>
 </html>

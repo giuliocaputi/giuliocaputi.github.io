@@ -67,20 +67,61 @@
 
 </head>
 <body class="essentials bg-stars">
+<div class="bg-twinkle-layer" aria-hidden="true"></div>
+
 <!-- Loader Overlay -->
   <div id="loader" aria-hidden="true">
     <div class="loader-planet" role="img" aria-label="Loading">
       <div class="loader-ring"></div>
     </div>
+    <div class="loader-percentage" aria-live="polite">0%</div>
   </div>
   <script>
-  // Fade-out loader once all assets are loaded
-  window.addEventListener('load', () => {
+  // Enhanced loader with percentage counter and smooth exit
+  (function() {
     const loader = document.getElementById('loader');
-    if (!loader) return;
-    loader.classList.add('fade'); // triggers CSS transition in assets/main.css
-    loader.addEventListener('transitionend', () => loader.remove(), { once: true });
-  });
+    const percentageEl = document.querySelector('.loader-percentage');
+    if (!loader || !percentageEl) return;
+
+    let progress = 0;
+    let isLoaded = false;
+
+    function updateProgress() {
+      if (!isLoaded) {
+        const target = 90;
+        const increment = (target - progress) * 0.08;
+        progress = Math.min(progress + increment, target);
+        percentageEl.textContent = Math.floor(progress) + '%';
+        requestAnimationFrame(updateProgress);
+      } else {
+        if (progress < 100) {
+          progress += (100 - progress) * 0.2;
+          percentageEl.textContent = Math.floor(progress) + '%';
+
+          if (progress > 99.5) {
+            progress = 100;
+            percentageEl.textContent = '100%';
+            setTimeout(() => {
+              loader.classList.add('fade');
+              loader.addEventListener('transitionend', () => {
+                loader.remove();
+                // Trigger content reveal (appearance from abyss)
+                document.body.classList.add('content-reveal');
+              }, { once: true });
+            }, 400);
+          } else {
+            requestAnimationFrame(updateProgress);
+          }
+        }
+      }
+    }
+
+    updateProgress();
+
+    window.addEventListener('load', () => {
+      isLoaded = true;
+    });
+  })();
 </script>
 
   <header class="header">
@@ -371,6 +412,7 @@ paragraphs.forEach(p => {
   })();
 });
 </script>
+
 
 </body>
 </html>
