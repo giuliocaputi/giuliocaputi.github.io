@@ -103,11 +103,8 @@
             percentageEl.textContent = '100%';
             setTimeout(() => {
               loader.classList.add('fade');
-              loader.addEventListener('transitionend', () => {
-                loader.remove();
-                // Trigger content reveal (appearance from abyss)
-                document.body.classList.add('content-reveal');
-              }, { once: true });
+              document.body.classList.add('content-reveal');
+              setTimeout(() => loader.remove(), 800);
             }, 400);
           } else {
             requestAnimationFrame(updateProgress);

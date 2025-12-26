@@ -13,174 +13,179 @@
 <div class="bg-twinkle-layer" aria-hidden="true"></div>
 
 <!-- Loader Overlay -->
-  <div id="loader" aria-hidden="true">
-    <div class="loader-planet" role="img" aria-label="Loading">
-      <div class="loader-ring"></div>
-    </div>
-    <div class="loader-percentage" aria-live="polite">0%</div>
+<div id="loader" aria-hidden="true">
+  <div class="loader-planet" role="img" aria-label="Loading">
+    <div class="loader-ring"></div>
   </div>
-  <script>
-  // Enhanced loader with percentage counter and smooth exit
-  (function() {
-    const loader = document.getElementById('loader');
-    const percentageEl = document.querySelector('.loader-percentage');
-    if (!loader || !percentageEl) return;
+  <div class="loader-percentage" aria-live="polite">0%</div>
+</div>
+<script>
+// Enhanced loader with percentage counter and smooth exit
+(function() {
+  const loader = document.getElementById('loader');
+  const percentageEl = document.querySelector('.loader-percentage');
+  if (!loader || !percentageEl) {
+    document.body.classList.add('content-reveal');
+    return;
+  }
 
-    let progress = 0;
-    let isLoaded = false;
+  let progress = 0;
+  let isLoaded = false;
 
-    function updateProgress() {
-      if (!isLoaded) {
-        const target = 90;
-        const increment = (target - progress) * 0.08;
-        progress = Math.min(progress + increment, target);
+  function updateProgress() {
+    if (!isLoaded) {
+      const target = 90;
+      const increment = (target - progress) * 0.08;
+      progress = Math.min(progress + increment, target);
+      percentageEl.textContent = Math.floor(progress) + '%';
+      requestAnimationFrame(updateProgress);
+    } else {
+      if (progress < 100) {
+        progress += (100 - progress) * 0.2;
         percentageEl.textContent = Math.floor(progress) + '%';
-        requestAnimationFrame(updateProgress);
-      } else {
-        if (progress < 100) {
-          progress += (100 - progress) * 0.2;
-          percentageEl.textContent = Math.floor(progress) + '%';
 
-          if (progress > 99.5) {
-            progress = 100;
-            percentageEl.textContent = '100%';
-            setTimeout(() => {
-              loader.classList.add('fade');
-              loader.addEventListener('transitionend', () => {
-                loader.remove();
-                // Trigger content reveal (appearance from abyss)
-                document.body.classList.add('content-reveal');
-              }, { once: true });
-            }, 400);
-          } else {
-            requestAnimationFrame(updateProgress);
-          }
+        if (progress > 99.5) {
+          progress = 100;
+          percentageEl.textContent = '100%';
+          setTimeout(() => {
+            loader.classList.add('fade');
+            document.body.classList.add('content-reveal');
+            setTimeout(() => loader.remove(), 800);
+          }, 400);
+        } else {
+          requestAnimationFrame(updateProgress);
         }
       }
     }
+  }
 
-    updateProgress();
+  updateProgress();
 
-    window.addEventListener('load', () => {
-      isLoaded = true;
-    });
-  })();
+  window.addEventListener('load', () => {
+    isLoaded = true;
+  });
+
+  // Check if already loaded (for cached pages)
+  if (document.readyState === 'complete') {
+    isLoaded = true;
+  }
+})();
 </script>
 
-  <header class="header">
-    <div class="left">
-      <img class="avatar" src="assets/img/giulio.jpg" alt="Giulio Caputi">
-      <div class="brand"><span class="dot"></span><span>Giulio Caputi</span></div>
-    </div>
-    <nav class="nav" aria-label="Primary">
-      <a href="index.html">Home</a>
-      <a href="essentials.html">Essentials</a>
-    </nav>
-    <div class="right">
-      <a href="contact_me.html" class="btn-contact" role="button" aria-label="Contact Me">Contact Me</a>
-      <button id="nav-toggle" class="hamburger" aria-label="Open menu" aria-controls="nav-drawer" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </header>
+<header class="header">
+  <div class="left">
+    <img class="avatar" src="assets/img/giulio.jpg" alt="Giulio Caputi">
+    <div class="brand"><span class="dot"></span><span>Giulio Caputi</span></div>
+  </div>
+  <nav class="nav" aria-label="Primary">
+    <a href="index.html">Home</a>
+    <a href="essentials.html">Essentials</a>
+  </nav>
+  <div class="right">
+    <a href="contact_me.html" class="btn-contact" role="button" aria-label="Contact Me">Contact Me</a>
+    <button id="nav-toggle" class="hamburger" aria-label="Open menu" aria-controls="nav-drawer" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
 
-  <div id="nav-backdrop" aria-hidden="true"></div>
-  <aside id="nav-drawer" aria-hidden="true" role="dialog" aria-label="Navigation menu">
-    <div class="nav-panel">
-      <button id="nav-close" class="nav-close" aria-label="Close navigation">×</button>
-      <ul class="nav-list">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="essentials.html">Essentials</a></li>
-      </ul>
-    </div>
-  </aside>
+<div id="nav-backdrop" aria-hidden="true"></div>
+<aside id="nav-drawer" aria-hidden="true" role="dialog" aria-label="Navigation menu">
+  <div class="nav-panel">
+    <button id="nav-close" class="nav-close" aria-label="Close navigation">×</button>
+    <ul class="nav-list">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="essentials.html">Essentials</a></li>
+    </ul>
+  </div>
+</aside>
 
-  <main>
-    <div class="wrap">
-      <section class="grid">
-        <article class="card category section-title" aria-hidden="true"><div>Complete the Form Below</div></article>
+<main>
+  <div class="wrap">
+    <section class="grid">
+      <article class="card card-visible category section-title" aria-hidden="true"><div>Complete the Form Below</div></article>
 
-        <article class="card form-card">
-          <div id="form-status" class="form-status" hidden role="status" aria-live="polite">
-            Thanks, I have received your message, and will get back to you shortly!
-          </div>
+      <article class="card card-visible form-card">
+        <div id="form-status" class="form-status" hidden role="status" aria-live="polite">
+          Thanks, I have received your message, and will get back to you shortly!
+        </div>
 
-          <!-- Form posts to FormSubmit to send an email to your address -->
-          <form id="contact-form" action="https://api.web3forms.com/submit" method="POST" accept-charset="UTF-8">
-            <!-- Web3Forms options -->
-            <input type="hidden" name="access_key" value="5a751d71-6286-455a-b6f8-80715d14fcdd" />
-            <input type="hidden" name="subject" value="Website Contact" />
-            <input type="hidden" name="from_name" value="giuliocaputi.com" />
+        <!-- Form posts to Web3Forms to send an email to your address -->
+        <form id="contact-form" action="https://api.web3forms.com/submit" method="POST" accept-charset="UTF-8">
+          <!-- Web3Forms options -->
+          <input type="hidden" name="access_key" value="5a751d71-6286-455a-b6f8-80715d14fcdd" />
+          <input type="hidden" name="subject" value="Website Contact" />
+          <input type="hidden" name="from_name" value="giuliocaputi.com" />
 
-            <!-- Web3Forms will redirect here after success (filled by JS below) -->
-            <input type="hidden" name="redirect" value="" />
+          <!-- Web3Forms will redirect here after success (filled by JS below) -->
+          <input type="hidden" name="redirect" value="" />
 
-            <!-- Spam trap (honeypot) -->
-            <input type="text" name="botcheck" style="display:none" tabindex="-1" autocomplete="off"/>
+          <!-- Spam trap (honeypot) -->
+          <input type="text" name="botcheck" style="display:none" tabindex="-1" autocomplete="off"/>
 
-            <!-- Ensure replies go to the sender -->
-            <input type="hidden" name="replyto" id="replyto" value="" />
+          <!-- Ensure replies go to the sender -->
+          <input type="hidden" name="replyto" id="replyto" value="" />
 
-            <div class="form-grid">
-              <div class="form-field">
-                <label for="fullName">Full Name</label>
-                <input id="fullName" name="Full Name" type="text" placeholder="Your name" required autocomplete="name"/>
-              </div>
-
-              <div class="form-field">
-                <label for="email">Email Address</label>
-                <input id="email" name="Email" type="email" placeholder="you@example.com" required autocomplete="email"/>
-              </div>
-
-              <div class="form-field span-2">
-                <label for="subject">Subject</label>
-                <input id="subject" name="Subject" type="text" placeholder="What’s this about?" required/>
-              </div>
-
-              <div class="form-field span-2">
-                <label for="message">Message</label>
-                <textarea id="message" name="Message" rows="7" placeholder="Write your message..." required></textarea>
-              </div>
-
-              <div class="form-actions span-2">
-                <button type="submit" class="btn-contact">Send</button>
-              </div>
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="fullName">Full Name</label>
+              <input id="fullName" name="Full Name" type="text" placeholder="Your name" required autocomplete="name"/>
             </div>
-          </form>
-        </article>
-      </section>
-    </div>
-  </main>
 
-  <script>
-    // Mobile nav (same as the other pages)
-    (function(){
-      const toggle = document.getElementById('nav-toggle');
-      const drawer = document.getElementById('nav-drawer');
-      const backdrop = document.getElementById('nav-backdrop');
-      const closeBtn = document.getElementById('nav-close');
-      function openNav(){ 
-        drawer.setAttribute('aria-hidden','false');
-        backdrop.setAttribute('aria-hidden','false');
-        document.body.classList.add('drawer-open');
-        toggle && toggle.setAttribute('aria-expanded','true');
-        closeBtn && closeBtn.focus();
-      }
-      function closeNav(){ 
-        drawer.setAttribute('aria-hidden','true');
-        backdrop.setAttribute('aria-hidden','true');
-        document.body.classList.remove('drawer-open');
-        toggle && toggle.setAttribute('aria-expanded','false');
-        toggle && toggle.focus();
-      }
-      toggle && toggle.addEventListener('click', openNav);
-      closeBtn && closeBtn.addEventListener('click', closeNav);
-      backdrop && backdrop.addEventListener('click', closeNav);
-      /* Close when clicking anywhere outside the panel (on the dimmed area) */
-      drawer && drawer.addEventListener('click', (e)=>{ 
-      if(!e.target.closest('.nav-panel')) closeNav(); });
-      window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeNav(); });
-    })();
+            <div class="form-field">
+              <label for="email">Email Address</label>
+              <input id="email" name="Email" type="email" placeholder="you@example.com" required autocomplete="email"/>
+            </div>
+
+            <div class="form-field span-2">
+              <label for="subject">Subject</label>
+              <input id="subject" name="Subject" type="text" placeholder="What's this about?" required/>
+            </div>
+
+            <div class="form-field span-2">
+              <label for="message">Message</label>
+              <textarea id="message" name="Message" rows="7" placeholder="Write your message..." required></textarea>
+            </div>
+
+            <div class="form-actions span-2">
+              <button type="submit" class="btn-contact">Send</button>
+            </div>
+          </div>
+        </form>
+      </article>
+    </section>
+  </div>
+</main>
+
+<script>
+  // Mobile nav (same as the other pages)
+  (function(){
+    const toggle = document.getElementById('nav-toggle');
+    const drawer = document.getElementById('nav-drawer');
+    const backdrop = document.getElementById('nav-backdrop');
+    const closeBtn = document.getElementById('nav-close');
+    function openNav(){
+      drawer.setAttribute('aria-hidden','false');
+      backdrop.setAttribute('aria-hidden','false');
+      document.body.classList.add('drawer-open');
+      toggle && toggle.setAttribute('aria-expanded','true');
+      closeBtn && closeBtn.focus();
+    }
+    function closeNav(){
+      drawer.setAttribute('aria-hidden','true');
+      backdrop.setAttribute('aria-hidden','true');
+      document.body.classList.remove('drawer-open');
+      toggle && toggle.setAttribute('aria-expanded','false');
+      toggle && toggle.focus();
+    }
+    toggle && toggle.addEventListener('click', openNav);
+    closeBtn && closeBtn.addEventListener('click', closeNav);
+    backdrop && backdrop.addEventListener('click', closeNav);
+    /* Close when clicking anywhere outside the panel (on the dimmed area) */
+    drawer && drawer.addEventListener('click', (e)=>{
+    if(!e.target.closest('.nav-panel')) closeNav(); });
+    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeNav(); });
+  })();
 
 // Redirect back here with a success flag after submission (Web3Forms)
 (function(){
@@ -205,7 +210,7 @@
     if(replyto && emailEl){ replyto.value = emailEl.value; }
   });
 })();
-  </script>
+</script>
 
 <!-- Avatar Lightbox -->
 <div id="photo-lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-label="Profile photo (enlarged)">
@@ -264,7 +269,7 @@
       <p>© Copyright <strong>Giulio Caputi</strong> <span class="js-year"></span>. All Rights Reserved.</p>
     </div>
 
-  
+
 <nav class="social-links social-tiles" aria-label="Social links">
   <a href="https://www.linkedin.com/in/giulio-caputi/" target="_blank" rel="noopener" title="LinkedIn">
     <i class="bi bi-linkedin" aria-hidden="true"></i>
@@ -273,7 +278,7 @@
     <i class="bi bi-instagram" aria-hidden="true"></i>
   </a>
 </nav>
-  
+
   </div>
 </footer>
 
@@ -308,7 +313,6 @@
     });
   })();
 </script>
-
 
 </body>
 </html>

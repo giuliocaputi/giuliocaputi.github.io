@@ -46,11 +46,8 @@
             percentageEl.textContent = '100%';
             setTimeout(() => {
               loader.classList.add('fade');
-              loader.addEventListener('transitionend', () => {
-                loader.remove();
-                // Trigger content reveal (appearance from abyss)
-                document.body.classList.add('content-reveal');
-              }, { once: true });
+              document.body.classList.add('content-reveal');
+              setTimeout(() => loader.remove(), 800);
             }, 400);
           } else {
             requestAnimationFrame(updateProgress);
@@ -77,7 +74,7 @@
     const titleText = title.dataset.text || '';
     const subtitleText = subtitle.dataset.text || '';
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*';
-    const scrambleDuration = 3000; // 3 seconds of scrambling
+    const scrambleDuration = 2000; // 2 seconds of scrambling
     const scrambleInterval = 50; // How fast the random letters change
 
     // Check for reduced motion preference
@@ -198,7 +195,7 @@
           <div class="subsection-header">
             <div class="subsection-title-3d">
               <h2 class="subsection-title">Work Experience</h2>
-              <p class="subsection-subtitle">Per aspera ad astra</p>
+              <p class="subsection-subtitle">Quant research at hedge fund, previously interned in big tech and cyber security</p>
             </div>
             <button class="subsection-toggle" aria-label="Toggle Work Experience details" aria-expanded="false">
               <span class="toggle-text toggle-text-explore">Explore</span>
@@ -249,7 +246,7 @@
           <div class="subsection-header">
             <div class="subsection-title-3d">
               <h2 class="subsection-title">Education</h2>
-              <p class="subsection-subtitle">Scientia potentia est</p>
+              <p class="subsection-subtitle">MSc in Stats at Oxford, BSc in CS &amp; Econ at Bocconi, exchange at Georgia Tech</p>
             </div>
             <button class="subsection-toggle" aria-label="Toggle Education details" aria-expanded="false">
               <span class="toggle-text toggle-text-explore">Explore</span>
@@ -300,7 +297,7 @@
           <div class="subsection-header">
             <div class="subsection-title-3d">
               <h2 class="subsection-title">Other</h2>
-              <p class="subsection-subtitle">Carpe diem, quam minimum credula postero</p>
+              <p class="subsection-subtitle">Student association and other fun stuff</p>
             </div>
             <button class="subsection-toggle" aria-label="Toggle Other details" aria-expanded="false">
               <span class="toggle-text toggle-text-explore">Explore</span>
