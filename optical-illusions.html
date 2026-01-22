@@ -1,0 +1,3266 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Giulio Caputi — Optical Illusions</title>
+  <link rel="icon" href="assets/img/giulio.jpg" type="image/jpeg">
+  <link rel="apple-touch-icon" href="assets/img/giulio.jpg">
+  <link rel="stylesheet" href="assets/main.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<style>
+/* Optical Illusions page styles */
+.illusions-container{
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: clamp(20px, 4vw, 40px) var(--wrap-pad);
+}
+
+.illusions-title{
+  text-align: center;
+  color: var(--accent);
+  font-family: var(--font-title);
+  font-weight: 400;
+  letter-spacing: 0.4px;
+  font-size: 38px;
+  margin: 0 0 16px;
+}
+
+.illusions-intro{
+  text-align: center;
+  color: var(--muted);
+  font-size: clamp(14px, 2vw, 18px);
+  margin-bottom: clamp(30px, 5vw, 50px);
+  line-height: 1.6;
+}
+
+@media (min-width: 641px){
+  .illusions-title{
+    font-size: 56px;
+  }
+}
+
+/* Tabs container */
+.illusion-tabs{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: clamp(20px, 4vw, 40px);
+}
+
+.illusion-tab{
+  background: rgba(237,24,198,0.1);
+  border: 1px solid rgba(237,24,198,0.3);
+  color: var(--accent);
+  padding: 10px 16px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: clamp(12px, 1.5vw, 14px);
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.illusion-tab:hover{
+  background: rgba(237,24,198,0.2);
+  border-color: rgba(237,24,198,0.5);
+  transform: translateY(-2px);
+}
+
+.illusion-tab.active{
+  background: var(--accent);
+  color: #000;
+  font-weight: 700;
+  box-shadow: 0 0 20px rgba(237,24,198,0.4);
+}
+
+/* Content panels */
+.illusion-panels{
+  position: relative;
+}
+
+.illusion-panel{
+  display: none;
+  animation: fadeIn 0.5s ease;
+}
+
+.illusion-panel.active{
+  display: block;
+}
+
+@keyframes fadeIn{
+  from{ opacity: 0; transform: translateY(20px); }
+  to{ opacity: 1; transform: translateY(0); }
+}
+
+/* Two-box layout */
+.illusion-layout{
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 15px;
+  width: 100%;
+}
+
+@media (max-width: 767px){
+  .illusion-layout{
+    flex-direction: column;
+  }
+  .illusion-canvas-container{
+    aspect-ratio: auto;
+    height: min(70vh, 520px);
+  }
+  .illusion-settings-box{
+    height: auto;
+  }
+}
+
+@media (min-width: 768px){
+  .illusion-layout{
+    --illusion-box-h: 520px;
+    flex-direction: row;
+    gap: 20px;
+    align-items: stretch;
+  }
+}
+
+/* Settings box (smaller) */
+.illusion-settings-box{
+  background: rgba(0,0,0,0.6);
+  border: 1px solid rgba(237,24,198,0.3);
+  border-radius: 16px;
+  padding: clamp(15px, 3vw, 25px);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+}
+
+@media (min-width: 768px){
+  .illusion-settings-box{
+    flex: 0 0 25%;
+    max-width: 25%;
+    height: var(--illusion-box-h);
+  }
+}
+
+/* Illusion caption */
+.illusion-caption{
+  color: #fff;
+  font-size: clamp(13px, 1.8vw, 16px);
+  text-align: left;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Settings controls */
+.illusion-controls{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.control-group{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.control-label{
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.control-slider{
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: rgba(237,24,198,0.2);
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+}
+
+.control-slider::-webkit-slider-thumb{
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: var(--accent);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.control-slider::-webkit-slider-thumb:hover{
+  transform: scale(1.2);
+}
+
+.control-slider::-moz-range-thumb{
+  width: 16px;
+  height: 16px;
+  background: var(--accent);
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+}
+
+#waterfall-panels::-webkit-slider-thumb{
+  opacity: 0;
+  border: none;
+  box-shadow: none;
+}
+
+#waterfall-panels::-moz-range-thumb{
+  opacity: 0;
+  border: none;
+}
+
+.range-value-wrap{
+  position: relative;
+  width: 100%;
+}
+
+.range-value{
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #000;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.control-color{
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 32px;
+  background: transparent;
+  border: 1px solid rgba(237,24,198,0.3);
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 2px;
+}
+
+.control-color::-webkit-color-swatch-wrapper{
+  padding: 0;
+}
+
+.control-color::-webkit-color-swatch{
+  border-radius: 6px;
+  border: none;
+}
+
+.control-color::-moz-color-swatch{
+  border-radius: 6px;
+  border: none;
+}
+
+.control-toggle{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.control-toggle input{
+  display: none;
+}
+
+.toggle-switch{
+  width: 44px;
+  height: 24px;
+  background: rgba(237,24,198,0.2);
+  border-radius: 12px;
+  position: relative;
+  transition: background 0.3s ease;
+}
+
+.toggle-switch::after{
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+.control-toggle input:checked + .toggle-switch{
+  background: var(--accent);
+}
+
+.control-toggle input:checked + .toggle-switch::after{
+  transform: translateX(20px);
+}
+
+.toggle-text{
+  color: #fff;
+  font-size: 13px;
+}
+
+.control-select{
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(237,24,198,0.3);
+  border-radius: 8px;
+  color: #fff;
+  padding: 8px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  outline: none;
+}
+
+.control-select:focus{
+  border-color: var(--accent);
+}
+
+.control-select option{
+  background: #1a1a2e;
+  color: #fff;
+}
+
+/* Main illusion box (bigger) */
+.illusion-canvas-container{
+  background: #000;
+  border: 1px solid rgba(237,24,198,0.3);
+  border-radius: 16px;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 4/3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.illusion-slot{
+  width: 100%;
+  height: 100%;
+}
+
+@media (min-width: 768px){
+  .illusion-canvas-container{
+    flex: 0 0 75%;
+    max-width: 75%;
+    aspect-ratio: auto;
+    min-height: var(--illusion-box-h);
+    height: var(--illusion-box-h);
+  }
+}
+
+ 
+
+/* ============================================
+   WATERFALL EFFECT
+   ============================================ */
+.waterfall-container{
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  background: #000;
+}
+
+.waterfall-canvas{
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ============================================
+   REVERSE PHI
+   ============================================ */
+.reverse-phi-container{
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  background: #d520bd;
+}
+
+.reverse-phi-stage{
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+  background: #d520bd;
+  --phi-angle: 0deg;
+  filter: none;
+}
+
+.reverse-phi-shifter{
+  position: absolute;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) rotate(var(--phi-angle));
+  background: #b0b0b0;
+  box-shadow:
+    inset 0 1px 0 #d0d0d0,
+    inset 0 -1px 0 #888;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.reverse-phi-center{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reverse-phi-center-inner{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.reverse-phi-arrow{
+  display: block;
+  line-height: 1;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+/* ============================================
+   MOVING CUBE
+   ============================================ */
+.pov-cube-container{
+  width: 100%;
+  height: 100%;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.pov-cube-canvas{
+  width: 100%;
+  height: 100%;
+}
+
+/* ============================================
+   CIRCLES
+   ============================================ */
+.circles-container{
+  width: 100%;
+  height: 100%;
+  background: #ed18c6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.circles-svg{
+  width: 100%;
+  height: 100%;
+  display: block;
+  shape-rendering: crispEdges;
+}
+
+.circles-svg *{
+  shape-rendering: crispEdges;
+}
+
+/* ============================================
+   LONGER LINE (PONZO)
+   ============================================ */
+.ponzo-container{
+  width: 100%;
+  height: 100%;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ponzo-canvas{
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ============================================
+   CONTRAST EFFECT
+   ============================================ */
+.contrast-container{
+  width: 100%;
+  height: 100%;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contrast-canvas{
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ============================================
+   CHECKERBOARD ANGLES
+   ============================================ */
+.checkerboard-container{
+  width: 100%;
+  height: 100%;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.checkerboard-canvas{
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ============================================
+   BLACK DOTS
+   ============================================ */
+.dots-container{
+  width: 100%;
+  height: 100%;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dots-canvas{
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ============================================
+   BUMPY ROAD
+   ============================================ */
+.road-container{
+  width: 100%;
+  height: 100%;
+  background: #00fa00;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.road-canvas{
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+
+</style>
+
+</head>
+<body class="home bg-stars">
+<div class="bg-twinkle-layer" aria-hidden="true"></div>
+
+<!-- Loader Overlay -->
+<div id="loader" aria-hidden="true">
+  <div class="loader-planet" role="img" aria-label="Loading">
+    <div class="loader-ring"></div>
+  </div>
+  <div class="loader-percentage" aria-live="polite">0%</div>
+</div>
+<script>
+// Enhanced loader with percentage counter and smooth exit
+(function() {
+  const loader = document.getElementById('loader');
+  const percentageEl = document.querySelector('.loader-percentage');
+  if (!loader || !percentageEl) {
+    document.body.classList.add('content-reveal');
+    return;
+  }
+
+  let progress = 0;
+  let isLoaded = false;
+
+  function updateProgress() {
+    if (!isLoaded) {
+      const target = 90;
+      const increment = (target - progress) * 0.08;
+      progress = Math.min(progress + increment, target);
+      percentageEl.textContent = Math.floor(progress) + '%';
+      requestAnimationFrame(updateProgress);
+    } else {
+      if (progress < 100) {
+        progress += (100 - progress) * 0.2;
+        percentageEl.textContent = Math.floor(progress) + '%';
+
+        if (progress > 99.5) {
+          progress = 100;
+          percentageEl.textContent = '100%';
+          setTimeout(() => {
+            loader.classList.add('fade');
+            document.body.classList.add('content-reveal');
+            setTimeout(() => loader.remove(), 800);
+          }, 400);
+        } else {
+          requestAnimationFrame(updateProgress);
+        }
+      }
+    }
+  }
+
+  updateProgress();
+
+  window.addEventListener('load', () => {
+    isLoaded = true;
+  });
+
+  if (document.readyState === 'complete') {
+    isLoaded = true;
+  }
+})();
+</script>
+
+<header class="header">
+  <div class="left">
+    <img class="avatar" src="assets/img/giulio.jpg" alt="Giulio Caputi">
+    <div class="brand"><span class="dot"></span><span>Giulio Caputi</span></div>
+  </div>
+  <nav class="nav" aria-label="Primary">
+    <a href="index.html">Home</a>
+    <a href="essentials.html">Essentials</a>
+    <a href="optical-illusions.html" class="active" aria-current="page">Illusions</a>
+  </nav>
+  <div class="right">
+    <a href="contact_me.html" class="btn-contact" role="button" aria-label="Contact Me">Contact Me</a>
+    <button id="nav-toggle" class="hamburger" aria-label="Open menu" aria-controls="nav-drawer" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div id="nav-backdrop" aria-hidden="true"></div>
+<aside id="nav-drawer" aria-hidden="true" role="dialog" aria-label="Navigation menu">
+  <div class="nav-panel">
+    <button id="nav-close" class="nav-close" aria-label="Close navigation">×</button>
+    <ul class="nav-list">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="essentials.html">Essentials</a></li>
+      <li><a href="optical-illusions.html" aria-current="page">Illusions</a></li>
+    </ul>
+  </div>
+</aside>
+
+<main>
+  <div class="illusions-container">
+    <h1 class="illusions-title">Optical Illusions</h1>
+    <p class="illusions-intro">These simple illusions hint at two profound insights about life:<br>(i) things are not always as they first appear,<br>(ii) even once the truth is known, the illusion can be hard to unsee.</p>
+
+    <!-- Tabs -->
+    <div class="illusion-tabs" role="tablist">
+      <button class="illusion-tab active" role="tab" data-panel="contrast" aria-selected="true">Contrast Effect</button>
+      <button class="illusion-tab" role="tab" data-panel="waterfall" aria-selected="false">Waterfall Effect</button>
+      <button class="illusion-tab" role="tab" data-panel="reverse-phi" aria-selected="false">Reverse Phi</button>
+      <button class="illusion-tab" role="tab" data-panel="pov-cube" aria-selected="false">Moving Cube</button>
+      <button class="illusion-tab" role="tab" data-panel="longer-line" aria-selected="false">Longer Line</button>
+      <button class="illusion-tab" role="tab" data-panel="circles" aria-selected="false">Circles</button>
+      <button class="illusion-tab" role="tab" data-panel="checkerboard" aria-selected="false">Tricky Lines</button>
+      <button class="illusion-tab" role="tab" data-panel="black-dots" aria-selected="false">Black Dots</button>
+      <button class="illusion-tab" role="tab" data-panel="bumpy-road" aria-selected="false">Bumpy Road</button>
+    </div>
+
+    <!-- Panels -->
+    <div class="illusion-panels">
+      <!-- Contrast Effect -->
+      <div class="illusion-panel active" id="panel-contrast" role="tabpanel">
+        <div class="illusion-layout">
+          <div class="illusion-settings-box">
+            <p class="illusion-caption">As the circle moves, it appears that its color changes... but does it?</p>
+            <div class="illusion-controls">
+              <div class="control-group">
+                <label class="control-label">Left Color</label>
+                <input type="color" class="control-color" id="contrast-left-color" value="#ed18c6">
+              </div>
+              <div class="control-group">
+                <label class="control-label">Right Color</label>
+                <input type="color" class="control-color" id="contrast-right-color" value="#000000">
+              </div>
+              <div class="control-group">
+                <label class="control-label">Size</label>
+                <input type="range" class="control-slider" id="contrast-size" min="0" max="200" step="10" value="125">
+              </div>
+              <div class="control-group">
+                <label class="control-label">Speed</label>
+                <input type="range" class="control-slider" id="contrast-speed" min="5" max="35" step="1" value="20">
+              </div>
+              <div class="control-group">
+                <label class="control-label">Border</label>
+                <input type="range" class="control-slider" id="contrast-border" min="0" max="10" step="1" value="0">
+              </div>
+            </div>
+          </div>
+          <div class="illusion-canvas-container">
+            <div class="illusion-slot" data-illusion="contrast"></div>
+            <template id="tpl-contrast">
+              <div class="contrast-container">
+                <canvas id="contrast-canvas" class="contrast-canvas"></canvas>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+
+      <!-- Waterfall Effect -->
+      <div class="illusion-panel" id="panel-waterfall" role="tabpanel">
+        <div class="illusion-layout">
+          <div class="illusion-settings-box">
+            <p class="illusion-caption">Stare at the center shape for 20-30 seconds, then look at a static surface. You'll continue to see the motion.</p>
+            <div class="illusion-controls">
+              <div class="control-group">
+                <label class="control-label">First Color</label>
+                <input type="color" class="control-color" id="waterfall-color-1" value="#000000">
+              </div>
+              <div class="control-group">
+                <label class="control-label">Second Color</label>
+                <input type="color" class="control-color" id="waterfall-color-2" value="#ed18c6">
+              </div>
+              <div class="control-group">
+                <label class="control-label">Speed</label>
+                <input type="range" class="control-slider" id="waterfall-speed" min="0.1" max="3.9" step="0.1" value="2">
+              </div>
+              <div class="control-group">
+                <label class="control-label">Flow Directions</label>
+                <div class="range-value-wrap">
+                  <input type="range" class="control-slider" id="waterfall-panels" min="1" max="8" step="1" value="4">
+                  <span class="range-value" id="waterfall-panels-value">4</span>
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label">Central Shape</label>
+                <select class="control-select" id="waterfall-shape">
+                  <option value="circle" selected>Circle</option>
+                  <option value="square">Square</option>
+                  <option value="diamond">Diamond</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="illusion-canvas-container">
+            <div class="illusion-slot" data-illusion="waterfall"></div>
+            <template id="tpl-waterfall">
+              <div class="waterfall-container" id="waterfall-container">
+                <canvas class="waterfall-canvas" id="waterfall-canvas"></canvas>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reverse Phi -->
+      <div class="illusion-panel" id="panel-reverse-phi" role="tabpanel">
+        <div class="illusion-layout">
+          <div class="illusion-settings-box">
+            <p class="illusion-caption">Move your mouse (or click) anywhere to change the direction of the arrow. The circles appear to move in that direction, but do they?</p>
+            <div class="illusion-controls">
+              <div class="control-group">
+                <label class="control-label">Loop Speed</label>
+                <input type="range" class="control-slider" id="phi-speed" min="5" max="55" step="1" value="30">
+              </div>
+              <div class="control-group">
+                <label class="control-label">Background Color</label>
+                <input type="color" class="control-color" id="phi-bg-color" value="#d520bd">
+              </div>
+              <label class="control-toggle">
+                <input type="checkbox" id="phi-grayscale">
+                <span class="toggle-switch"></span>
+                <span class="toggle-text">Grayscale</span>
+              </label>
+            </div>
+          </div>
+          <div class="illusion-canvas-container">
+            <div class="illusion-slot" data-illusion="reverse-phi"></div>
+            <template id="tpl-reverse-phi">
+              <div class="reverse-phi-container" id="reverse-phi-container">
+                <div id="reverse-phi-stage" class="reverse-phi-stage" aria-hidden="true"></div>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+
+      <!-- Moving Cube -->
+      <div class="illusion-panel" id="panel-pov-cube" role="tabpanel">
+        <div class="illusion-layout">
+          <div class="illusion-settings-box">
+            <p class="illusion-caption">No cube is actually drawn, only the cells along its edges flip colors. Click to pause/resume this flipping.</p>
+            <div class="illusion-controls">
+              <div class="control-group">
+                <label class="control-label">Speed</label>
+                <input type="range" class="control-slider" id="cube-speed" min="0.01" max="0.05" step="0.005" value="0.03">
+              </div>
+              <div class="control-group">
+                <label class="control-label">Cell Size</label>
+                <input type="range" class="control-slider" id="cube-cell-size" min="2" max="10" value="6">
+              </div>
+              <div class="control-group">
+                <label class="control-label">Cube Size</label>
+                <input type="range" class="control-slider" id="cube-size" min="80" max="240" value="160">
+              </div>
+            </div>
+          </div>
+          <div class="illusion-canvas-container">
+            <div class="illusion-slot" data-illusion="pov-cube"></div>
+            <template id="tpl-pov-cube">
+              <div class="pov-cube-container">
+                <canvas id="pov-cube-canvas" class="pov-cube-canvas"></canvas>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+
+      
+      <!-- Circles -->
+      <div class="illusion-panel" id="panel-circles" role="tabpanel">
+        <div class="illusion-layout">
+          <div class="illusion-settings-box">
+            <p class="illusion-caption">Are the circles moving?</p>
+            <div class="illusion-controls">
+              <div class="control-group">
+                <label class="control-label">First Color</label>
+                <input type="color" class="control-color" id="circles-color-1" value="#000000">
+              </div>
+              <div class="control-group">
+                <label class="control-label">Second Color</label>
+                <input type="color" class="control-color" id="circles-color-3" value="#d7d700">
+              </div>
+              <div class="control-group">
+                <label class="control-label">Third Color</label>
+                <input type="color" class="control-color" id="circles-color-4" value="#0000fa">
+              </div>
+            </div>
+          </div>
+          <div class="illusion-canvas-container">
+            <div class="illusion-slot" data-illusion="circles"></div>
+            <template id="tpl-circles">
+              <div class="circles-container">
+                <svg class="circles-svg" id="circles-svg" aria-hidden="true"></svg>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+
+<!-- Longer Line -->
+      <div class="illusion-panel" id="panel-longer-line" role="tabpanel">
+        <div class="illusion-layout">
+          <div class="illusion-settings-box">
+            <p class="illusion-caption">Is the upper line longer than the lower one?</p>
+            <div class="illusion-controls">
+              <div class="control-group">
+                <label class="control-label">Background Color</label>
+                <input type="color" class="control-color" id="ponzo-bg" value="#000000">
+              </div>
+              <div class="control-group">
+                <label class="control-label">Rails Color</label>
+                <input type="color" class="control-color" id="ponzo-rails" value="#ed18c6">
+              </div>
+              <div class="control-group">
+                <label class="control-label">Lines Color</label>
+                <input type="color" class="control-color" id="ponzo-bars" value="#ffd400">
+              </div>
+              <div class="control-group">
+                <label class="control-label">Speed</label>
+                <input type="range" class="control-slider" id="ponzo-speed" min="0.2" max="1.8" step="0.1" value="1">
+              </div>
+            </div>
+          </div>
+          <div class="illusion-canvas-container">
+            <div class="illusion-slot" data-illusion="longer-line"></div>
+            <template id="tpl-longer-line">
+              <div class="ponzo-container">
+                <canvas class="ponzo-canvas" id="ponzo-canvas"></canvas>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tricky Lines -->
+      <div class="illusion-panel" id="panel-checkerboard" role="tabpanel">
+        <div class="illusion-layout">
+          <div class="illusion-settings-box">
+            <p class="illusion-caption">Are the lines parallel? Click on the animation to stop/resume it.</p>
+            <div class="illusion-controls">
+              <div class="control-group">
+                <label class="control-label">First Color</label>
+                <input type="color" class="control-color" id="checkerboard-color-1" value="#ed18c6">
+              </div>
+              <div class="control-group">
+                <label class="control-label">Second Color</label>
+                <input type="color" class="control-color" id="checkerboard-color-2" value="#000000">
+              </div>
+              <div class="control-group">
+                <label class="control-label">Size</label>
+                <input type="range" class="control-slider" id="checkerboard-size" min="40" max="200" step="10" value="120">
+              </div>
+              <div class="control-group">
+                <label class="control-label">Speed</label>
+                <input type="range" class="control-slider" id="checkerboard-speed" min="0" max="6" step="0.5" value="3">
+              </div>
+              <div class="control-group">
+                <label class="control-label">Movement</label>
+                <select class="control-select" id="checkerboard-orientation">
+                  <option value="vertical" selected>Vertical</option>
+                  <option value="horizontal">Horizontal</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="illusion-canvas-container">
+            <div class="illusion-slot" data-illusion="checkerboard"></div>
+            <template id="tpl-checkerboard">
+              <div class="checkerboard-container">
+                <canvas id="checkerboard-canvas" class="checkerboard-canvas"></canvas>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+
+      <!-- Black Dots -->
+      <div class="illusion-panel" id="panel-black-dots" role="tabpanel">
+        <div class="illusion-layout">
+          <div class="illusion-settings-box">
+            <p class="illusion-caption">How many black dots do you see?</p>
+            <div class="illusion-controls">
+              <div class="control-group">
+                <label class="control-label">Grid Width</label>
+                <input type="range" class="control-slider" id="dots-grid" min="20" max="120" step="5" value="70">
+              </div>
+              <div class="control-group">
+                <label class="control-label">Line Width</label>
+                <input type="range" class="control-slider" id="dots-line-width" min="2" max="20" step="1" value="8">
+              </div>
+              <div class="control-group">
+                <label class="control-label">Line Color</label>
+                <input type="color" class="control-color" id="dots-line-color" value="#ffffff">
+              </div>
+              <div class="control-group">
+                <label class="control-label">Background Color</label>
+                <input type="color" class="control-color" id="dots-bg-color" value="#000000">
+              </div>
+            </div>
+          </div>
+          <div class="illusion-canvas-container">
+            <div class="illusion-slot" data-illusion="black-dots"></div>
+            <template id="tpl-black-dots">
+              <div class="dots-container">
+                <canvas id="dots-canvas" class="dots-canvas"></canvas>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bumpy Road -->
+      <div class="illusion-panel" id="panel-bumpy-road" role="tabpanel">
+        <div class="illusion-layout">
+          <div class="illusion-settings-box">
+            <p class="illusion-caption">Pretty self-explanatory.</p>
+            <div class="illusion-controls">
+              <div class="control-group">
+                <label class="control-label">Oval Height</label>
+                <input type="range" class="control-slider" id="road-height" min="18" max="80" step="2" value="40">
+              </div>
+              <div class="control-group">
+                <label class="control-label">Spacing</label>
+                <input type="range" class="control-slider" id="road-spacing" min="4" max="40" step="2" value="14">
+              </div>
+              <div class="control-group">
+                <label class="control-label">Background Color</label>
+                <input type="color" class="control-color" id="road-bg-color" value="#00fa00">
+              </div>
+              <div class="control-group">
+                <label class="control-label">First Color</label>
+                <input type="color" class="control-color" id="road-color-1" value="#ed18c6">
+              </div>
+              <div class="control-group">
+                <label class="control-label">Second Color</label>
+                <input type="color" class="control-color" id="road-color-2" value="#000000">
+              </div>
+              <div class="control-group">
+                <label class="control-label">Third Color</label>
+                <input type="color" class="control-color" id="road-color-3" value="#ffffff">
+              </div>
+            </div>
+          </div>
+          <div class="illusion-canvas-container">
+            <div class="illusion-slot" data-illusion="bumpy-road"></div>
+            <template id="tpl-bumpy-road">
+              <div class="road-container">
+                <canvas id="road-canvas" class="road-canvas"></canvas>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+// Tab switching functionality
+(function(){
+  const tabs = document.querySelectorAll('.illusion-tab');
+  const panels = document.querySelectorAll('.illusion-panel');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      panels.forEach(p => p.classList.remove('active'));
+
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+
+      const panelId = 'panel-' + tab.dataset.panel;
+      const panel = document.getElementById(panelId);
+      if (panel) panel.classList.add('active');
+
+      if (window.IllusionManager) {
+        window.IllusionManager.activate(tab.dataset.panel);
+      }
+    });
+  });
+})();
+
+// Waterfall Effect - quadrants with reversed center motion
+function initWaterfall() {
+  const canvas = document.getElementById('waterfall-canvas');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  const speedSlider = document.getElementById('waterfall-speed');
+  const colorOnePicker = document.getElementById('waterfall-color-1');
+  const colorTwoPicker = document.getElementById('waterfall-color-2');
+  const panelSlider = document.getElementById('waterfall-panels');
+  const panelValue = document.getElementById('waterfall-panels-value');
+  const shapeSelect = document.getElementById('waterfall-shape');
+
+  let stripeWidth = 10;
+  let offset = stripeWidth;
+  let animationOffset = 0;
+  let increment = -parseFloat(speedSlider.value);
+  let animationId = null;
+  let isActive = false;
+
+  function resize() {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = rect.height;
+    stripeWidth = Math.max(8, Math.round(Math.min(canvas.width, canvas.height) / 60));
+    offset = stripeWidth;
+    ctx.lineWidth = stripeWidth;
+  }
+
+  function drawStripesAtAngle(angle, offsetValue) {
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const diag = Math.hypot(canvas.width, canvas.height);
+    const spacing = stripeWidth * 2.5;
+
+    ctx.save();
+    ctx.translate(centerX, centerY);
+    ctx.rotate(angle);
+    ctx.beginPath();
+    for (let pos = -diag; pos <= diag; pos += spacing) {
+      const x = pos + offsetValue;
+      ctx.moveTo(x, -diag);
+      ctx.lineTo(x, diag);
+    }
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawQuadrantStripes() {
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(canvas.width / 2, 0, canvas.width / 2, canvas.height / 2);
+    ctx.clip();
+    ctx.beginPath();
+    for (let pos = -offset + animationOffset; pos < canvas.width + canvas.height; pos += stripeWidth * 2.5) {
+      ctx.moveTo(canvas.width - pos - offset, 0 - offset);
+      ctx.lineTo(canvas.width - pos + canvas.height + offset, canvas.height + offset);
+    }
+    ctx.stroke();
+    ctx.restore();
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(0, 0, canvas.width / 2, canvas.height / 2);
+    ctx.clip();
+    ctx.beginPath();
+    for (let pos = -offset + animationOffset; pos < canvas.width + canvas.height + 20; pos += stripeWidth * 2.5) {
+      ctx.moveTo(pos + offset, 0 - offset);
+      ctx.lineTo(pos - canvas.height - offset, canvas.height + offset);
+    }
+    ctx.stroke();
+    ctx.restore();
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(0, canvas.height / 2, canvas.width / 2, canvas.height / 2);
+    ctx.clip();
+    ctx.beginPath();
+    for (let pos = -offset + animationOffset; pos < canvas.width + canvas.height - 100; pos += stripeWidth * 2.5) {
+      ctx.moveTo(pos + offset, canvas.height + offset);
+      ctx.lineTo(0 - offset, canvas.height - offset - pos);
+    }
+    ctx.stroke();
+    ctx.restore();
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(canvas.width / 2, canvas.height / 2, canvas.width / 2, canvas.height / 2);
+    ctx.clip();
+    ctx.beginPath();
+    for (let pos = -offset + animationOffset; pos < canvas.width + canvas.height - 100; pos += stripeWidth * 2.5) {
+      ctx.moveTo(canvas.width - pos - offset, canvas.height + offset);
+      ctx.lineTo(canvas.width - pos + canvas.height + offset, 0 - offset);
+    }
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawRadialStripes(panelCount, startOffset = 0, angleOffset = 0) {
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const radius = Math.hypot(canvas.width, canvas.height);
+
+    for (let i = 0; i < panelCount; i++) {
+      const start = startOffset + (i / panelCount) * Math.PI * 2;
+      const end = startOffset + ((i + 1) / panelCount) * Math.PI * 2;
+      const angle = (start + end) / 2 + angleOffset;
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(centerX, centerY);
+      ctx.arc(centerX, centerY, radius, start, end);
+      ctx.closePath();
+      ctx.clip();
+      drawStripesAtAngle(angle, animationOffset);
+      ctx.restore();
+    }
+  }
+
+  function drawTriStripes() {
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const radius = Math.hypot(canvas.width, canvas.height);
+    const wedges = [
+      { start: Math.PI / 6, end: 5 * Math.PI / 6 },
+      { start: 5 * Math.PI / 6, end: 3 * Math.PI / 2 },
+      { start: 3 * Math.PI / 2, end: 13 * Math.PI / 6 }
+    ];
+
+    wedges.forEach(wedge => {
+      const angle = (wedge.start + wedge.end) / 2;
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(centerX, centerY);
+      ctx.arc(centerX, centerY, radius, wedge.start, wedge.end);
+      ctx.closePath();
+      ctx.clip();
+      drawStripesAtAngle(angle, animationOffset);
+      ctx.restore();
+    });
+  }
+
+  function drawStripes() {
+    ctx.fillStyle = colorTwoPicker.value;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = colorOnePicker.value;
+
+    const panelCount = Math.max(1, parseInt(panelSlider.value, 10) || 4);
+    if (panelCount === 4) {
+      drawQuadrantStripes();
+    } else if (panelCount === 3) {
+      drawTriStripes();
+    } else if (panelCount === 2) {
+      drawRadialStripes(panelCount, 0, Math.PI / 4);
+    } else if (panelCount >= 5) {
+      drawRadialStripes(panelCount, Math.PI / 2);
+    } else {
+      drawRadialStripes(panelCount);
+    }
+  }
+
+  function getPanelCount() {
+    return Math.max(1, parseInt(panelSlider.value, 10) || 4);
+  }
+
+  function clipCenterShape() {
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const radius = Math.min(canvas.width, canvas.height) * 0.28;
+    ctx.beginPath();
+
+    if (shapeSelect.value === 'square') {
+      const size = radius * 2;
+      ctx.rect(centerX - size / 2, centerY - size / 2, size, size);
+    } else if (shapeSelect.value === 'diamond') {
+      ctx.moveTo(centerX, centerY - radius);
+      ctx.lineTo(centerX + radius, centerY);
+      ctx.lineTo(centerX, centerY + radius);
+      ctx.lineTo(centerX - radius, centerY);
+      ctx.closePath();
+    } else {
+      ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+    }
+  }
+
+  function loop() {
+    if (!isActive) return;
+    const panelCount = getPanelCount();
+    const originalOffset = animationOffset;
+
+    if (panelCount === 4) {
+      drawStripes();
+      ctx.save();
+      clipCenterShape();
+      ctx.clip();
+      animationOffset = -originalOffset;
+      drawStripes();
+      ctx.restore();
+    } else {
+      animationOffset = -originalOffset;
+      drawStripes();
+      ctx.save();
+      clipCenterShape();
+      ctx.clip();
+      animationOffset = originalOffset;
+      drawStripes();
+      ctx.restore();
+    }
+    animationOffset = originalOffset;
+    animationOffset += increment;
+    if (animationOffset >= stripeWidth * 2.5 || animationOffset <= -stripeWidth * 2.5) {
+      animationOffset = 0;
+    }
+    animationId = requestAnimationFrame(loop);
+  }
+
+  speedSlider.addEventListener('input', () => {
+    increment = -parseFloat(speedSlider.value);
+  });
+
+  colorOnePicker.addEventListener('input', () => {});
+  colorTwoPicker.addEventListener('input', () => {});
+  function updatePanelValue() {
+    if (!panelValue) return;
+    const min = parseInt(panelSlider.min, 10);
+    const max = parseInt(panelSlider.max, 10);
+    const value = parseInt(panelSlider.value, 10);
+    const percent = (value - min) / (max - min);
+    const sliderWidth = panelSlider.getBoundingClientRect().width;
+    if (!sliderWidth) return;
+    const thumbSize = 16;
+    const left = percent * (sliderWidth - thumbSize) + (thumbSize / 2);
+    panelValue.textContent = value;
+    panelValue.style.left = `${left}px`;
+  }
+
+  panelSlider.addEventListener('input', () => {
+    updatePanelValue();
+  });
+  shapeSelect.addEventListener('change', () => {});
+
+  const observer = new MutationObserver(() => {
+    const panel = document.getElementById('panel-waterfall');
+    if (panel && panel.classList.contains('active')) {
+      isActive = true;
+      resize();
+      updatePanelValue();
+      if (!animationId) loop();
+    } else {
+      isActive = false;
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+        animationId = null;
+      }
+    }
+  });
+
+  const panels = document.querySelector('.illusion-panels');
+  if (panels) {
+    observer.observe(panels, { subtree: true, attributes: true, attributeFilter: ['class'] });
+  }
+
+  window.addEventListener('resize', () => {
+    if (isActive) resize();
+    updatePanelValue();
+  });
+
+  const panel = document.getElementById('panel-waterfall');
+  if (panel && panel.classList.contains('active')) {
+    isActive = true;
+    resize();
+    loop();
+  }
+
+  updatePanelValue();
+}
+
+// Reverse Phi Effect - DOM shifters with directional striping
+function initReversePhi() {
+  const container = document.getElementById('reverse-phi-container');
+  const stage = document.getElementById('reverse-phi-stage');
+  if (!container || !stage) return;
+
+  const speedSlider = document.getElementById('phi-speed');
+  const bgColorPicker = document.getElementById('phi-bg-color');
+  const grayscaleToggle = document.getElementById('phi-grayscale');
+
+  let shifters = [];
+  let centerOuter = null;
+  let centerInner = null;
+  let arrowEl = null;
+  let animationId = null;
+  let rotation = 0;
+  let speedValue = parseInt(speedSlider.value, 10);
+  let angleDeg = 0;
+  const baseRepeater = 900;
+
+  function clamp(value, min, max) {
+    return Math.min(max, Math.max(min, value));
+  }
+
+  function hexToRgb(hex) {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16),
+    } : { r: 0, g: 0, b: 0 };
+  }
+
+  function lightenColor(hex, amount) {
+    const rgb = hexToRgb(hex);
+    const r = clamp(rgb.r + amount, 0, 255);
+    const g = clamp(rgb.g + amount, 0, 255);
+    const b = clamp(rgb.b + amount, 0, 255);
+    return `rgb(${r}, ${g}, ${b})`;
+  }
+
+  function getColorValues(t) {
+    const base = 0.5;
+    const scale = 255;
+    const red = Math.floor((Math.cos(Math.PI * 2 * (t + 0.25)) * 0.5 + base) * scale);
+    const blue = Math.floor((Math.cos(Math.PI * 2 * (t + 0.75)) * 0.5 + base) * scale);
+    const green = Math.floor((Math.cos(Math.PI * 2 * t) * 0.5 + base) * scale);
+    return { red, green, blue };
+  }
+
+  function rgbString(color) {
+    return `rgb(${color.red}, ${color.green}, ${color.blue})`;
+  }
+
+  const colorTableSize = 2048;
+  const colorTable = new Array(colorTableSize);
+  const topOffsetIndex = Math.round(colorTableSize * 0.75);
+  const midOffsetIndex = Math.round(colorTableSize * 0.5);
+  const bottomOffsetIndex = Math.round(colorTableSize * 0.25);
+
+  function buildColorTable() {
+    for (let i = 0; i < colorTableSize; i += 1) {
+      colorTable[i] = rgbString(getColorValues(i / colorTableSize));
+    }
+  }
+
+  buildColorTable();
+
+  function setStageBackground(color) {
+    stage.style.background = color;
+    container.style.background = color;
+    if (centerInner) {
+      centerInner.style.background = lightenColor(color, 20);
+    }
+  }
+
+  function applyGrayscale() {
+    stage.style.filter = grayscaleToggle.checked ? 'grayscale(100%)' : 'none';
+  }
+
+  function updateDirection(clientX, clientY) {
+    const rect = stage.getBoundingClientRect();
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const angle = Math.atan2(y - centerY, x - centerX);
+    angleDeg = angle * 180 / Math.PI - 90;
+    stage.style.setProperty('--phi-angle', `${angleDeg}deg`);
+  }
+
+  function buildScene() {
+    stage.innerHTML = '';
+    shifters = [];
+
+    const rect = stage.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    if (!width || !height) return;
+
+    const minDim = Math.min(width, height);
+    const outerSize = clamp(minDim * 0.16, 70, 130);
+    const innerSize = outerSize * 0.5;
+
+    centerOuter = document.createElement('div');
+    centerOuter.className = 'reverse-phi-shifter reverse-phi-center';
+    centerOuter.style.width = `${outerSize}px`;
+    centerOuter.style.height = `${outerSize}px`;
+    centerOuter.style.left = '50%';
+    centerOuter.style.top = '50%';
+
+    centerInner = document.createElement('div');
+    centerInner.className = 'reverse-phi-center-inner';
+    centerInner.style.width = `${innerSize}px`;
+    centerInner.style.height = `${innerSize}px`;
+
+    arrowEl = document.createElement('span');
+    arrowEl.className = 'reverse-phi-arrow';
+    arrowEl.textContent = '⬇';
+    arrowEl.style.fontSize = `${Math.round(innerSize * 0.5)}px`;
+
+    centerInner.appendChild(arrowEl);
+    centerOuter.appendChild(centerInner);
+    stage.appendChild(centerOuter);
+
+    const targetCount = Math.round((width * height) / 2600);
+    const count = clamp(targetCount, 140, 320);
+    const minSize = clamp(minDim * 0.025, 14, 22);
+    const maxSize = clamp(minDim * 0.06, 24, 40);
+    const padding = clamp(minDim * 0.012, 6, 12);
+    const centerX = width / 2;
+    const centerY = height / 2;
+    const exclusionRadius = outerSize * 0.7;
+    const placed = [];
+
+    for (let i = 0; i < count; i++) {
+      let placedCircle = null;
+      for (let attempt = 0; attempt < 40; attempt++) {
+        const size = minSize + Math.random() * (maxSize - minSize);
+        const radius = size / 2;
+        const x = radius + Math.random() * (width - size);
+        const y = radius + Math.random() * (height - size);
+        const distCenter = Math.hypot(x - centerX, y - centerY);
+
+        if (distCenter < exclusionRadius + radius + padding) continue;
+
+        let overlaps = false;
+        for (const circle of placed) {
+          const dist = Math.hypot(x - circle.x, y - circle.y);
+          if (dist < radius + circle.radius + padding) {
+            overlaps = true;
+            break;
+          }
+        }
+        if (overlaps) continue;
+
+        placedCircle = { x, y, radius, size };
+        break;
+      }
+
+      if (!placedCircle) continue;
+
+      const el = document.createElement('div');
+      el.className = 'reverse-phi-shifter';
+      el.style.width = `${placedCircle.size}px`;
+      el.style.height = `${placedCircle.size}px`;
+      el.style.left = `${placedCircle.x}px`;
+      el.style.top = `${placedCircle.y}px`;
+      stage.appendChild(el);
+      shifters.push({ el, offsetIndex: Math.floor(Math.random() * colorTableSize) });
+      placed.push(placedCircle);
+    }
+
+    stage.style.setProperty('--phi-angle', `${angleDeg}deg`);
+    setStageBackground(bgColorPicker.value);
+  }
+
+  function applyColors(phase) {
+    const baseIndex = Math.floor(phase * colorTableSize) % colorTableSize;
+    const centerTop = colorTable[(baseIndex + topOffsetIndex) % colorTableSize];
+    const centerMid = colorTable[(baseIndex + midOffsetIndex) % colorTableSize];
+    const centerBottom = colorTable[(baseIndex + bottomOffsetIndex) % colorTableSize];
+
+    if (centerOuter) {
+      centerOuter.style.backgroundColor = centerMid;
+      centerOuter.style.boxShadow = `inset 0 1px 0 ${centerTop}, inset 0 -1px 0 ${centerBottom}`;
+    }
+
+    if (arrowEl) {
+      arrowEl.style.color = centerMid;
+      arrowEl.style.textShadow = `0 1px ${centerTop}, 0 -1px ${centerBottom}`;
+    }
+
+    shifters.forEach(item => {
+      const idx = (baseIndex + item.offsetIndex) % colorTableSize;
+      const top = colorTable[(idx + topOffsetIndex) % colorTableSize];
+      const mid = colorTable[(idx + midOffsetIndex) % colorTableSize];
+      const bottom = colorTable[(idx + bottomOffsetIndex) % colorTableSize];
+      item.el.style.backgroundColor = mid;
+      item.el.style.boxShadow = `inset 0 1px 0 ${top}, inset 0 -1px 0 ${bottom}`;
+    });
+  }
+
+  function loop() {
+    rotation += 1;
+    const phase = ((rotation * speedValue) % baseRepeater) / baseRepeater;
+    applyColors(phase);
+    animationId = requestAnimationFrame(loop);
+  }
+
+  stage.addEventListener('mousemove', (event) => {
+    updateDirection(event.clientX, event.clientY);
+  });
+
+  stage.addEventListener('click', (event) => {
+    updateDirection(event.clientX, event.clientY);
+  });
+
+  stage.addEventListener('touchstart', (event) => {
+    event.preventDefault();
+    const touch = event.touches[0];
+    if (touch) updateDirection(touch.clientX, touch.clientY);
+  });
+
+  stage.addEventListener('touchmove', (event) => {
+    event.preventDefault();
+    const touch = event.touches[0];
+    if (touch) updateDirection(touch.clientX, touch.clientY);
+  });
+
+  const observer = new MutationObserver(() => {
+    const panel = document.getElementById('panel-reverse-phi');
+    if (panel && panel.classList.contains('active')) {
+      if (!shifters.length) buildScene();
+      if (!animationId) loop();
+    } else if (animationId) {
+      cancelAnimationFrame(animationId);
+      animationId = null;
+    }
+  });
+
+  const panels = document.querySelector('.illusion-panels');
+  if (panels) {
+    observer.observe(panels, { subtree: true, attributes: true, attributeFilter: ['class'] });
+  }
+
+  window.addEventListener('resize', () => {
+    buildScene();
+  });
+
+  const panel = document.getElementById('panel-reverse-phi');
+  if (panel && panel.classList.contains('active')) {
+    buildScene();
+    loop();
+  }
+
+  speedSlider.addEventListener('input', () => {
+    speedValue = Math.max(5, parseInt(speedSlider.value, 10) || 30);
+  });
+
+  bgColorPicker.addEventListener('input', () => {
+    setStageBackground(bgColorPicker.value);
+  });
+
+  grayscaleToggle.addEventListener('change', applyGrayscale);
+  applyGrayscale();
+}
+
+// POV Cube - Persistence of Vision (color-flipping grid)
+function initPovCube() {
+  const canvas = document.getElementById('pov-cube-canvas');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  const speedSlider = document.getElementById('cube-speed');
+  const cellSizeSlider = document.getElementById('cube-cell-size');
+  const cubeSizeSlider = document.getElementById('cube-size');
+
+  let animationId;
+  let angle = 0;
+  let grid = [];
+  let cols, rows;
+  let cellSize = 8;
+  let mobileDefaultApplied = false;
+  const mobileQuery = window.matchMedia('(max-width: 767px)');
+  let isMobile = mobileQuery.matches;
+  const pink = '#ed18c6';
+  const black = '#000000';
+
+  // Cube position and velocity for bouncing movement
+  let cubeX = 0, cubeY = 0;
+  let velocityX = 2, velocityY = 1.5;
+  let isPaused = false;
+
+  function getCubeSize() {
+    return parseInt(cubeSizeSlider.value);
+  }
+
+  function getRotationSpeed() {
+    return parseFloat(speedSlider.value);
+  }
+
+  function getCellSize() {
+    return parseInt(cellSizeSlider.value);
+  }
+
+  function applyMobileCubeDefaults() {
+    if (isMobile) {
+      cubeSizeSlider.max = '170';
+      if (!mobileDefaultApplied) {
+        const currentValue = parseInt(cubeSizeSlider.value, 10);
+        cubeSizeSlider.value = Math.max(0, Math.round(currentValue * 0.7)).toString();
+        mobileDefaultApplied = true;
+      }
+    } else {
+      cubeSizeSlider.max = '240';
+    }
+  }
+
+  function getVertices() {
+    const size = getCubeSize();
+    const half = size / 2;
+    return [
+      [-half, -half, -half],
+      [half, -half, -half],
+      [half, half, -half],
+      [-half, half, -half],
+      [-half, -half, half],
+      [half, -half, half],
+      [half, half, half],
+      [-half, half, half]
+    ];
+  }
+
+  // Cube edges
+  const edges = [
+    [0, 1], [1, 2], [2, 3], [3, 0],
+    [4, 5], [5, 6], [6, 7], [7, 4],
+    [0, 4], [1, 5], [2, 6], [3, 7]
+  ];
+
+  function drawCell(x, y) {
+    ctx.fillStyle = grid[y][x] === 1 ? pink : black;
+    ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+  }
+
+  function drawGrid() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        drawCell(x, y);
+      }
+    }
+  }
+
+  function initGrid() {
+    applyMobileCubeDefaults();
+    const rect = canvas.parentElement.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = rect.height;
+    cellSize = getCellSize();
+    cols = Math.ceil(canvas.width / cellSize);
+    rows = Math.ceil(canvas.height / cellSize);
+
+    // Initialize cube position near center
+    cubeX = 0;
+    cubeY = 0;
+
+    // Initialize grid with random 50-50 black/pink
+    grid = [];
+    for (let y = 0; y < rows; y++) {
+      grid[y] = [];
+      for (let x = 0; x < cols; x++) {
+        grid[y][x] = Math.random() < 0.5 ? 0 : 1; // 0 = black, 1 = pink
+      }
+    }
+    drawGrid();
+  }
+
+  function rotateX(point, ang) {
+    const cos = Math.cos(ang);
+    const sin = Math.sin(ang);
+    return [point[0], point[1] * cos - point[2] * sin, point[1] * sin + point[2] * cos];
+  }
+
+  function rotateY(point, ang) {
+    const cos = Math.cos(ang);
+    const sin = Math.sin(ang);
+    return [point[0] * cos + point[2] * sin, point[1], -point[0] * sin + point[2] * cos];
+  }
+
+  function project(point) {
+    return projectAt(point, cubeX, cubeY);
+  }
+
+  function projectAt(point, offsetX, offsetY) {
+    const fov = 300;
+    const z = point[2] + 300;
+    const scale = fov / z;
+    return [
+      point[0] * scale + canvas.width / 2 + offsetX,
+      point[1] * scale + canvas.height / 2 + offsetY
+    ];
+  }
+
+  function getProjectedBounds() {
+    const vertices = getVertices();
+    const rotated = vertices.map(v => {
+      let p = rotateX(v, angle * 0.6);
+      p = rotateY(p, angle);
+      return p;
+    });
+    let minX = Infinity;
+    let maxX = -Infinity;
+    let minY = Infinity;
+    let maxY = -Infinity;
+
+    rotated.forEach(point => {
+      const [x, y] = projectAt(point, 0, 0);
+      minX = Math.min(minX, x);
+      maxX = Math.max(maxX, x);
+      minY = Math.min(minY, y);
+      maxY = Math.max(maxY, y);
+    });
+
+    return { minX, maxX, minY, maxY };
+  }
+
+  // Bresenham's line algorithm to get all cells on a line
+  function getCellsOnLine(x0, y0, x1, y1) {
+    const cells = [];
+    x0 = Math.floor(x0 / cellSize);
+    y0 = Math.floor(y0 / cellSize);
+    x1 = Math.floor(x1 / cellSize);
+    y1 = Math.floor(y1 / cellSize);
+
+    const dx = Math.abs(x1 - x0);
+    const dy = Math.abs(y1 - y0);
+    const sx = x0 < x1 ? 1 : -1;
+    const sy = y0 < y1 ? 1 : -1;
+    let err = dx - dy;
+
+    while (true) {
+      if (x0 >= 0 && x0 < cols && y0 >= 0 && y0 < rows) {
+        cells.push([x0, y0]);
+      }
+      if (x0 === x1 && y0 === y1) break;
+      const e2 = 2 * err;
+      if (e2 > -dy) { err -= dy; x0 += sx; }
+      if (e2 < dx) { err += dx; y0 += sy; }
+    }
+    return cells;
+  }
+
+  function updateCubePosition() {
+    if (isPaused) return;
+
+    // Update position
+    cubeX += velocityX;
+    cubeY += velocityY;
+
+    // Calculate bounds from projected cube extents
+    const bounds = getProjectedBounds();
+    const minOffsetX = -bounds.minX;
+    const maxOffsetX = canvas.width - bounds.maxX;
+    const minOffsetY = -bounds.minY;
+    const maxOffsetY = canvas.height - bounds.maxY;
+
+    // Bounce off walls
+    if (cubeX > maxOffsetX || cubeX < minOffsetX) {
+      velocityX = -velocityX;
+      cubeX = Math.max(minOffsetX, Math.min(maxOffsetX, cubeX));
+    }
+    if (cubeY > maxOffsetY || cubeY < minOffsetY) {
+      velocityY = -velocityY;
+      cubeY = Math.max(minOffsetY, Math.min(maxOffsetY, cubeY));
+    }
+  }
+
+  function draw() {
+    if (isPaused) {
+      animationId = null;
+      return;
+    }
+
+    // Only update cube and flip cells when not paused
+    // Update cube position (bouncing)
+    updateCubePosition();
+
+    // Rotate cube vertices
+    const vertices = getVertices();
+    const rotated = vertices.map(v => {
+      let p = rotateX(v, angle * 0.6);
+      p = rotateY(p, angle);
+      return p;
+    });
+
+    // Project to 2D
+    const projected = rotated.map(project);
+
+    // Get all cells on cube edges and flip them
+    const cellsToFlip = new Set();
+    edges.forEach(([i, j]) => {
+      const cells = getCellsOnLine(
+        projected[i][0], projected[i][1],
+        projected[j][0], projected[j][1]
+      );
+      cells.forEach(([x, y]) => cellsToFlip.add(`${x},${y}`));
+    });
+
+    // Flip the cells on edges and redraw only those cells
+    cellsToFlip.forEach(key => {
+      const [x, y] = key.split(',').map(Number);
+      if (grid[y] && grid[y][x] !== undefined) {
+        grid[y][x] = 1 - grid[y][x]; // Flip: 0->1 or 1->0
+        drawCell(x, y);
+      }
+    });
+
+    // Update rotation angle
+    angle += getRotationSpeed();
+
+    animationId = requestAnimationFrame(draw);
+  }
+
+  function startAnimation() {
+    if (!animationId && !isPaused) {
+      animationId = requestAnimationFrame(draw);
+    }
+  }
+
+  // Click to toggle pause/resume
+  canvas.addEventListener('click', () => {
+    isPaused = !isPaused;
+    if (!isPaused) {
+      startAnimation();
+    }
+  });
+
+  // Start when panel becomes visible
+  const observer = new MutationObserver(() => {
+    const panel = document.getElementById('panel-pov-cube');
+    if (panel && panel.classList.contains('active')) {
+      if (grid.length === 0) initGrid();
+      startAnimation();
+    } else {
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+        animationId = null;
+      }
+    }
+  });
+
+  const panels = document.querySelector('.illusion-panels');
+  if (panels) {
+    observer.observe(panels, { subtree: true, attributes: true, attributeFilter: ['class'] });
+  }
+
+  window.addEventListener('resize', () => {
+    initGrid();
+  });
+
+  // Check if already active
+  const panel = document.getElementById('panel-pov-cube');
+  if (panel && panel.classList.contains('active')) {
+    initGrid();
+    startAnimation();
+  }
+
+  // Control event listeners
+  cellSizeSlider.addEventListener('input', () => {
+    initGrid();
+  });
+
+  if (mobileQuery.addEventListener) {
+    mobileQuery.addEventListener('change', (event) => {
+      isMobile = event.matches;
+      const panel = document.getElementById('panel-pov-cube');
+      if (panel && panel.classList.contains('active')) {
+        initGrid();
+      }
+    });
+  }
+}
+
+// Contrast Effect - Moving circle on gradient background
+function initContrast() {
+  const canvas = document.getElementById('contrast-canvas');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  const leftPicker = document.getElementById('contrast-left-color');
+  const rightPicker = document.getElementById('contrast-right-color');
+  const sizeSlider = document.getElementById('contrast-size');
+  const speedSlider = document.getElementById('contrast-speed');
+  const borderSlider = document.getElementById('contrast-border');
+
+  let dpr = window.devicePixelRatio || 1;
+  let clientWidth = 0;
+  let clientHeight = 0;
+  let animationId = null;
+  let mobileDefaultApplied = false;
+  const mobileQuery = window.matchMedia('(max-width: 767px)');
+  let isMobile = mobileQuery.matches;
+  let backgroundGradient = null;
+  let backgroundKey = '';
+  let circleColor = null;
+
+  const edgeThreshold = 30;
+  const circle = {
+    x: 0,
+    y: 0,
+    radius: parseInt(sizeSlider.value, 10),
+    dx: 10,
+    dy: 10,
+    maxSpeed: parseInt(speedSlider.value, 10)
+  };
+
+  function interpolateColor(colorA, colorB, t) {
+    const a = colorA.slice(1).match(/.{2}/g).map(v => parseInt(v, 16));
+    const b = colorB.slice(1).match(/.{2}/g).map(v => parseInt(v, 16));
+    const rgb = a.map((value, i) => Math.round(value + t * (b[i] - value)));
+    return `#${rgb.map(v => v.toString(16).padStart(2, '0')).join('')}`;
+  }
+
+  function getCircleColor() {
+    return interpolateColor(leftPicker.value, rightPicker.value, 0.5);
+  }
+
+  function updateCachedColors() {
+    circleColor = getCircleColor();
+    backgroundKey = '';
+  }
+
+  function setupCanvas() {
+    dpr = window.devicePixelRatio || 1;
+    clientWidth = canvas.parentElement.clientWidth;
+    clientHeight = canvas.parentElement.clientHeight;
+    canvas.width = clientWidth * dpr;
+    canvas.height = clientHeight * dpr;
+    canvas.style.width = `${clientWidth}px`;
+    canvas.style.height = `${clientHeight}px`;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    circle.x = clientWidth / 2;
+    circle.y = clientHeight / 2;
+  }
+
+  function drawBackground() {
+    const key = `${clientWidth}|${clientHeight}|${leftPicker.value}|${rightPicker.value}|${isMobile}`;
+    if (key !== backgroundKey) {
+      const gradient = isMobile
+        ? ctx.createLinearGradient(0, 0, 0, clientHeight)
+        : ctx.createLinearGradient(0, 0, clientWidth, 0);
+      gradient.addColorStop(0, leftPicker.value);
+      gradient.addColorStop(1, rightPicker.value);
+      backgroundGradient = gradient;
+      backgroundKey = key;
+    }
+    ctx.fillStyle = backgroundGradient;
+    ctx.fillRect(0, 0, clientWidth, clientHeight);
+  }
+
+  function drawCircle() {
+    ctx.beginPath();
+    ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
+    ctx.fillStyle = circleColor || getCircleColor();
+    ctx.fill();
+    const border = parseInt(borderSlider.value, 10);
+    if (border > 0) {
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = border;
+      ctx.stroke();
+    }
+    ctx.closePath();
+  }
+
+  function update() {
+    drawBackground();
+    drawCircle();
+
+    if (isMobile) {
+      circle.y += circle.dy;
+      const topGap = circle.y - circle.radius - edgeThreshold;
+      const bottomGap = clientHeight - circle.y - circle.radius - edgeThreshold;
+      const minGap = Math.min(topGap, bottomGap);
+      const speedFactor = (Math.sin((minGap / clientHeight) * Math.PI) + 0.1) * 0.5;
+      const nextSpeed = speedFactor * circle.maxSpeed;
+      circle.dy = Math.max(1, Math.round(nextSpeed)) * (circle.dy > 0 ? 1 : -1);
+
+      if (circle.y + circle.radius + edgeThreshold >= clientHeight ||
+          circle.y - circle.radius - edgeThreshold <= 0) {
+        circle.dy *= -1;
+      }
+    } else {
+      circle.x += circle.dx;
+      const leftGap = circle.x - circle.radius - edgeThreshold;
+      const rightGap = clientWidth - circle.x - circle.radius - edgeThreshold;
+      const minGap = Math.min(leftGap, rightGap);
+      const speedFactor = (Math.sin((minGap / clientWidth) * Math.PI) + 0.1) * 0.5;
+      const nextSpeed = speedFactor * circle.maxSpeed;
+      circle.dx = Math.max(1, Math.round(nextSpeed)) * (circle.dx > 0 ? 1 : -1);
+
+      if (circle.x + circle.radius + edgeThreshold >= clientWidth ||
+          circle.x - circle.radius - edgeThreshold <= 0) {
+        circle.dx *= -1;
+      }
+    }
+
+    animationId = requestAnimationFrame(update);
+  }
+
+  function start() {
+    if (animationId) cancelAnimationFrame(animationId);
+    if (circle.dx === 0) {
+      circle.dx = 10;
+    }
+    if (circle.dy === 0) {
+      circle.dy = 10;
+    }
+    update();
+  }
+
+  function clampCirclePosition() {
+    circle.x = Math.max(circle.radius + edgeThreshold, Math.min(clientWidth - circle.radius - edgeThreshold, circle.x));
+    circle.y = Math.max(circle.radius + edgeThreshold, Math.min(clientHeight - circle.radius - edgeThreshold, circle.y));
+  }
+
+  function resetCirclePosition() {
+    if (isMobile) {
+      circle.x = clientWidth / 2;
+      circle.y = circle.radius + edgeThreshold;
+    } else {
+      circle.x = circle.radius + edgeThreshold;
+      circle.y = clientHeight / 2;
+    }
+    clampCirclePosition();
+  }
+
+  function applyMobileDefaultSize() {
+    if (isMobile) {
+      sizeSlider.max = '160';
+    } else {
+      sizeSlider.max = '200';
+    }
+    if (isMobile && !mobileDefaultApplied) {
+      sizeSlider.value = '80';
+      speedSlider.value = '13';
+      mobileDefaultApplied = true;
+    }
+  }
+
+  function syncCircleSize() {
+    circle.radius = parseInt(sizeSlider.value, 10);
+    circle.maxSpeed = parseInt(speedSlider.value, 10);
+    if (isMobile) {
+      circle.x = clientWidth / 2;
+    } else {
+      circle.y = clientHeight / 2;
+    }
+    clampCirclePosition();
+  }
+
+  function handleResize() {
+    updateCachedColors();
+    applyMobileDefaultSize();
+    setupCanvas();
+    syncCircleSize();
+    resetCirclePosition();
+    start();
+  }
+
+  // Start when panel becomes visible
+  const observer = new MutationObserver(() => {
+    const panel = document.getElementById('panel-contrast');
+    if (panel && panel.classList.contains('active')) {
+      handleResize();
+    } else if (animationId) {
+      cancelAnimationFrame(animationId);
+      animationId = null;
+    }
+  });
+
+  const panels = document.querySelector('.illusion-panels');
+  if (panels) {
+    observer.observe(panels, { subtree: true, attributes: true, attributeFilter: ['class'] });
+  }
+
+  window.addEventListener('resize', () => {
+    const panel = document.getElementById('panel-contrast');
+    if (panel && panel.classList.contains('active')) {
+      handleResize();
+    }
+  });
+
+  leftPicker.addEventListener('input', () => {
+    updateCachedColors();
+  });
+  rightPicker.addEventListener('input', () => {
+    updateCachedColors();
+  });
+  sizeSlider.addEventListener('input', () => {
+    syncCircleSize();
+  });
+  speedSlider.addEventListener('input', () => {
+    syncCircleSize();
+  });
+  borderSlider.addEventListener('input', () => {});
+
+  const panel = document.getElementById('panel-contrast');
+  if (panel && panel.classList.contains('active')) {
+    handleResize();
+  }
+
+  if (mobileQuery.addEventListener) {
+    mobileQuery.addEventListener('change', (event) => {
+      isMobile = event.matches;
+      backgroundKey = '';
+      const panel = document.getElementById('panel-contrast');
+      if (panel && panel.classList.contains('active')) {
+        handleResize();
+      }
+    });
+  }
+}
+
+
+// Longer Line (Ponzo) illusion
+function initPonzo() {
+  const canvas = document.getElementById('ponzo-canvas');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  const bgPicker = document.getElementById('ponzo-bg');
+  const railsPicker = document.getElementById('ponzo-rails');
+  const barsPicker = document.getElementById('ponzo-bars');
+  const speedSlider = document.getElementById('ponzo-speed');
+
+  let animationId = null;
+  let phase = 0;
+  let isPaused = false;
+
+  function resize() {
+    canvas.width = canvas.parentElement.clientWidth;
+    canvas.height = canvas.parentElement.clientHeight;
+  }
+
+  function lerp(a, b, t) {
+    return a + (b - a) * t;
+  }
+
+  function drawRail(start, end, widthStart, widthEnd) {
+    const dx = end.x - start.x;
+    const dy = end.y - start.y;
+    const len = Math.hypot(dx, dy) || 1;
+    const nx = -dy / len;
+    const ny = dx / len;
+
+    ctx.fillStyle = railsPicker.value;
+    ctx.beginPath();
+    ctx.moveTo(start.x + nx * widthStart, start.y + ny * widthStart);
+    ctx.lineTo(end.x + nx * widthEnd, end.y + ny * widthEnd);
+    ctx.lineTo(end.x - nx * widthEnd, end.y - ny * widthEnd);
+    ctx.lineTo(start.x - nx * widthStart, start.y - ny * widthStart);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  function drawSleepers(config) {
+    const { leftStart, rightStart, leftEnd, rightEnd, height, speed } = config;
+    const count = 14;
+    const depthBias = 1.7;
+    for (let i = 0; i < count; i += 1) {
+      const raw = (i / count + phase * speed) % 1;
+      const t = 1 - raw;
+      const eased = Math.pow(t, depthBias);
+      const y = lerp(leftEnd.y, leftStart.y, eased);
+      const leftX = lerp(leftEnd.x, leftStart.x, eased);
+      const rightX = lerp(rightEnd.x, rightStart.x, eased);
+      const thickness = lerp(1.5, 10, eased);
+      const extension = lerp(10, 40, eased);
+
+      ctx.strokeStyle = railsPicker.value;
+      ctx.lineWidth = thickness;
+      ctx.lineCap = 'butt';
+      ctx.beginPath();
+      ctx.moveTo(leftX - extension, y);
+      ctx.lineTo(rightX + extension, y);
+      ctx.stroke();
+    }
+  }
+
+  function drawHighlightBars(config) {
+    const { leftStart, rightStart, leftEnd, rightEnd } = config;
+    const positions = [0.22, 0.78];
+    const barLength = canvas.width * 0.294;
+    const lineWidth = Math.max(4, canvas.width * 0.018);
+    ctx.strokeStyle = barsPicker.value;
+    ctx.lineCap = 'butt';
+    ctx.lineWidth = lineWidth;
+
+    positions.forEach((t) => {
+      const eased = Math.pow(t, 1.4);
+      const y = lerp(leftEnd.y, leftStart.y, eased);
+      const leftX = lerp(leftEnd.x, leftStart.x, eased);
+      const rightX = lerp(rightEnd.x, rightStart.x, eased);
+      const centerX = (leftX + rightX) / 2;
+      ctx.beginPath();
+      ctx.moveTo(centerX - barLength / 2, y);
+      ctx.lineTo(centerX + barLength / 2, y);
+      ctx.stroke();
+    });
+  }
+
+  function render() {
+    const width = canvas.width;
+    const height = canvas.height;
+    ctx.fillStyle = bgPicker.value;
+    ctx.fillRect(0, 0, width, height);
+
+    const speed = parseFloat(speedSlider.value);
+    const centerX = width / 2;
+    const topY = height * 0.08;
+    const bottomY = height * 0.95;
+    const drift = 0;
+    const railSpreadBottom = width * 0.7;
+    const railSpreadTop = width * 0.1;
+
+    const leftStart = { x: centerX - railSpreadBottom / 2, y: bottomY };
+    const rightStart = { x: centerX + railSpreadBottom / 2, y: bottomY };
+    const leftEnd = { x: centerX - railSpreadTop / 2 + drift, y: topY };
+    const rightEnd = { x: centerX + railSpreadTop / 2 + drift, y: topY };
+
+    drawRail(leftStart, leftEnd, width * 0.012, width * 0.004);
+    drawRail(rightStart, rightEnd, width * 0.012, width * 0.004);
+
+    drawSleepers({ leftStart, rightStart, leftEnd, rightEnd, height, speed });
+    drawHighlightBars({ leftStart, rightStart, leftEnd, rightEnd, height });
+
+    if (!isPaused) {
+      phase += speed * 0.01;
+    }
+  }
+
+  function animate() {
+    render();
+    animationId = requestAnimationFrame(animate);
+  }
+
+  function togglePause() {
+    isPaused = !isPaused;
+  }
+
+  const panel = document.getElementById('panel-longer-line');
+  const observer = new MutationObserver(() => {
+    if (panel && panel.classList.contains('active')) {
+      resize();
+      if (!animationId) animate();
+    } else if (animationId) {
+      cancelAnimationFrame(animationId);
+      animationId = null;
+    }
+  });
+
+  const panels = document.querySelector('.illusion-panels');
+  if (panels) {
+    observer.observe(panels, { subtree: true, attributes: true, attributeFilter: ['class'] });
+  }
+
+  window.addEventListener('resize', () => {
+    if (panel && panel.classList.contains('active')) {
+      resize();
+    }
+  });
+
+  canvas.addEventListener('click', togglePause);
+  canvas.addEventListener('touchstart', (event) => {
+    event.preventDefault();
+    togglePause();
+  }, { passive: false });
+
+  if (panel && panel.classList.contains('active')) {
+    resize();
+    animate();
+  }
+}
+
+
+
+
+
+
+
+
+
+// Circles illusion
+function initCircles() {
+  const svg = document.getElementById('circles-svg');
+  if (!svg) return;
+
+  const colorOnePicker = document.getElementById('circles-color-1');
+  const colorThreePicker = document.getElementById('circles-color-3');
+  const colorFourPicker = document.getElementById('circles-color-4');
+  const svgNs = 'http://www.w3.org/2000/svg';
+
+  function polarToCartesian(cx, cy, r, angle) {
+    return {
+      x: cx + r * Math.cos(angle),
+      y: cy + r * Math.sin(angle)
+    };
+  }
+
+  function createAnnulusWedgePath(cx, cy, rOuter, rInner, start, end) {
+    const startOuter = polarToCartesian(cx, cy, rOuter, start);
+    const endOuter = polarToCartesian(cx, cy, rOuter, end);
+    const startInner = polarToCartesian(cx, cy, rInner, start);
+    const endInner = polarToCartesian(cx, cy, rInner, end);
+    const largeArc = end - start <= Math.PI ? 0 : 1;
+    return [
+      `M ${startOuter.x} ${startOuter.y}`,
+      `A ${rOuter} ${rOuter} 0 ${largeArc} 1 ${endOuter.x} ${endOuter.y}`,
+      `L ${endInner.x} ${endInner.y}`,
+      `A ${rInner} ${rInner} 0 ${largeArc} 0 ${startInner.x} ${startInner.y}`,
+      'Z'
+    ].join(' ');
+  }
+
+  const ovalShortDiv = 1.5;
+  const ovalLongFactor = 1.9;
+
+  function drawOvalRing(group, cx, cy, radius, step, colors, ringIndex, rotationOffset, direction) {
+    const offset = rotationOffset || 0;
+    const dir = direction || 1;
+    const arcLength = radius * step;
+    const ovalH = arcLength / ovalShortDiv;
+    const ovalW = ovalH * ovalLongFactor;
+
+    const count = Math.round((Math.PI * 2) / step);
+    for (let i = 0; i < count; i += 1) {
+      const angle = dir * i * step + offset;
+      const pos = polarToCartesian(cx, cy, radius, angle);
+      const color = (i + ringIndex) % 2 === 0 ? colors[0] : colors[1];
+      const ellipse = document.createElementNS(svgNs, 'ellipse');
+      ellipse.setAttribute('cx', pos.x);
+      ellipse.setAttribute('cy', pos.y);
+      ellipse.setAttribute('rx', ovalW / 2);
+      ellipse.setAttribute('ry', ovalH / 2);
+      ellipse.setAttribute('fill', color);
+      const rotation = (angle * 180) / Math.PI;
+      ellipse.setAttribute('transform', `rotate(${rotation} ${pos.x} ${pos.y})`);
+      group.appendChild(ellipse);
+    }
+  }
+
+  function buildRingData(radius, step, ringCount) {
+    const alpha = ovalLongFactor / ovalShortDiv;
+    const ringData = [];
+    let ringRadius = radius / (1 + step * alpha / 2);
+    let ovalW = ringRadius * step * alpha;
+    ringData.push({ radius: ringRadius, ovalW });
+
+    for (let ring = 1; ring < ringCount; ring += 1) {
+      ringRadius = (ringData[ring - 1].radius - ringData[ring - 1].ovalW / 2) / (1 + step * alpha / 2);
+      ovalW = ringRadius * step * alpha;
+      if (ringRadius <= ovalW / 2 || ringRadius <= 0) break;
+      ringData.push({ radius: ringRadius, ovalW });
+    }
+    return ringData;
+  }
+
+  function drawDisc(svgRoot, defs, cx, cy, radius, step, colors, discIndex, ringCount, bandOffset, ovalOffset, ovalDirection, centerColor) {
+    const wedgeOffset = bandOffset || 0;
+    const ovalRotation = ovalOffset || 0;
+    const ovalDir = ovalDirection || 1;
+    const centerFill = centerColor || colors[0];
+    const ringData = buildRingData(radius, step, ringCount);
+    const lastRing = ringData[ringData.length - 1];
+    const centerRadius = lastRing ? Math.max(6, lastRing.radius * 0.2) : 10;
+
+    const clipId = `circles-clip-${discIndex}`;
+    const clip = document.createElementNS(svgNs, 'clipPath');
+    clip.setAttribute('id', clipId);
+    const clipCircle = document.createElementNS(svgNs, 'circle');
+    clipCircle.setAttribute('cx', cx);
+    clipCircle.setAttribute('cy', cy);
+    clipCircle.setAttribute('r', radius);
+    clip.appendChild(clipCircle);
+    defs.appendChild(clip);
+
+    const bandGroup = document.createElementNS(svgNs, 'g');
+    bandGroup.setAttribute('clip-path', `url(#${clipId})`);
+    ringData.forEach((data, ring) => {
+      const outerEdge = data.radius + data.ovalW / 2;
+      const next = ringData[ring + 1];
+      const innerEdge = next ? next.radius - next.ovalW / 2 : centerRadius;
+      const wedgeCount = Math.round((Math.PI * 2) / step);
+      for (let i = 0; i < wedgeCount; i += 1) {
+        const start = i * step + wedgeOffset;
+        const end = start + step;
+        const path = document.createElementNS(svgNs, 'path');
+        path.setAttribute('d', createAnnulusWedgePath(cx, cy, outerEdge, innerEdge, start, end));
+        const fill = (i + ring) % 2 === 0 ? colors[0] : colors[1];
+        path.setAttribute('fill', fill);
+        bandGroup.appendChild(path);
+      }
+    });
+    svgRoot.appendChild(bandGroup);
+
+    const ringGroup = document.createElementNS(svgNs, 'g');
+    ringGroup.setAttribute('clip-path', `url(#${clipId})`);
+    ringData.forEach((data, ring) => {
+      drawOvalRing(ringGroup, cx, cy, data.radius, step, [colors[2], colors[3]], ring, ovalRotation, ovalDir);
+    });
+    svgRoot.appendChild(ringGroup);
+
+    const center = document.createElementNS(svgNs, 'circle');
+    center.setAttribute('cx', cx);
+    center.setAttribute('cy', cy);
+    center.setAttribute('r', centerRadius);
+    center.setAttribute('fill', centerFill);
+    svgRoot.appendChild(center);
+  }
+
+  function render() {
+    const colorA = colorOnePicker ? colorOnePicker.value : '#000000';
+    const colorB = '#ffffff';
+    const colorC = colorThreePicker ? colorThreePicker.value : '#ed18c6';
+    const colorD = colorFourPicker ? colorFourPicker.value : '#00b3a4';
+
+    const rect = svg.getBoundingClientRect();
+    const width = Math.max(1, rect.width);
+    const height = Math.max(1, rect.height);
+    svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+    svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+    while (svg.firstChild) {
+      svg.removeChild(svg.firstChild);
+    }
+
+    const wedgeCount = 36;
+    const step = (Math.PI * 2) / wedgeCount;
+    const ringCount = 16;
+    const isMobile = window.matchMedia('(max-width: 767px)').matches;
+    let gridCols = 4;
+    let gridRows = 3;
+    let overlayCols = 3;
+    let overlayRows = 2;
+    if (isMobile) {
+      [gridCols, gridRows] = [gridRows, gridCols];
+      [overlayCols, overlayRows] = [overlayRows, overlayCols];
+    }
+    const cell = Math.min(width / gridCols, height / gridRows);
+    const gridWidth = cell * gridCols;
+    const gridHeight = cell * gridRows;
+    const offsetX = (width - gridWidth) / 2;
+    const offsetY = (height - gridHeight) / 2;
+    const overlayWidth = cell * overlayCols;
+    const overlayHeight = cell * overlayRows;
+    const overlayOffsetX = (width - overlayWidth) / 2;
+    const overlayOffsetY = (height - overlayHeight) / 2;
+
+    const defs = document.createElementNS(svgNs, 'defs');
+    svg.appendChild(defs);
+
+    function toLogical(row, col) {
+      return isMobile ? { row: col, col: row } : { row, col };
+    }
+
+    function shouldSwapBack(row, col) {
+      const logical = toLogical(row, col);
+      if ((logical.row === 0 || logical.row === 2) && (logical.col === 1 || logical.col === 3)) {
+        return true;
+      }
+      return logical.row === 1 && (logical.col === 0 || logical.col === 2);
+    }
+
+    function shouldSwapFront(row, col) {
+      const logical = toLogical(row, col);
+      return logical.col === 1;
+    }
+
+    let discIndex = 0;
+    for (let row = 0; row < gridRows; row += 1) {
+      for (let col = 0; col < gridCols; col += 1) {
+        const cx = offsetX + cell * (col + 0.5);
+        const cy = offsetY + cell * (row + 0.5);
+        const radius = cell / 2;
+        const isMirrored = (row + col) % 2 === 1;
+        const bandOffset = 0;
+        const ovalOffset = 0;
+        const ovalDirection = isMirrored ? -1 : 1;
+        const bandColors = shouldSwapBack(row, col)
+          ? [colorB, colorA, colorC, colorD]
+          : [colorA, colorB, colorC, colorD];
+        drawDisc(svg, defs, cx, cy, radius, step, bandColors, discIndex, ringCount, bandOffset, ovalOffset, ovalDirection, colorA);
+        discIndex += 1;
+      }
+    }
+
+    for (let row = 0; row < overlayRows; row += 1) {
+      for (let col = 0; col < overlayCols; col += 1) {
+        const cx = overlayOffsetX + cell * (col + 0.5);
+        const cy = overlayOffsetY + cell * (row + 0.5);
+        const radius = cell / 2;
+        const isMirrored = (row + col) % 2 === 1;
+        const bandOffset = 0;
+        const ovalOffset = 0;
+        const ovalDirection = isMirrored ? -1 : 1;
+        const bandColors = shouldSwapFront(row, col)
+          ? [colorB, colorA, colorC, colorD]
+          : [colorA, colorB, colorC, colorD];
+        drawDisc(svg, defs, cx, cy, radius, step, bandColors, discIndex, ringCount, bandOffset, ovalOffset, ovalDirection, colorA);
+        discIndex += 1;
+      }
+    }
+  }
+
+  if (colorOnePicker) colorOnePicker.addEventListener('input', render);
+  if (colorThreePicker) colorThreePicker.addEventListener('input', render);
+  if (colorFourPicker) colorFourPicker.addEventListener('input', render);
+  window.addEventListener('resize', render);
+
+  const panel = document.getElementById('panel-circles');
+  const observer = new MutationObserver(() => {
+    if (panel && panel.classList.contains('active')) {
+      render();
+    }
+  });
+
+  const panels = document.querySelector('.illusion-panels');
+  if (panels) {
+    observer.observe(panels, { subtree: true, attributes: true, attributeFilter: ['class'] });
+  }
+
+  if (panel && panel.classList.contains('active')) {
+    render();
+  }
+}
+
+// Tricky Lines - Animated checker pattern
+function initCheckerboard() {
+  const canvas = document.getElementById('checkerboard-canvas');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  const colorOnePicker = document.getElementById('checkerboard-color-1');
+  const colorTwoPicker = document.getElementById('checkerboard-color-2');
+  const sizeSlider = document.getElementById('checkerboard-size');
+  const speedSlider = document.getElementById('checkerboard-speed');
+  const orientationSelect = document.getElementById('checkerboard-orientation');
+  let speed = parseFloat(speedSlider.value);
+  let offset = 0;
+  let animationId = null;
+  let isPaused = false;
+  let mobileDefaultsApplied = false;
+  const microAngles = [1, -1, 1, 1, -1, 1, -1, -1, 1, -1, 1];
+  let basePattern = null;
+  let microPatternVertical = null;
+  let microPatternHorizontal = null;
+  let patternKey = '';
+  let microMetrics = {
+    clusterOffset: 0,
+    vertical: { width: 0, height: 0 },
+    horizontal: { width: 0, height: 0 }
+  };
+
+  const desktopSizeRange = { min: 40, max: 200, value: 120 };
+  const mobileSizeRange = { min: 20, max: 100, value: 60 };
+
+  function resize() {
+    canvas.width = canvas.parentElement.clientWidth;
+    canvas.height = canvas.parentElement.clientHeight;
+  }
+
+  function applySizeDefaults() {
+    const isMobile = window.matchMedia('(max-width: 767px)').matches;
+    if (isMobile) {
+      sizeSlider.min = String(mobileSizeRange.min);
+      sizeSlider.max = String(mobileSizeRange.max);
+      if (!mobileDefaultsApplied) {
+        sizeSlider.value = String(mobileSizeRange.value);
+        mobileDefaultsApplied = true;
+      }
+    } else {
+      sizeSlider.min = String(desktopSizeRange.min);
+      sizeSlider.max = String(desktopSizeRange.max);
+    }
+  }
+
+  function buildBasePattern(cellW, colorOne, colorTwo) {
+    const tile = document.createElement('canvas');
+    tile.width = cellW;
+    tile.height = cellW;
+    const tctx = tile.getContext('2d');
+    const half = cellW / 2;
+
+    tctx.fillStyle = colorTwo;
+    tctx.fillRect(0, 0, half, half);
+    tctx.fillRect(half, half, half, half);
+    tctx.fillStyle = colorOne;
+    tctx.fillRect(half, 0, half, half);
+    tctx.fillRect(0, half, half, half);
+
+    return ctx.createPattern(tile, 'repeat');
+  }
+
+  function buildMicroPattern(cellW, colors, orientation, step, clusterOffset) {
+    const tile = document.createElement('canvas');
+    let width = step * 2;
+    let height = step * 2;
+    if (orientation === 'vertical') {
+      width = step * microAngles.length;
+      height = step * 2;
+    } else {
+      width = step * 2;
+      height = step * microAngles.length;
+    }
+    tile.width = Math.max(1, Math.round(width));
+    tile.height = Math.max(1, Math.round(height));
+    const tctx = tile.getContext('2d');
+    const square = cellW / 10;
+
+    function drawCluster(cx, cy, angleDeg) {
+      tctx.save();
+      tctx.translate(cx, cy);
+      tctx.rotate(angleDeg * Math.PI / 180);
+      for (let i = 0; i < 2; i++) {
+        for (let j = 0; j < 2; j++) {
+          tctx.fillStyle = colors[(i + j) % 2];
+          tctx.fillRect(-square + i * square, -square + j * square, square, square);
+        }
+      }
+      tctx.restore();
+    }
+
+    if (orientation === 'vertical') {
+      for (let row = 0; row < 2; row++) {
+        const rowFlip = row === 0 ? 1 : -1;
+        const cy = clusterOffset + row * step;
+        for (let col = 0; col < microAngles.length; col++) {
+          const cx = clusterOffset + col * step;
+          const angle = microAngles[col] * 45 * rowFlip;
+          drawCluster(cx, cy, angle);
+        }
+      }
+    } else {
+      for (let col = 0; col < 2; col++) {
+        const colFlip = col === 0 ? 1 : -1;
+        const cx = clusterOffset + col * step;
+        for (let row = 0; row < microAngles.length; row++) {
+          const cy = clusterOffset + row * step;
+          const angle = microAngles[row] * 45 * colFlip;
+          drawCluster(cx, cy, angle);
+        }
+      }
+    }
+
+    return ctx.createPattern(tile, 'repeat');
+  }
+
+  function rebuildPatterns(cellW) {
+    const colorOne = colorOnePicker.value;
+    const colorTwo = colorTwoPicker.value;
+    const key = `${cellW}|${colorOne}|${colorTwo}`;
+    if (key === patternKey) return;
+    patternKey = key;
+
+    const step = cellW / 2;
+    const clusterOffset = cellW / 10;
+    basePattern = buildBasePattern(cellW, colorOne, colorTwo);
+    const colors = [colorTwo, colorOne];
+    microPatternVertical = buildMicroPattern(cellW, colors, 'vertical', step, clusterOffset);
+    microPatternHorizontal = buildMicroPattern(cellW, colors, 'horizontal', step, clusterOffset);
+    microMetrics = {
+      clusterOffset,
+      vertical: { width: step * microAngles.length, height: step * 2 },
+      horizontal: { width: step * 2, height: step * microAngles.length }
+    };
+  }
+
+  function draw() {
+    applySizeDefaults();
+    const cellW = parseInt(sizeSlider.value, 10);
+    const isVertical = orientationSelect.value === 'vertical';
+
+    rebuildPatterns(cellW);
+
+    if (!isPaused) {
+      const axisSize = cellW;
+      offset = (offset - speed) % axisSize;
+      if (offset > 0) offset -= axisSize;
+    }
+
+    ctx.save();
+    ctx.translate(isVertical ? 0 : offset, isVertical ? offset : 0);
+    ctx.fillStyle = basePattern;
+    ctx.fillRect(-cellW, -cellW, canvas.width + cellW * 2, canvas.height + cellW * 2);
+    ctx.restore();
+
+    const microPattern = isVertical ? microPatternVertical : microPatternHorizontal;
+    const patternWidth = isVertical ? microMetrics.vertical.width : microMetrics.horizontal.width;
+    const patternHeight = isVertical ? microMetrics.vertical.height : microMetrics.horizontal.height;
+    const shiftX = (isVertical ? 0 : offset) - microMetrics.clusterOffset;
+    const shiftY = (isVertical ? offset : 0) - microMetrics.clusterOffset;
+    ctx.save();
+    ctx.translate(shiftX, shiftY);
+    ctx.fillStyle = microPattern;
+    ctx.fillRect(-patternWidth, -patternHeight, canvas.width + patternWidth * 2, canvas.height + patternHeight * 2);
+    ctx.restore();
+
+    animationId = requestAnimationFrame(draw);
+  }
+
+  function start() {
+    if (animationId) cancelAnimationFrame(animationId);
+    draw();
+  }
+
+  canvas.addEventListener('click', () => {
+    isPaused = !isPaused;
+  });
+
+  speedSlider.addEventListener('input', () => {
+    speed = parseFloat(speedSlider.value);
+  });
+  sizeSlider.addEventListener('input', () => {});
+  colorOnePicker.addEventListener('input', () => {});
+  colorTwoPicker.addEventListener('input', () => {});
+  orientationSelect.addEventListener('change', () => {});
+
+  // Start when panel becomes visible
+  const observer = new MutationObserver(() => {
+    const panel = document.getElementById('panel-checkerboard');
+    if (panel && panel.classList.contains('active')) {
+      resize();
+      start();
+    } else if (animationId) {
+      cancelAnimationFrame(animationId);
+      animationId = null;
+    }
+  });
+
+  const panels = document.querySelector('.illusion-panels');
+  if (panels) {
+    observer.observe(panels, { subtree: true, attributes: true, attributeFilter: ['class'] });
+  }
+
+  window.addEventListener('resize', () => {
+    const panel = document.getElementById('panel-checkerboard');
+    if (panel && panel.classList.contains('active')) {
+      resize();
+    }
+  });
+
+  const panel = document.getElementById('panel-checkerboard');
+  if (panel && panel.classList.contains('active')) {
+    resize();
+    start();
+  }
+}
+
+// Black Dots - Scintillating grid
+function initBlackDots() {
+  const canvas = document.getElementById('dots-canvas');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  const gridSlider = document.getElementById('dots-grid');
+  const lineWidthSlider = document.getElementById('dots-line-width');
+  const lineColorPicker = document.getElementById('dots-line-color');
+  const bgColorPicker = document.getElementById('dots-bg-color');
+  const panel = document.getElementById('panel-black-dots');
+
+  let dpr = window.devicePixelRatio || 1;
+
+  function resize() {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    dpr = window.devicePixelRatio || 1;
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    canvas.style.width = `${rect.width}px`;
+    canvas.style.height = `${rect.height}px`;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function draw() {
+    const grid = parseInt(gridSlider.value, 10);
+    const lineWidth = parseInt(lineWidthSlider.value, 10);
+    const lineColor = lineColorPicker.value;
+    const bgColor = bgColorPicker.value;
+    const width = canvas.width / dpr;
+    const height = canvas.height / dpr;
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    const shouldRotate = false;
+    const logicalWidth = shouldRotate ? height : width;
+    const logicalHeight = shouldRotate ? width : height;
+    const cols = Math.max(2, Math.round(width / grid));
+    const rows = Math.max(2, Math.round(height / grid));
+    const stepX = cols > 1 ? width / (cols - 1) : width;
+    const stepY = rows > 1 ? height / (rows - 1) : height;
+
+    ctx.fillStyle = bgColor;
+    ctx.fillRect(0, 0, width, height);
+
+    ctx.lineWidth = lineWidth;
+    ctx.lineCap = 'butt';
+    ctx.save();
+    ctx.globalAlpha = 0.55;
+    ctx.strokeStyle = lineColor;
+
+    for (let col = 0; col < cols; col += 1) {
+      const x = col * stepX;
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, height);
+      ctx.stroke();
+    }
+
+    for (let row = 0; row < rows; row += 1) {
+      const y = row * stepY;
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(width, y);
+      ctx.stroke();
+    }
+    ctx.restore();
+
+    const dotRadius = Math.max(2, lineWidth * 0.7);
+    ctx.fillStyle = lineColor;
+    for (let col = 0; col < cols; col += 1) {
+      const x = col * stepX;
+      for (let row = 0; row < rows; row += 1) {
+        const y = row * stepY;
+        ctx.beginPath();
+        ctx.arc(x, y, dotRadius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+  }
+
+  function redraw() {
+    if (panel && !panel.classList.contains('active')) return;
+    resize();
+    draw();
+  }
+
+  gridSlider.addEventListener('input', draw);
+  lineWidthSlider.addEventListener('input', draw);
+  lineColorPicker.addEventListener('input', draw);
+  bgColorPicker.addEventListener('input', draw);
+
+  window.addEventListener('resize', redraw);
+
+  if (panel && panel.classList.contains('active')) {
+    resize();
+    draw();
+  }
+}
+
+// Bumpy Road
+function initBumpyRoad() {
+  const canvas = document.getElementById('road-canvas');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  const heightSlider = document.getElementById('road-height');
+  const spacingSlider = document.getElementById('road-spacing');
+  const bgColorPicker = document.getElementById('road-bg-color');
+  const colorOnePicker = document.getElementById('road-color-1');
+  const colorTwoPicker = document.getElementById('road-color-2');
+  const colorThreePicker = document.getElementById('road-color-3');
+  const panel = document.getElementById('panel-bumpy-road');
+
+  let dpr = window.devicePixelRatio || 1;
+
+  function resize() {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    dpr = window.devicePixelRatio || 1;
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    canvas.style.width = `${rect.width}px`;
+    canvas.style.height = `${rect.height}px`;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function buildWidths(baseHeight) {
+    const minWidth = baseHeight * 0.25;
+    const maxWidth = baseHeight * 0.85;
+    const widths = [];
+    for (let i = 0; i < 4; i += 1) {
+      const t = i / 3;
+      widths.push(minWidth + (maxWidth - minWidth) * t);
+    }
+    if (widths.length >= 4) {
+      widths[2] *= 0.94;
+      widths[3] *= 0.9;
+      if (widths[3] < widths[2]) widths[3] = widths[2];
+    }
+    return widths.concat([...widths].reverse());
+  }
+
+  function drawOval(x, y, ovalWidth, ovalHeight, fillColor, rightStroke, leftStroke, strokeWidth) {
+    const radiusX = ovalWidth * 0.5;
+    const radiusY = ovalHeight * 0.5;
+
+    ctx.save();
+    ctx.translate(x, y);
+
+    ctx.beginPath();
+    ctx.ellipse(0, 0, radiusX, radiusY, 0, 0, Math.PI * 2);
+    ctx.fillStyle = fillColor;
+    ctx.fill();
+
+    ctx.lineWidth = strokeWidth;
+    ctx.lineCap = 'butt';
+
+    ctx.beginPath();
+    ctx.strokeStyle = rightStroke;
+    ctx.ellipse(0, 0, radiusX, radiusY, 0, -Math.PI / 2, Math.PI / 2);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.strokeStyle = leftStroke;
+    ctx.ellipse(0, 0, radiusX, radiusY, 0, Math.PI / 2, Math.PI * 1.5);
+    ctx.stroke();
+
+    ctx.restore();
+  }
+
+  function draw() {
+    if (panel && !panel.classList.contains('active')) return;
+    const baseHeight = parseInt(heightSlider.value, 10);
+    const spacing = parseInt(spacingSlider.value, 10);
+    const bgColor = bgColorPicker.value;
+    const colorOne = colorOnePicker.value;
+    const colorTwo = colorTwoPicker.value;
+    const colorThree = colorThreePicker.value;
+    const width = canvas.width / dpr;
+    const height = canvas.height / dpr;
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    const shouldRotate = isMobile;
+    const logicalWidth = shouldRotate ? height : width;
+    const logicalHeight = shouldRotate ? width : height;
+
+    ctx.fillStyle = bgColor;
+    ctx.fillRect(0, 0, width, height);
+
+    const rows = 10;
+    const baseWidths = buildWidths(baseHeight);
+    const sectionCols = baseWidths.length;
+    const cols = sectionCols * 3;
+    const widths = Array.from({ length: cols }, (_, index) => baseWidths[index % sectionCols]);
+    const strokeWidth = Math.max(1, baseHeight * 0.1);
+    const sectionGap = Math.max(0, strokeWidth);
+    const spacingAfter = Array.from({ length: cols - 1 }, (_, index) =>
+      (index + 1) % sectionCols === 0 ? sectionGap : spacing
+    );
+
+    const gridWidth = widths.reduce((sum, value) => sum + value, 0) +
+      spacingAfter.reduce((sum, value) => sum + value, 0);
+    const gridHeight = rows * baseHeight + spacing * (rows - 1);
+
+    const padding = shouldRotate ? Math.max(2, strokeWidth) : Math.max(12, Math.min(logicalWidth, logicalHeight) * 0.04);
+    const availableWidth = Math.max(0, logicalWidth - padding * 2);
+    const availableHeight = Math.max(0, logicalHeight - padding * 2);
+
+    let scale = Math.min(availableWidth / gridWidth, availableHeight / gridHeight);
+    if (!shouldRotate) scale = Math.min(scale, 1);
+    if (!isFinite(scale) || scale <= 0) scale = 1;
+
+    const offsetX = (logicalWidth - gridWidth * scale) / 2;
+    const offsetY = (logicalHeight - gridHeight * scale) / 2;
+
+    ctx.save();
+    if (shouldRotate) {
+      ctx.translate(width / 2, height / 2);
+      ctx.rotate(Math.PI / 2);
+      ctx.translate(-logicalWidth / 2, -logicalHeight / 2);
+    }
+    ctx.translate(offsetX, offsetY);
+    ctx.scale(scale, scale);
+
+    for (let row = 0; row < rows; row += 1) {
+      const centerY = row * (baseHeight + spacing) + baseHeight / 2;
+      let cursorX = 0;
+      for (let col = 0; col < cols; col += 1) {
+        const ovalWidth = widths[col];
+        const centerX = cursorX + ovalWidth / 2;
+        const sectionIndex = Math.floor(col / sectionCols);
+        const rightStroke = sectionIndex === 1 ? colorThree : colorTwo;
+        const leftStroke = sectionIndex === 1 ? colorTwo : colorThree;
+        drawOval(centerX, centerY, ovalWidth, baseHeight, colorOne, rightStroke, leftStroke, strokeWidth);
+        const gap = col < spacingAfter.length ? spacingAfter[col] : 0;
+        cursorX += ovalWidth + gap;
+      }
+    }
+
+    ctx.restore();
+  }
+
+  function redraw() {
+    resize();
+    draw();
+  }
+
+  heightSlider.addEventListener('input', draw);
+  spacingSlider.addEventListener('input', draw);
+  bgColorPicker.addEventListener('input', draw);
+  colorOnePicker.addEventListener('input', draw);
+  colorTwoPicker.addEventListener('input', draw);
+  colorThreePicker.addEventListener('input', draw);
+  window.addEventListener('resize', redraw);
+
+  if (panel && panel.classList.contains('active')) {
+    resize();
+    draw();
+  }
+}
+
+const IllusionManager = (function() {
+  const registry = {
+    'contrast': { templateId: 'tpl-contrast', init: initContrast },
+    'waterfall': { templateId: 'tpl-waterfall', init: initWaterfall },
+    'reverse-phi': { templateId: 'tpl-reverse-phi', init: initReversePhi, unmountOnHide: true },
+    'pov-cube': { templateId: 'tpl-pov-cube', init: initPovCube },
+    'longer-line': { templateId: 'tpl-longer-line', init: initPonzo },
+    'circles': { templateId: 'tpl-circles', init: initCircles },
+    'checkerboard': { templateId: 'tpl-checkerboard', init: initCheckerboard },
+    'black-dots': { templateId: 'tpl-black-dots', init: initBlackDots },
+    'bumpy-road': { templateId: 'tpl-bumpy-road', init: initBumpyRoad }
+  };
+
+  const state = {};
+
+  function getState(key) {
+    if (!state[key]) {
+      state[key] = { mounted: false, initialized: false, node: null, handle: null };
+    }
+    return state[key];
+  }
+
+  function mount(key) {
+    const info = registry[key];
+    if (!info) return;
+    const panel = document.getElementById(`panel-${key}`);
+    if (!panel) return;
+    const slot = panel.querySelector(`.illusion-slot[data-illusion="${key}"]`);
+    if (!slot) return;
+
+    const local = getState(key);
+    if (local.mounted) return;
+
+    if (local.node) {
+      slot.appendChild(local.node);
+    } else {
+      const template = document.getElementById(info.templateId);
+      if (!template) return;
+      const fragment = template.content.cloneNode(true);
+      slot.appendChild(fragment);
+      local.node = slot.firstElementChild;
+    }
+    local.mounted = true;
+
+    if (!local.initialized && typeof info.init === 'function') {
+      local.handle = info.init() || null;
+      local.initialized = true;
+    }
+  }
+
+  function unmount(key) {
+    const local = getState(key);
+    if (!local.mounted || !local.node) return;
+    if (local.node.parentElement) {
+      local.node.parentElement.removeChild(local.node);
+    }
+    local.mounted = false;
+  }
+
+  function activate(key) {
+    if (!key) return;
+    mount(key);
+    Object.keys(registry).forEach((otherKey) => {
+      if (otherKey !== key && registry[otherKey].unmountOnHide) {
+        unmount(otherKey);
+      }
+    });
+  }
+
+  function activateFromActiveTab() {
+    const activeTab = document.querySelector('.illusion-tab.active');
+    if (activeTab && activeTab.dataset.panel) {
+      activate(activeTab.dataset.panel);
+    }
+  }
+
+  return { activate, activateFromActiveTab };
+})();
+
+window.IllusionManager = IllusionManager;
+IllusionManager.activateFromActiveTab();
+
+
+// Mobile nav
+(function(){
+  const toggle = document.getElementById('nav-toggle');
+  const drawer = document.getElementById('nav-drawer');
+  const backdrop = document.getElementById('nav-backdrop');
+  const closeBtn = document.getElementById('nav-close');
+  function openNav(){
+    drawer.setAttribute('aria-hidden','false');
+    backdrop.setAttribute('aria-hidden','false');
+    document.body.classList.add('drawer-open');
+    toggle && toggle.setAttribute('aria-expanded','true');
+    closeBtn && closeBtn.focus();
+  }
+  function closeNav(){
+    drawer.setAttribute('aria-hidden','true');
+    backdrop.setAttribute('aria-hidden','true');
+    document.body.classList.remove('drawer-open');
+    toggle && toggle.setAttribute('aria-expanded','false');
+    toggle && toggle.focus();
+  }
+  toggle && toggle.addEventListener('click', openNav);
+  closeBtn && closeBtn.addEventListener('click', closeNav);
+  backdrop && backdrop.addEventListener('click', closeNav);
+  drawer && drawer.addEventListener('click', (e)=>{
+    if(!e.target.closest('.nav-panel')) closeNav();
+  });
+  window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeNav(); });
+})();
+</script>
+
+<!-- Avatar Lightbox -->
+<div id="photo-lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-label="Profile photo (enlarged)">
+  <div class="lightbox__inner" role="document">
+    <button id="photo-lightbox-close" class="lightbox__close" aria-label="Close enlarged photo">×</button>
+    <img id="photo-lightbox-img" alt="Giulio Caputi">
+  </div>
+</div>
+
+<script>
+  (function(){
+    const avatar   = document.querySelector('.avatar');
+    const lb       = document.getElementById('photo-lightbox');
+    const lbImg    = document.getElementById('photo-lightbox-img');
+    const lbClose  = document.getElementById('photo-lightbox-close');
+
+    if(!avatar || !lb || !lbImg || !lbClose) return;
+
+    avatar.setAttribute('tabindex','0');
+    avatar.setAttribute('role','button');
+    avatar.setAttribute('aria-label','Enlarge profile photo');
+
+    function openLB(){
+      lbImg.src = avatar.currentSrc || avatar.src;
+      lb.setAttribute('aria-hidden','false');
+      document.body.classList.add('modal-open');
+      lbClose.focus();
+    }
+
+    function closeLB(){
+      lb.setAttribute('aria-hidden','true');
+      document.body.classList.remove('modal-open');
+      avatar.focus();
+    }
+
+    avatar.addEventListener('click', openLB);
+    avatar.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        openLB();
+      }
+    });
+
+    lbClose.addEventListener('click', closeLB);
+    lb.addEventListener('click', (e)=>{ if(e.target === lb) closeLB(); });
+    window.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeLB(); });
+  })();
+</script>
+
+<footer class="site-footer footer">
+  <div class="footer-inner">
+    <div>
+      <h2 class="footer-name">Giulio Caputi</h2>
+      <p>London, United Kingdom</p>
+      <p>© Copyright <strong>Giulio Caputi</strong> <span class="js-year"></span>. All Rights Reserved.</p>
+    </div>
+
+    <nav class="social-links social-tiles" aria-label="Social links">
+      <a href="https://www.linkedin.com/in/giulio-caputi/" target="_blank" rel="noopener" title="LinkedIn">
+        <i class="bi bi-linkedin" aria-hidden="true"></i>
+      </a>
+      <a href="https://www.instagram.com/giulio_caputi/" target="_blank" rel="noopener" title="Instagram">
+        <i class="bi bi-instagram" aria-hidden="true"></i>
+      </a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.js-year').forEach(function(el){
+    el.textContent = new Date().getFullYear();
+  });
+</script>
+
+<!-- Scroll-to-top arrow -->
+<a href="#" id="scroll-top" class="scroll-top" aria-label="Back to top" title="Back to top">
+  <i class="bi bi-arrow-up-short" aria-hidden="true"></i>
+</a>
+<script>
+  (function(){
+    const btn = document.getElementById('scroll-top');
+    if(!btn) return;
+    const toggle = () => {
+      const y = window.scrollY || document.documentElement.scrollTop;
+      btn.classList.toggle('show', y > 120);
+    };
+    window.addEventListener('scroll', toggle, { passive: true });
+    window.addEventListener('resize', toggle, { passive: true });
+    toggle();
+    btn.addEventListener('click', function(e){
+      e.preventDefault();
+      try{
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }catch(_){
+        window.scrollTo(0, 0);
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>

@@ -153,6 +153,7 @@
   <nav class="nav" aria-label="Primary">
     <a href="index.html" class="active" aria-current="page">Home</a>
     <a href="essentials.html">Essentials</a>
+    <a href="optical-illusions.html">Illusions</a>
   </nav>
 
   <!-- RIGHT: Contact button + hamburger (mobile shows hamburger; desktop hides it) -->
@@ -172,6 +173,7 @@
     <ul class="nav-list">
       <li><a href="index.html" aria-current="page">Home</a></li>
       <li><a href="essentials.html">Essentials</a></li>
+      <li><a href="optical-illusions.html">Illusions</a></li>
     </ul>
   </div>
 </aside>
@@ -182,7 +184,7 @@
     <section id="hero" class="hero-section" aria-label="Introduction">
       <div class="hero-content">
         <h1 class="hero-title" data-text="Giulio Caputi"></h1>
-        <p class="hero-subtitle" data-text="Rumor has it they used to call him &quot;Cap&quot;"></p>
+        <p class="hero-subtitle" data-text="Rumor has it they used to call him “Cap”"></p>
       </div>
     </section>
 
@@ -632,7 +634,6 @@
     <div>
       <h2 class="footer-name">Giulio Caputi</h2>
       <p>London, United Kingdom</p>
-      <p>Email: <a href="mailto:giulio.caputi@st-hughs.ox.ac.uk" target="_blank">giulio.caputi@st-hughs.ox.ac.uk</a></p>
       <p>© Copyright <strong>Giulio Caputi</strong> <span class="js-year"></span>. All Rights Reserved.</p>
     </div>
 
@@ -863,11 +864,12 @@
     });
   });
 
-  // Close subsections when clicking outside
+  // Close subsections when clicking outside the cards/toggles
   document.addEventListener('click', (e) => {
-    // Don't close if clicking inside a subsection, on a card, or on the drawer/backdrop
-    if (e.target.closest('.subsection') ||
+    // Don't close if clicking inside cards, on the toggle, or on the drawer/backdrop
+    if (e.target.closest('.subsection-cards') ||
         e.target.closest('.card') ||
+        e.target.closest('.subsection-toggle') ||
         e.target.closest('#drawer') ||
         e.target.closest('#drawer-backdrop') ||
         e.target.closest('#drawer-close')) return;

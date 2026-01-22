@@ -8,6 +8,24 @@
   <link rel="apple-touch-icon" href="assets/img/giulio.jpg">
   <link rel="stylesheet" href="assets/main.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <style>
+    .contact-title{
+      grid-column: 1 / -1;
+      text-align: center;
+      color: var(--accent);
+      font-family: var(--font-title);
+      font-weight: 400;
+      letter-spacing: 0.4px;
+      font-size: 38px;
+      margin: 0 0 16px;
+    }
+    @media (min-width: 641px){
+      .contact-title{
+        font-size: 56px;
+      }
+    }
+  </style>
 </head>
 <body class="home bg-stars">
 <div class="bg-twinkle-layer" aria-hidden="true"></div>
@@ -80,6 +98,7 @@
   <nav class="nav" aria-label="Primary">
     <a href="index.html">Home</a>
     <a href="essentials.html">Essentials</a>
+    <a href="optical-illusions.html">Illusions</a>
   </nav>
   <div class="right">
     <a href="contact_me.html" class="btn-contact" role="button" aria-label="Contact Me">Contact Me</a>
@@ -96,6 +115,7 @@
     <ul class="nav-list">
       <li><a href="index.html">Home</a></li>
       <li><a href="essentials.html">Essentials</a></li>
+      <li><a href="optical-illusions.html">Illusions</a></li>
     </ul>
   </div>
 </aside>
@@ -103,7 +123,7 @@
 <main>
   <div class="wrap">
     <section class="grid">
-      <article class="card card-visible category section-title" aria-hidden="true"><div>Complete the Form Below</div></article>
+      <h1 class="contact-title">Complete the Form Below</h1>
 
       <article class="card card-visible form-card">
         <div id="form-status" class="form-status" hidden role="status" aria-live="polite">
@@ -265,7 +285,6 @@
     <div>
       <h2 class="footer-name">Giulio Caputi</h2>
       <p>London, United Kingdom</p>
-      <p>Email: <a href="mailto:giulio.caputi@st-hughs.ox.ac.uk" target="_blank">giulio.caputi@st-hughs.ox.ac.uk</a></p>
       <p>© Copyright <strong>Giulio Caputi</strong> <span class="js-year"></span>. All Rights Reserved.</p>
     </div>
 
