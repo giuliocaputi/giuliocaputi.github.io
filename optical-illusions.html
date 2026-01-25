@@ -1352,9 +1352,21 @@ function initReversePhi() {
   let speedValue = parseInt(speedSlider.value, 10);
   let angleDeg = 0;
   const baseRepeater = 900;
+  const mobileQuery = window.matchMedia('(max-width: 767px)');
+  let isMobile = mobileQuery.matches;
+  let mobileDefaultApplied = false;
 
   function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value));
+  }
+
+  function applyMobileSpeedDefault() {
+    if (!isMobile || mobileDefaultApplied) return;
+    const current = parseInt(speedSlider.value, 10) || 30;
+    const boosted = Math.round(current * 1.4);
+    speedSlider.value = String(clamp(boosted, 5, 55));
+    speedValue = parseInt(speedSlider.value, 10);
+    mobileDefaultApplied = true;
   }
 
   function hexToRgb(hex) {
@@ -1400,6 +1412,7 @@ function initReversePhi() {
   }
 
   buildColorTable();
+  applyMobileSpeedDefault();
 
   function setStageBackground(color) {
     stage.style.background = color;
@@ -1929,11 +1942,14 @@ function initContrast() {
   const sizeSlider = document.getElementById('contrast-size');
   const speedSlider = document.getElementById('contrast-speed');
   const borderSlider = document.getElementById('contrast-border');
+  const panel = document.getElementById('panel-contrast');
 
   let dpr = window.devicePixelRatio || 1;
   let clientWidth = 0;
   let clientHeight = 0;
   let animationId = null;
+  let lastFrameTs = 0;
+  let watchdogId = null;
   let mobileDefaultApplied = false;
   const mobileQuery = window.matchMedia('(max-width: 767px)');
   let isMobile = mobileQuery.matches;
@@ -1950,6 +1966,10 @@ function initContrast() {
     dy: 10,
     maxSpeed: parseInt(speedSlider.value, 10)
   };
+
+  function isPanelActive() {
+    return panel && panel.classList.contains('active');
+  }
 
   function interpolateColor(colorA, colorB, t) {
     const a = colorA.slice(1).match(/.{2}/g).map(v => parseInt(v, 16));
@@ -2010,6 +2030,7 @@ function initContrast() {
   }
 
   function update() {
+    lastFrameTs = performance.now();
     drawBackground();
     drawCircle();
 
@@ -2052,7 +2073,25 @@ function initContrast() {
     if (circle.dy === 0) {
       circle.dy = 10;
     }
+    lastFrameTs = performance.now();
     update();
+  }
+
+  function startWatchdog() {
+    if (watchdogId) return;
+    watchdogId = window.setInterval(() => {
+      if (document.hidden || !isPanelActive()) return;
+      const now = performance.now();
+      if (!animationId || (now - lastFrameTs) > 800) {
+        start();
+      }
+    }, 800);
+  }
+
+  function stopWatchdog() {
+    if (!watchdogId) return;
+    window.clearInterval(watchdogId);
+    watchdogId = null;
   }
 
   function clampCirclePosition() {
@@ -2079,7 +2118,7 @@ function initContrast() {
     }
     if (isMobile && !mobileDefaultApplied) {
       sizeSlider.value = '80';
-      speedSlider.value = '13';
+      speedSlider.value = '20';
       mobileDefaultApplied = true;
     }
   }
@@ -2106,12 +2145,15 @@ function initContrast() {
 
   // Start when panel becomes visible
   const observer = new MutationObserver(() => {
-    const panel = document.getElementById('panel-contrast');
-    if (panel && panel.classList.contains('active')) {
+    if (isPanelActive()) {
       handleResize();
-    } else if (animationId) {
-      cancelAnimationFrame(animationId);
-      animationId = null;
+      startWatchdog();
+    } else {
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+        animationId = null;
+      }
+      stopWatchdog();
     }
   });
 
@@ -2121,8 +2163,7 @@ function initContrast() {
   }
 
   window.addEventListener('resize', () => {
-    const panel = document.getElementById('panel-contrast');
-    if (panel && panel.classList.contains('active')) {
+    if (isPanelActive()) {
       handleResize();
     }
   });
@@ -2141,17 +2182,16 @@ function initContrast() {
   });
   borderSlider.addEventListener('input', () => {});
 
-  const panel = document.getElementById('panel-contrast');
-  if (panel && panel.classList.contains('active')) {
+  if (isPanelActive()) {
     handleResize();
+    startWatchdog();
   }
 
   if (mobileQuery.addEventListener) {
     mobileQuery.addEventListener('change', (event) => {
       isMobile = event.matches;
       backgroundKey = '';
-      const panel = document.getElementById('panel-contrast');
-      if (panel && panel.classList.contains('active')) {
+      if (isPanelActive()) {
         handleResize();
       }
     });

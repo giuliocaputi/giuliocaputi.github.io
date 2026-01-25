@@ -47,6 +47,12 @@
     font-weight:800;
   }
 
+  /* Keep the BSML link in the site accent color (not default blue/purple) */
+  .essay a.accent,
+  .essay a.accent:visited{
+    color:var(--accent);
+  }
+
  /* Caret for the one-time typing of the whole essay */
 .typing-caret{
   display:inline-block;
@@ -157,50 +163,37 @@
 
     
 
-    <section class="essay" aria-labelledby="essentials-title">
+    <section class="essay" aria-labelledby="essentials-title">     
 
       <h1 id="essentials-title">A Few Essentials About Me</h1>
 
-      <p>My name is <span class="accent">Giulio Caputi</span>, I am <span class="js-age"></span> years old and currently a <span class="accent">Quantitative Researcher Intern</span> 
-        at the hedge fund <span class="accent">Point72</span> in London, where I develop meaningful <span class="accent">alpha signals</span> from a variety of different sources, and implement 
-        <span class="accent">fully automated trading strategies</span>.</p>
+      <p>Hi, I’m <span class="accent">Giulio Caputi</span>, I was born in Rome, Italy, and am <span class="js-age"></span> years old. I work as a <span class="accent">Quantitative Researcher Intern</span> 
+        at the hedge fund <span class="accent">Point72</span> in London, where I develop <span class="accent">fully automated trading strategies</span> from raw data.</p>
 
-      <p>Right before this, I completed all of my academic requirements for the <span class="accent">MSc in Statistical Science</span> at the 
-        <span class="accent">University of Oxford</span>, where I built a strong foundation in both 
-        <span class="accent">theoretical</span> and <span class="accent">applied statistics</span>. I am currently waiting for graduation and final grade release.
-        I performed research at the intersection of <span class="accent">statistics</span> and <span 
-        class="accent">finance</span>, writing a <span class="accent">Dissertation</span> where I designed 
+      <p>Right before that, I obtained a <span class="accent">Master of Science in Statistics</span> at the <span class="accent">University of Oxford</span>.
+        I performed research at the intersection of <span class="accent">statistics</span> and <span class="accent">finance</span>, writing a <span class="accent">Dissertation</span> where I designed 
         <span class="accent">machine learning algorithms</span> to <span class="accent">forecast stock volatility</span> 
-        and build <span class="accent">optimal trading strategies</span> using <span class="accent">options</span>.</p>
+        and build <span class="accent">options trading strategies</span>.</p>
 
-      <p>Prior to that, I graduated <span class="accent">Cum Laude</span> with a <span class="accent">BSc in Computer 
-        Science and Economics</span> from <span class="accent">Bocconi University</span> in <span class="accent">Milan, Italy</span>. 
-        The program included numerous courses in <span class="accent">mathematics</span>, <span class="accent">statistics</span>, 
-        <span class="accent">computer science</span> and <span class="accent">machine learning</span>, as well quantitative-oriented economics 
-        courses such as <span class="accent">econometrics</span> and <span class="accent">game theory</span>. I also spent a semester at <span class="accent">Georgia Tech</span>, 
-        earning a <span class="accent">4.0/4.0 GPA</span>.</p>
+      <p>Before Oxford, I graduated <em>Cum Laude</em> with a <span class="accent">Bachelor in Computer 
+        Science and Economics</span> from <span class="accent">Bocconi University</span> in Milan, Italy. 
+        The curriculum ranged from math/stats/ML to some econ (micro, macro, econometrics, game theory). I also spent a semester at <span class="accent">Georgia Tech</span>.</p>
 
-      <p>During the three years of my bachelor’s, I completed <span class="accent">two internships</span>. At <span class="accent">Amazon</span>’s 
-        European headquarters in <span class="accent">Luxembourg</span>, I worked for six months as a <span class="accent">Business Intelligence Engineer</span>, 
-        applying <span class="accent">Bayesian Optimisation</span> to improve <span class="accent">database performance</span>, a project that later 
-        became my <span class="accent">undergraduate thesis</span>. I also interned at <span class="accent">Deloitte</span> in 
-        <span class="accent">Milan</span> as a <span class="accent">Cybersecurity Analyst</span> for three months. Both internships overlapped 
-        with my bachelor’s term time, which posed some difficulties.</p>
+      <p>During the three years of my bachelor’s I completed two internships (largely overlapping with term time, which wasn’t fun). At Amazon’s European HQ in Luxembourg, I worked for 6 months as a Business Intelligence Engineer.
+        I previously interned at Deloitte in Milan as a Cybersecurity Analyst, but we quickly agreed it wasn’t a long-term relationship: it was meant to be 6 months, but I quit after 3.</p>
 
-      <p>Beyond academics and work, I co-founded <span class="accent">Bocconi Students for Machine Learning (BSML)</span> 
-        with some of my closest friends and served as its <span class="accent">President</span>. As the university’s first machine 
+      <p>Beyond academics and work, I co-founded <a href="https://bsmachinelearning.com/" class="accent" target="_blank" rel="noopener noreferrer">Bocconi Students for Machine Learning (BSML)</a>
+        with some of my closest friends, and served as its <span class="accent">President</span>. As the university’s first machine 
         learning association, BSML evolved into a <span class="accent">project incubator</span> and <span class="accent">community</span>, 
-        fostering <span class="accent">research</span> (including my own work in <span class="accent">network science</span>), hosting 
-        <span class="accent">hackathons</span>, and launching a <span class="accent">mentorship program</span>. As a mentor, I support students 
-        in applications to graduate school and <span class="accent">quantitative finance</span> through dedicated one-to-one sessions.</p>
+        fostering <span class="accent">research</span>, hosting 
+        <span class="accent">hackathons</span>, and launching a <span class="accent">mentorship program</span>. As a mentor, I still support students 
+        in applications to graduate school and <span class="accent">quantitative finance</span>.</p>
 
-      <p>Regarding other interests, I hit the gym 4x/week for <span class="accent">strength and hypertrophy training</span> and I listen to 
+      <p>Regarding other interests, I hit the gym 4x/week and listen to 
         plenty of <span class="accent">music</span> (mainly <span class="accent">trap/rap</span>, <span class="accent">lo-fi</span>, 
-        and <span class="accent">contemporary classical</span>, but I periodically explore new genres). I also love <span class="accent">creating 
-        websites</span> (<span class="accent">giuliocaputi.com</span> is the one I’m proudest of), and solving both <span class="accent">logical</span> 
-        and <span class="accent">mathematical riddles</span> (something I discovered while preparing for interviews). In high school I created a fully 
-        automated <span class="accent">print-on-demand online shop</span>, and I occasionally still make some sells. Lastly, I like <span class="accent">reading 
-        books</span> (mostly non-fiction, occasionally a novel).</p>
+        and <span class="accent">contemporary classical</span>, with occasional genre detours). I also love <span class="accent">creating 
+        websites</span> (this one is a good example), and solving logic/maths riddles</span> (something I discovered while preparing for interviews). In high school I created a fully 
+        automated <a href="https://www.redbubble.com/people/babylonmerchant/shop" class="accent" target="_blank" rel="noopener noreferrer">print-on-demand online shop</a>, and I occasionally still make some sales. Lastly, I like to pretend I read.</p>
     </section>
   </div>
 </main>
@@ -373,7 +366,7 @@ paragraphs.forEach(p => {
     node.nodeValue = '';
   }
 
-  const TYPE_MS = 5; // typing speed (per character). Increase for slower, decrease for faster.
+  const TYPE_MS = 1.5; // typing speed (per character). Increase for slower, decrease for faster.
 
   const wait = (ms) => new Promise(r => setTimeout(r, ms));
 
