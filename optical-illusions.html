@@ -1950,6 +1950,7 @@ function initContrast() {
   let animationId = null;
   let lastFrameTs = 0;
   let watchdogId = null;
+  let resizeRaf = null;
   let mobileDefaultApplied = false;
   const mobileQuery = window.matchMedia('(max-width: 767px)');
   let isMobile = mobileQuery.matches;
@@ -2066,12 +2067,19 @@ function initContrast() {
   }
 
   function start() {
+    if (!clientWidth || !clientHeight) {
+      scheduleResize({ resetPosition: true });
+      return;
+    }
     if (animationId) cancelAnimationFrame(animationId);
-    if (circle.dx === 0) {
+    if (!Number.isFinite(circle.dx) || circle.dx === 0) {
       circle.dx = 10;
     }
-    if (circle.dy === 0) {
+    if (!Number.isFinite(circle.dy) || circle.dy === 0) {
       circle.dy = 10;
+    }
+    if (!Number.isFinite(circle.maxSpeed) || circle.maxSpeed <= 0) {
+      circle.maxSpeed = Math.max(5, parseInt(speedSlider.value, 10) || 20);
     }
     lastFrameTs = performance.now();
     update();
@@ -2134,19 +2142,50 @@ function initContrast() {
     clampCirclePosition();
   }
 
-  function handleResize() {
+  function handleResize(options = {}) {
+    const { resetPosition = false } = options;
+    const prevWidth = clientWidth;
+    const prevHeight = clientHeight;
+    const prevX = circle.x;
+    const prevY = circle.y;
     updateCachedColors();
     applyMobileDefaultSize();
     setupCanvas();
+    if (!clientWidth || !clientHeight) {
+      scheduleResize(options);
+      return;
+    }
     syncCircleSize();
-    resetCirclePosition();
+    if (resetPosition || !prevWidth || !prevHeight) {
+      resetCirclePosition();
+    } else {
+      const xRatio = Math.max(0, Math.min(1, prevX / prevWidth));
+      const yRatio = Math.max(0, Math.min(1, prevY / prevHeight));
+      if (isMobile) {
+        circle.x = clientWidth / 2;
+        circle.y = yRatio * clientHeight;
+      } else {
+        circle.x = xRatio * clientWidth;
+        circle.y = clientHeight / 2;
+      }
+      clampCirclePosition();
+    }
     start();
+  }
+
+  function scheduleResize(options = {}) {
+    if (!isPanelActive()) return;
+    if (resizeRaf) cancelAnimationFrame(resizeRaf);
+    resizeRaf = requestAnimationFrame(() => {
+      resizeRaf = null;
+      handleResize(options);
+    });
   }
 
   // Start when panel becomes visible
   const observer = new MutationObserver(() => {
     if (isPanelActive()) {
-      handleResize();
+      scheduleResize({ resetPosition: true });
       startWatchdog();
     } else {
       if (animationId) {
@@ -2164,7 +2203,7 @@ function initContrast() {
 
   window.addEventListener('resize', () => {
     if (isPanelActive()) {
-      handleResize();
+      scheduleResize({ resetPosition: !isMobile });
     }
   });
 
@@ -2183,7 +2222,7 @@ function initContrast() {
   borderSlider.addEventListener('input', () => {});
 
   if (isPanelActive()) {
-    handleResize();
+    scheduleResize({ resetPosition: true });
     startWatchdog();
   }
 
@@ -2192,7 +2231,7 @@ function initContrast() {
       isMobile = event.matches;
       backgroundKey = '';
       if (isPanelActive()) {
-        handleResize();
+        scheduleResize({ resetPosition: true });
       }
     });
   }
