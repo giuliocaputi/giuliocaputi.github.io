@@ -1342,6 +1342,7 @@ function initReversePhi() {
   const speedSlider = document.getElementById('phi-speed');
   const bgColorPicker = document.getElementById('phi-bg-color');
   const grayscaleToggle = document.getElementById('phi-grayscale');
+  const panel = document.getElementById('panel-reverse-phi');
 
   let shifters = [];
   let centerOuter = null;
@@ -1355,8 +1356,12 @@ function initReversePhi() {
   const mobileQuery = window.matchMedia('(max-width: 767px)');
   let isMobile = mobileQuery.matches;
   let mobileDefaultsApplied = false;
+  let desktopDefaultsApplied = false;
+  let speedTouched = false;
   const desktopSpeedRange = { min: 5, max: 55, value: 30 };
   const mobileSpeedRange = { min: 30, max: 80, value: 55 };
+  let lastStageWidth = 0;
+  let lastStageHeight = 0;
 
   function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value));
@@ -1375,13 +1380,39 @@ function initReversePhi() {
       } else {
         speedSlider.value = String(clamp(current, range.min, range.max));
       }
+    } else if (!desktopDefaultsApplied && !speedTouched) {
+      speedSlider.value = String(range.value);
+      desktopDefaultsApplied = true;
     } else if (!Number.isFinite(current)) {
       speedSlider.value = String(range.value);
-    } else if (current < range.min || current > range.max) {
+    } else {
       speedSlider.value = String(clamp(current, range.min, range.max));
     }
 
     speedValue = clamp(parseInt(speedSlider.value, 10) || range.value, range.min, range.max);
+  }
+
+  function shouldRebuild(width, height) {
+    if (!lastStageWidth || !lastStageHeight) return true;
+    const widthChanged = width !== lastStageWidth;
+    const heightChanged = height !== lastStageHeight;
+    if (!isMobile) return widthChanged || heightChanged;
+    return widthChanged;
+  }
+
+  function ensureScene(options = {}) {
+    if (!panel || !panel.classList.contains('active')) return;
+    const rect = stage.getBoundingClientRect();
+    const width = Math.round(rect.width);
+    const height = Math.round(rect.height);
+    if (!width || !height) return;
+    const force = Boolean(options.force);
+    if (force || !shifters.length || shouldRebuild(width, height)) {
+      buildScene();
+    } else {
+      lastStageWidth = width;
+      lastStageHeight = height;
+    }
   }
 
   function updateArrowAppearance(innerSize) {
@@ -1472,6 +1503,8 @@ function initReversePhi() {
     const width = rect.width;
     const height = rect.height;
     if (!width || !height) return;
+    lastStageWidth = Math.round(width);
+    lastStageHeight = Math.round(height);
 
     const minDim = Math.min(width, height);
     const outerSize = clamp(minDim * 0.16, 70, 130);
@@ -1603,9 +1636,8 @@ function initReversePhi() {
   });
 
   const observer = new MutationObserver(() => {
-    const panel = document.getElementById('panel-reverse-phi');
     if (panel && panel.classList.contains('active')) {
-      if (!shifters.length) buildScene();
+      ensureScene();
       if (!animationId) loop();
     } else if (animationId) {
       cancelAnimationFrame(animationId);
@@ -1619,16 +1651,16 @@ function initReversePhi() {
   }
 
   window.addEventListener('resize', () => {
-    buildScene();
+    ensureScene();
   });
 
-  const panel = document.getElementById('panel-reverse-phi');
   if (panel && panel.classList.contains('active')) {
-    buildScene();
+    ensureScene({ force: true });
     loop();
   }
 
   speedSlider.addEventListener('input', () => {
+    speedTouched = true;
     const min = parseInt(speedSlider.min, 10) || desktopSpeedRange.min;
     const max = parseInt(speedSlider.max, 10) || desktopSpeedRange.max;
     speedValue = clamp(parseInt(speedSlider.value, 10) || min, min, max);
@@ -1645,7 +1677,7 @@ function initReversePhi() {
     mobileQuery.addEventListener('change', (event) => {
       isMobile = event.matches;
       applySpeedRange();
-      buildScene();
+      ensureScene({ force: true });
     });
   }
 }
@@ -1659,12 +1691,16 @@ function initPovCube() {
   const speedSlider = document.getElementById('cube-speed');
   const cellSizeSlider = document.getElementById('cube-cell-size');
   const cubeSizeSlider = document.getElementById('cube-size');
+  const panel = document.getElementById('panel-pov-cube');
 
   let animationId;
   let angle = 0;
   let grid = [];
   let cols, rows;
   let cellSize = 8;
+  let lastCanvasWidth = 0;
+  let lastCanvasHeight = 0;
+  let resizeRaf = null;
   let mobileDefaultApplied = false;
   const mobileQuery = window.matchMedia('(max-width: 767px)');
   let isMobile = mobileQuery.matches;
@@ -1686,6 +1722,10 @@ function initPovCube() {
 
   function getCellSize() {
     return parseInt(cellSizeSlider.value);
+  }
+
+  function isPanelActive() {
+    return panel && panel.classList.contains('active');
   }
 
   function applyMobileCubeDefaults() {
@@ -1740,8 +1780,13 @@ function initPovCube() {
   function initGrid() {
     applyMobileCubeDefaults();
     const rect = canvas.parentElement.getBoundingClientRect();
-    canvas.width = rect.width;
-    canvas.height = rect.height;
+    const width = Math.round(rect.width);
+    const height = Math.round(rect.height);
+    if (!width || !height) return;
+    canvas.width = width;
+    canvas.height = height;
+    lastCanvasWidth = width;
+    lastCanvasHeight = height;
     cellSize = getCellSize();
     cols = Math.ceil(canvas.width / cellSize);
     rows = Math.ceil(canvas.height / cellSize);
@@ -1759,6 +1804,36 @@ function initPovCube() {
       }
     }
     drawGrid();
+  }
+
+  function shouldReinit(width, height) {
+    if (!lastCanvasWidth || !lastCanvasHeight) return true;
+    if (!isMobile) return width !== lastCanvasWidth || height !== lastCanvasHeight;
+    return width !== lastCanvasWidth;
+  }
+
+  function ensureGrid(options = {}) {
+    if (!isPanelActive()) return;
+    const rect = canvas.parentElement.getBoundingClientRect();
+    const width = Math.round(rect.width);
+    const height = Math.round(rect.height);
+    if (!width || !height) return;
+    const force = Boolean(options.force);
+    if (force || grid.length === 0 || shouldReinit(width, height)) {
+      initGrid();
+    } else {
+      lastCanvasWidth = width;
+      lastCanvasHeight = height;
+    }
+  }
+
+  function scheduleResize(options = {}) {
+    if (!isPanelActive()) return;
+    if (resizeRaf) cancelAnimationFrame(resizeRaf);
+    resizeRaf = requestAnimationFrame(() => {
+      resizeRaf = null;
+      ensureGrid(options);
+    });
   }
 
   function rotateX(point, ang) {
@@ -1923,9 +1998,8 @@ function initPovCube() {
 
   // Start when panel becomes visible
   const observer = new MutationObserver(() => {
-    const panel = document.getElementById('panel-pov-cube');
-    if (panel && panel.classList.contains('active')) {
-      if (grid.length === 0) initGrid();
+    if (isPanelActive()) {
+      ensureGrid();
       startAnimation();
     } else {
       if (animationId) {
@@ -1941,28 +2015,24 @@ function initPovCube() {
   }
 
   window.addEventListener('resize', () => {
-    initGrid();
+    scheduleResize();
   });
 
   // Check if already active
-  const panel = document.getElementById('panel-pov-cube');
-  if (panel && panel.classList.contains('active')) {
-    initGrid();
+  if (isPanelActive()) {
+    ensureGrid({ force: true });
     startAnimation();
   }
 
   // Control event listeners
   cellSizeSlider.addEventListener('input', () => {
-    initGrid();
+    scheduleResize({ force: true });
   });
 
   if (mobileQuery.addEventListener) {
     mobileQuery.addEventListener('change', (event) => {
       isMobile = event.matches;
-      const panel = document.getElementById('panel-pov-cube');
-      if (panel && panel.classList.contains('active')) {
-        initGrid();
-      }
+      scheduleResize({ force: true });
     });
   }
 }
@@ -2162,7 +2232,7 @@ function initContrast() {
     }
     if (isMobile && !mobileDefaultApplied) {
       sizeSlider.value = '80';
-      speedSlider.value = '20';
+      speedSlider.value = '28';
       mobileDefaultApplied = true;
     }
   }
