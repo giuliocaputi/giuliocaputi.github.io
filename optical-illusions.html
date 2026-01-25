@@ -1354,19 +1354,46 @@ function initReversePhi() {
   const baseRepeater = 900;
   const mobileQuery = window.matchMedia('(max-width: 767px)');
   let isMobile = mobileQuery.matches;
-  let mobileDefaultApplied = false;
+  let mobileDefaultsApplied = false;
+  const desktopSpeedRange = { min: 5, max: 55, value: 30 };
+  const mobileSpeedRange = { min: 30, max: 80, value: 55 };
 
   function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value));
   }
 
-  function applyMobileSpeedDefault() {
-    if (!isMobile || mobileDefaultApplied) return;
-    const current = parseInt(speedSlider.value, 10) || 30;
-    const boosted = Math.round(current * 1.4);
-    speedSlider.value = String(clamp(boosted, 5, 55));
-    speedValue = parseInt(speedSlider.value, 10);
-    mobileDefaultApplied = true;
+  function applySpeedRange() {
+    const range = isMobile ? mobileSpeedRange : desktopSpeedRange;
+    speedSlider.min = String(range.min);
+    speedSlider.max = String(range.max);
+
+    const current = parseInt(speedSlider.value, 10);
+    if (isMobile) {
+      if (!mobileDefaultsApplied || !Number.isFinite(current)) {
+        speedSlider.value = String(range.value);
+        mobileDefaultsApplied = true;
+      } else {
+        speedSlider.value = String(clamp(current, range.min, range.max));
+      }
+    } else if (!Number.isFinite(current)) {
+      speedSlider.value = String(range.value);
+    } else if (current < range.min || current > range.max) {
+      speedSlider.value = String(clamp(current, range.min, range.max));
+    }
+
+    speedValue = clamp(parseInt(speedSlider.value, 10) || range.value, range.min, range.max);
+  }
+
+  function updateArrowAppearance(innerSize) {
+    if (!arrowEl) return;
+    const arrowScale = isMobile ? 0.7 : 0.5;
+    arrowEl.textContent = isMobile ? '\u2193' : '\u2B07';
+    arrowEl.style.fontSize = `${Math.round(innerSize * arrowScale)}px`;
+    if (isMobile) {
+      arrowEl.style.fontFamily = '"Apple Symbols", "Segoe UI Symbol", "Noto Sans Symbols", sans-serif';
+    } else {
+      arrowEl.style.fontFamily = '';
+    }
   }
 
   function hexToRgb(hex) {
@@ -1412,7 +1439,7 @@ function initReversePhi() {
   }
 
   buildColorTable();
-  applyMobileSpeedDefault();
+  applySpeedRange();
 
   function setStageBackground(color) {
     stage.style.background = color;
@@ -1464,8 +1491,7 @@ function initReversePhi() {
 
     arrowEl = document.createElement('span');
     arrowEl.className = 'reverse-phi-arrow';
-    arrowEl.textContent = '⬇';
-    arrowEl.style.fontSize = `${Math.round(innerSize * 0.5)}px`;
+    updateArrowAppearance(innerSize);
 
     centerInner.appendChild(arrowEl);
     centerOuter.appendChild(centerInner);
@@ -1603,7 +1629,9 @@ function initReversePhi() {
   }
 
   speedSlider.addEventListener('input', () => {
-    speedValue = Math.max(5, parseInt(speedSlider.value, 10) || 30);
+    const min = parseInt(speedSlider.min, 10) || desktopSpeedRange.min;
+    const max = parseInt(speedSlider.max, 10) || desktopSpeedRange.max;
+    speedValue = clamp(parseInt(speedSlider.value, 10) || min, min, max);
   });
 
   bgColorPicker.addEventListener('input', () => {
@@ -1612,6 +1640,14 @@ function initReversePhi() {
 
   grayscaleToggle.addEventListener('change', applyGrayscale);
   applyGrayscale();
+
+  if (mobileQuery.addEventListener) {
+    mobileQuery.addEventListener('change', (event) => {
+      isMobile = event.matches;
+      applySpeedRange();
+      buildScene();
+    });
+  }
 }
 
 // POV Cube - Persistence of Vision (color-flipping grid)
