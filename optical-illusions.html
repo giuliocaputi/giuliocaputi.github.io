@@ -2137,6 +2137,10 @@ function initContrast() {
   }
 
   function update() {
+    if (!isPanelActive() || !clientWidth || !clientHeight) {
+      animationId = null;
+      return;
+    }
     lastFrameTs = performance.now();
     drawBackground();
     drawCircle();
@@ -2297,6 +2301,10 @@ function initContrast() {
       if (animationId) {
         cancelAnimationFrame(animationId);
         animationId = null;
+      }
+      if (resizeRaf) {
+        cancelAnimationFrame(resizeRaf);
+        resizeRaf = null;
       }
       stopWatchdog();
     }
