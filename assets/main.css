@@ -1,7 +1,6 @@
 /* ==== Start of Fonts ==== */
-/* Body text: EB Garamond */
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;700&display=swap');
+/* Body text: EB Garamond — loaded via <link> in each HTML <head> for faster rendering */
+/* Cinzel / Cinzel Decorative — loaded via <link> in each HTML <head> for faster rendering */
 
 /* Menu: CMU Serif
    If you have the WOFF2 files, drop them into assets/fonts/ and leave this on.
@@ -158,7 +157,7 @@ body.bg-stars{
     repeat, repeat, repeat, repeat, no-repeat;
   background-attachment:
     scroll, scroll, scroll, scroll, scroll; /* mobile-friendly */
-  animation: stars-drift 20s ease-in-out infinite alternate;
+  animation: stars-drift 12s ease-in-out infinite alternate;
 }
 
 /* Separate layer for twinkle effect (has filter, so must be isolated) */
@@ -167,6 +166,7 @@ body.bg-stars{
   inset: 0;
   z-index: -3;
   pointer-events: none;
+  will-change: filter;
   background-image:
     radial-gradient(rgba(255,255,255,.90) 1px, transparent 1.1px),
     radial-gradient(rgba(255,255,255,.70) 1px, transparent 1.15px),
@@ -179,13 +179,13 @@ body.bg-stars{
     23px 41px, 102px 11px, 77px 163px, 12px 124px, center;
   background-repeat:
     repeat, repeat, repeat, repeat, no-repeat;
-  animation: stars-drift 20s ease-in-out infinite alternate, stars-twinkle 8s ease-in-out infinite;
+  animation: stars-drift 12s ease-in-out infinite alternate, stars-twinkle 8s ease-in-out infinite;
 }
 
 /* Stars drift and movement */
 @keyframes stars-drift{
   0%{ background-position: 23px 41px, 102px 11px, 77px 163px, 12px 124px, center; }
-  100%{ background-position: 43px 61px, 122px 31px, 97px 183px, 32px 144px, center; }
+  100%{ background-position: 63px 81px, 142px 51px, 117px 203px, 52px 164px, center; }
 }
 
 /* Stars glow and fade effect */
@@ -570,6 +570,8 @@ main{padding:16px var(--wrap-pad) 48px}
   /* Initial state for scroll reveal */
   opacity: 0;
   transform: translateY(40px) scale(0.95);
+  will-change: transform, opacity;
+  contain: layout style;
 }
 
 /* Card visible state (triggered by scroll) */
@@ -665,7 +667,6 @@ main{padding:16px var(--wrap-pad) 48px}
   letter-spacing: 0.5px;
   padding: 6px 12px;
   border-radius: 6px;
-  backdrop-filter: blur(10px);
   transition: all 0.3s ease;
 }
 
@@ -684,20 +685,37 @@ main{padding:16px var(--wrap-pad) 48px}
   height: var(--cat-h);
   grid-column: 1 / -1;
   cursor: default;
+  position: relative;
 
-  /* Glowing layered border effect */
+  /* Glowing layered border effect (dim state) */
   background: rgba(10, 0, 20, 0.85);
   border: 2px solid rgba(237,24,198,0.6);
   box-shadow:
-    /* Inner glow */
     inset 0 0 20px rgba(237,24,198,0.2),
-    /* Layered outer glows */
     0 0 10px rgba(237,24,198,0.4),
     0 0 20px rgba(237,24,198,0.3),
     0 0 40px rgba(161,69,255,0.2),
     0 0 60px rgba(237,24,198,0.15),
     0 0 80px rgba(161,69,255,0.1);
+}
+
+/* Bright glow state on a pseudo-element — animating only opacity is GPU-friendly */
+.category::after{
+  content: '';
+  position: absolute;
+  inset: -2px; /* match the border width */
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 25px rgba(237,24,198,0.3),
+    0 0 15px rgba(237,24,198,0.5),
+    0 0 30px rgba(161,69,255,0.4),
+    0 0 50px rgba(237,24,198,0.25),
+    0 0 70px rgba(161,69,255,0.2),
+    0 0 90px rgba(237,24,198,0.15);
+  opacity: 0;
   animation: category-glow 3s ease-in-out infinite alternate;
+  will-change: opacity;
 }
 
 /* 3D text styling for category titles - tilted with deep extrusion */
@@ -735,31 +753,19 @@ main{padding:16px var(--wrap-pad) 48px}
     0 0 30px rgba(237,24,198,0.4);
 }
 
-/* Glow animation for category cards */
+/* Glow animation for category cards — only animates opacity (compositor-friendly) */
 @keyframes category-glow{
-  0%{
-    box-shadow:
-      inset 0 0 20px rgba(237,24,198,0.2),
-      0 0 10px rgba(237,24,198,0.4),
-      0 0 20px rgba(237,24,198,0.3),
-      0 0 40px rgba(161,69,255,0.2),
-      0 0 60px rgba(237,24,198,0.15),
-      0 0 80px rgba(161,69,255,0.1);
-  }
-  100%{
-    box-shadow:
-      inset 0 0 25px rgba(237,24,198,0.3),
-      0 0 15px rgba(237,24,198,0.5),
-      0 0 30px rgba(161,69,255,0.4),
-      0 0 50px rgba(237,24,198,0.25),
-      0 0 70px rgba(161,69,255,0.2),
-      0 0 90px rgba(237,24,198,0.15);
-  }
+  0%{ opacity: 0; }
+  100%{ opacity: 1; }
 }
 
 .category:hover{
   transform: none;
   border-color: rgba(237,24,198,0.8);
+}
+.category:hover::after{
+  opacity: 1;
+  animation: none;
   box-shadow:
     inset 0 0 30px rgba(237,24,198,0.3),
     0 0 20px rgba(237,24,198,0.6),
@@ -771,7 +777,7 @@ main{padding:16px var(--wrap-pad) 48px}
 
 /* Reduced motion preference */
 @media (prefers-reduced-motion: reduce){
-  .category{
+  .category::after{
     animation: none;
   }
 }
@@ -811,6 +817,14 @@ main{padding:16px var(--wrap-pad) 48px}
 .card:hover .logo{
   opacity: .75;
   transform: scale(1.05);
+}
+
+/* Lighter backdrop-filter on mobile for smoother scrolling */
+@media (max-width:640px){
+  .card{
+    backdrop-filter: blur(8px) saturate(130%);
+    -webkit-backdrop-filter: blur(8px) saturate(130%);
+  }
 }
 
 /* Logos on larger screens */
@@ -860,6 +874,7 @@ main{padding:16px var(--wrap-pad) 48px}
   transition: transform 600ms cubic-bezier(0.34, 1.56, 0.64, 1),
               opacity 600ms ease;
   padding: clamp(24px, 4vw, 32px);
+  will-change: transform, opacity;
 }
 
 #drawer[aria-hidden="false"]{
@@ -1367,13 +1382,13 @@ body.modal-open { overflow:hidden; }
 }
 
 /* icon inside the tile */
-.footer .social-links.social-tiles a i{
+.footer .social-links.social-tiles a svg{
   font-size: var(--social-glyph-size);
-  line-height: 1;
-  -webkit-font-smoothing: antialiased;
+  width: 1em;
+  height: 1em;
   color: #fff;
-  position: relative;   /* NEW */
-  z-index: 1;           /* NEW: keep the glyph above ::before */
+  position: relative;
+  z-index: 1;
 }
 
 /* hover & keyboard focus */
@@ -1387,8 +1402,8 @@ body.modal-open { overflow:hidden; }
   transform: translateY(-1px);
 }
 
-.footer .social-links.social-tiles a:hover i,
-.footer .social-links.social-tiles a:focus-visible i{
+.footer .social-links.social-tiles a:hover svg,
+.footer .social-links.social-tiles a:focus-visible svg{
   color: var(--accent-color);
 }
 
@@ -1431,9 +1446,9 @@ body.modal-open { overflow:hidden; }
   transform: translateY(0);
   pointer-events: auto;
 }
-#scroll-top i{
-  font-size: 1.5rem;
-  line-height: 1;
+#scroll-top svg{
+  width: 1.5rem;
+  height: 1.5rem;
 }
 #scroll-top:focus-visible{
   outline: 3px solid rgba(255,255,255,.8);
@@ -1713,7 +1728,6 @@ body.modal-open { overflow:hidden; }
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  backdrop-filter: blur(10px);
   box-shadow: 0 8px 24px rgba(237,24,198,0.2);
 }
 
@@ -1725,7 +1739,8 @@ body.modal-open { overflow:hidden; }
 }
 
 .toggle-icon{
-  font-size: 20px;
+  width: 20px;
+  height: 20px;
   transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
