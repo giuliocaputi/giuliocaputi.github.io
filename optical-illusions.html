@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;700&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;700&display=swap">
   <link rel="stylesheet" href="assets/main.css">
+  <script src="assets/color-picker.js" defer></script>
 
 <style>
 /* Optical Illusions page styles */
@@ -57,8 +58,8 @@
 }
 
 .illusion-tab{
-  background: rgba(237,24,198,0.1);
-  border: 1px solid rgba(237,24,198,0.3);
+  background: rgba(var(--accent-rgb),0.1);
+  border: 1px solid rgba(var(--accent-rgb),0.3);
   color: var(--accent);
   padding: 10px 16px;
   border-radius: 25px;
@@ -70,8 +71,8 @@
 }
 
 .illusion-tab:hover{
-  background: rgba(237,24,198,0.2);
-  border-color: rgba(237,24,198,0.5);
+  background: rgba(var(--accent-rgb),0.2);
+  border-color: rgba(var(--accent-rgb),0.5);
   transform: translateY(-2px);
 }
 
@@ -79,7 +80,7 @@
   background: var(--accent);
   color: #000;
   font-weight: 700;
-  box-shadow: 0 0 20px rgba(237,24,198,0.4);
+  box-shadow: 0 0 20px rgba(var(--accent-rgb),0.4);
 }
 
 /* Content panels */
@@ -134,7 +135,7 @@
 /* Settings box (smaller) */
 .illusion-settings-box{
   background: rgba(0,0,0,0.6);
-  border: 1px solid rgba(237,24,198,0.3);
+  border: 1px solid rgba(var(--accent-rgb),0.3);
   border-radius: 16px;
   padding: clamp(15px, 3vw, 25px);
   display: flex;
@@ -187,7 +188,7 @@
   appearance: none;
   width: 100%;
   height: 6px;
-  background: rgba(237,24,198,0.2);
+  background: rgba(var(--accent-rgb),0.2);
   border-radius: 3px;
   outline: none;
   cursor: pointer;
@@ -258,7 +259,7 @@
   width: 100%;
   height: 32px;
   background: transparent;
-  border: 1px solid rgba(237,24,198,0.3);
+  border: 1px solid rgba(var(--accent-rgb),0.3);
   border-radius: 8px;
   cursor: pointer;
   padding: 2px;
@@ -292,7 +293,7 @@
 .toggle-switch{
   width: 44px;
   height: 24px;
-  background: rgba(237,24,198,0.2);
+  background: rgba(var(--accent-rgb),0.2);
   border-radius: 12px;
   position: relative;
   transition: background 0.3s ease;
@@ -325,7 +326,7 @@
 
 .control-select{
   background: rgba(0,0,0,0.4);
-  border: 1px solid rgba(237,24,198,0.3);
+  border: 1px solid rgba(var(--accent-rgb),0.3);
   border-radius: 8px;
   color: #fff;
   padding: 8px 12px;
@@ -346,7 +347,7 @@
 /* Main illusion box (bigger) */
 .illusion-canvas-container{
   background: #000;
-  border: 1px solid rgba(237,24,198,0.3);
+  border: 1px solid rgba(var(--accent-rgb),0.3);
   border-radius: 16px;
   overflow: hidden;
   width: 100%;
@@ -400,14 +401,14 @@
   height: 100%;
   position: relative;
   overflow: hidden;
-  background: #d520bd;
+  background: var(--accent);
 }
 
 .reverse-phi-stage{
   position: absolute;
   inset: 0;
   cursor: pointer;
-  background: #d520bd;
+  background: var(--accent);
   --phi-angle: 0deg;
   filter: none;
   touch-action: none; /* prevent scroll on this element so touch listeners can be passive */
@@ -474,7 +475,7 @@
 .circles-container{
   width: 100%;
   height: 100%;
-  background: #ed18c6;
+  background: var(--accent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -705,7 +706,7 @@
             <div class="illusion-controls">
               <div class="control-group">
                 <label class="control-label">Left Color</label>
-                <input type="color" class="control-color" id="contrast-left-color" value="#ed18c6">
+                <input type="color" class="control-color" id="contrast-left-color" value="#06b6d4" data-accent-default>
               </div>
               <div class="control-group">
                 <label class="control-label">Right Color</label>
@@ -748,7 +749,7 @@
               </div>
               <div class="control-group">
                 <label class="control-label">Second Color</label>
-                <input type="color" class="control-color" id="waterfall-color-2" value="#ed18c6">
+                <input type="color" class="control-color" id="waterfall-color-2" value="#06b6d4" data-accent-default>
               </div>
               <div class="control-group">
                 <label class="control-label">Speed</label>
@@ -794,7 +795,7 @@
               </div>
               <div class="control-group">
                 <label class="control-label">Background Color</label>
-                <input type="color" class="control-color" id="phi-bg-color" value="#d520bd">
+                <input type="color" class="control-color" id="phi-bg-color" value="#06b6d4" data-accent-default>
               </div>
               <label class="control-toggle">
                 <input type="checkbox" id="phi-grayscale">
@@ -831,6 +832,10 @@
               <div class="control-group">
                 <label class="control-label">Cube Size</label>
                 <input type="range" class="control-slider" id="cube-size" min="80" max="240" value="160">
+              </div>
+              <div class="control-group">
+                <label class="control-label">Background Color</label>
+                <input type="color" class="control-color" id="cube-bg-color" value="#000000">
               </div>
             </div>
           </div>
@@ -889,7 +894,7 @@
               </div>
               <div class="control-group">
                 <label class="control-label">Rails Color</label>
-                <input type="color" class="control-color" id="ponzo-rails" value="#ed18c6">
+                <input type="color" class="control-color" id="ponzo-rails" value="#06b6d4" data-accent-default>
               </div>
               <div class="control-group">
                 <label class="control-label">Lines Color</label>
@@ -920,7 +925,7 @@
             <div class="illusion-controls">
               <div class="control-group">
                 <label class="control-label">First Color</label>
-                <input type="color" class="control-color" id="checkerboard-color-1" value="#ed18c6">
+                <input type="color" class="control-color" id="checkerboard-color-1" value="#06b6d4" data-accent-default>
               </div>
               <div class="control-group">
                 <label class="control-label">Second Color</label>
@@ -1005,11 +1010,11 @@
               </div>
               <div class="control-group">
                 <label class="control-label">Background Color</label>
-                <input type="color" class="control-color" id="road-bg-color" value="#00fa00">
+                <input type="color" class="control-color" id="road-bg-color" value="#ffcf4d">
               </div>
               <div class="control-group">
                 <label class="control-label">First Color</label>
-                <input type="color" class="control-color" id="road-color-1" value="#ed18c6">
+                <input type="color" class="control-color" id="road-color-1" value="#06b6d4" data-accent-default>
               </div>
               <div class="control-group">
                 <label class="control-label">Second Color</label>
@@ -1686,6 +1691,7 @@ function initPovCube() {
   const speedSlider = document.getElementById('cube-speed');
   const cellSizeSlider = document.getElementById('cube-cell-size');
   const cubeSizeSlider = document.getElementById('cube-size');
+  const bgColorPicker = document.getElementById('cube-bg-color');
   const panel = document.getElementById('panel-pov-cube');
 
   let animationId;
@@ -1699,8 +1705,16 @@ function initPovCube() {
   let mobileDefaultApplied = false;
   const mobileQuery = window.matchMedia('(max-width: 767px)');
   let isMobile = mobileQuery.matches;
-  const pink = '#ed18c6';
-  const black = '#000000';
+  let accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+
+  // Update accent when global color changes
+  document.addEventListener('accentchange', function(e){
+    accentColor = e.detail.hex;
+  });
+
+  function getBgColor() {
+    return bgColorPicker.value;
+  }
 
   // Cube position and velocity for bouncing movement
   let cubeX = 0, cubeY = 0;
@@ -1759,7 +1773,7 @@ function initPovCube() {
   ];
 
   function drawCell(x, y) {
-    ctx.fillStyle = grid[y][x] === 1 ? pink : black;
+    ctx.fillStyle = grid[y][x] === 1 ? accentColor : getBgColor();
     ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
   }
 
@@ -2017,6 +2031,11 @@ function initPovCube() {
   // Control event listeners
   cellSizeSlider.addEventListener('input', () => {
     scheduleResize({ force: true });
+  });
+
+  bgColorPicker.addEventListener('input', () => {
+    canvas.parentElement.style.background = bgColorPicker.value;
+    drawGrid();
   });
 
   if (mobileQuery.addEventListener) {
