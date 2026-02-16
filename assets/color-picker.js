@@ -12,8 +12,20 @@
     { name: 'Cyan',    hex: '#06b6d4', rgb: '6, 182, 212',   rgb2: '59, 130, 246' }
   ];
 
-  var activeIndex = 6;
+  var DEFAULT_INDEX = 6;
+  var stored = sessionStorage.getItem('accent-index');
+  var activeIndex = stored !== null ? parseInt(stored, 10) : DEFAULT_INDEX;
+  if (activeIndex < 0 || activeIndex >= PALETTE.length) activeIndex = DEFAULT_INDEX;
   var isOpen = false;
+
+  // Apply saved color to CSS variables immediately (before DOM paints)
+  if (stored !== null) {
+    var init = PALETTE[activeIndex];
+    var r = document.documentElement.style;
+    r.setProperty('--accent', init.hex);
+    r.setProperty('--accent-rgb', init.rgb);
+    r.setProperty('--accent2-rgb', init.rgb2);
+  }
 
   // Build DOM
   var wrapper = document.createElement('div');
@@ -99,6 +111,9 @@
       accentInputs[j].value = color.hex;
       accentInputs[j].dispatchEvent(new Event('input', { bubbles: true }));
     }
+
+    // Persist choice for this browser session
+    sessionStorage.setItem('accent-index', String(index));
 
     // Notify other scripts (e.g. canvas-based illusions)
     document.dispatchEvent(new CustomEvent('accentchange', { detail: { hex: color.hex, rgb: color.rgb, rgb2: color.rgb2 } }));

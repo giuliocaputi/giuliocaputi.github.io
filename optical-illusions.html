@@ -933,7 +933,7 @@
               </div>
               <div class="control-group">
                 <label class="control-label">Size</label>
-                <input type="range" class="control-slider" id="checkerboard-size" min="40" max="200" step="10" value="120">
+                <input type="range" class="control-slider" id="checkerboard-size" min="20" max="160" step="10" value="90">
               </div>
               <div class="control-group">
                 <label class="control-label">Speed</label>
@@ -2791,8 +2791,8 @@ function initCheckerboard() {
     horizontal: { width: 0, height: 0 }
   };
 
-  const desktopSizeRange = { min: 40, max: 200, value: 120 };
-  const mobileSizeRange = { min: 20, max: 100, value: 60 };
+  const desktopSizeRange = { min: 20, max: 160, value: 90 };
+  const mobileSizeRange = { min: 10, max: 80, value: 45 };
   const checkerMobileQuery = window.matchMedia('(max-width: 767px)');
   let checkerIsMobile = checkerMobileQuery.matches;
   if (checkerMobileQuery.addEventListener) {
