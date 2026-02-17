@@ -66,12 +66,14 @@
   wrapper.appendChild(panel);
   wrapper.appendChild(toggle);
 
-  // Inject when DOM is ready
+  // Inject when DOM is ready, then sync illusion inputs with restored color
   if (document.body) {
     document.body.appendChild(wrapper);
+    applyColor(activeIndex);
   } else {
     document.addEventListener('DOMContentLoaded', function(){
       document.body.appendChild(wrapper);
+      applyColor(activeIndex);
     });
   }
 

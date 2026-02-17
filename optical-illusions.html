@@ -834,6 +834,10 @@
                 <input type="range" class="control-slider" id="cube-size" min="80" max="240" value="160">
               </div>
               <div class="control-group">
+                <label class="control-label">Main Color</label>
+                <input type="color" class="control-color" id="cube-main-color" value="#06b6d4" data-accent-default>
+              </div>
+              <div class="control-group">
                 <label class="control-label">Background Color</label>
                 <input type="color" class="control-color" id="cube-bg-color" value="#000000">
               </div>
@@ -933,7 +937,7 @@
               </div>
               <div class="control-group">
                 <label class="control-label">Size</label>
-                <input type="range" class="control-slider" id="checkerboard-size" min="20" max="160" step="10" value="90">
+                <input type="range" class="control-slider" id="checkerboard-size" min="20" max="124" step="2" value="72">
               </div>
               <div class="control-group">
                 <label class="control-label">Speed</label>
@@ -1691,6 +1695,7 @@ function initPovCube() {
   const speedSlider = document.getElementById('cube-speed');
   const cellSizeSlider = document.getElementById('cube-cell-size');
   const cubeSizeSlider = document.getElementById('cube-size');
+  const mainColorPicker = document.getElementById('cube-main-color');
   const bgColorPicker = document.getElementById('cube-bg-color');
   const panel = document.getElementById('panel-pov-cube');
 
@@ -1705,12 +1710,10 @@ function initPovCube() {
   let mobileDefaultApplied = false;
   const mobileQuery = window.matchMedia('(max-width: 767px)');
   let isMobile = mobileQuery.matches;
-  let accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
 
-  // Update accent when global color changes
-  document.addEventListener('accentchange', function(e){
-    accentColor = e.detail.hex;
-  });
+  function getMainColor() {
+    return mainColorPicker.value;
+  }
 
   function getBgColor() {
     return bgColorPicker.value;
@@ -1773,7 +1776,7 @@ function initPovCube() {
   ];
 
   function drawCell(x, y) {
-    ctx.fillStyle = grid[y][x] === 1 ? accentColor : getBgColor();
+    ctx.fillStyle = grid[y][x] === 1 ? getMainColor() : getBgColor();
     ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
   }
 
@@ -2031,6 +2034,10 @@ function initPovCube() {
   // Control event listeners
   cellSizeSlider.addEventListener('input', () => {
     scheduleResize({ force: true });
+  });
+
+  mainColorPicker.addEventListener('input', () => {
+    drawGrid();
   });
 
   bgColorPicker.addEventListener('input', () => {
@@ -2791,8 +2798,8 @@ function initCheckerboard() {
     horizontal: { width: 0, height: 0 }
   };
 
-  const desktopSizeRange = { min: 20, max: 160, value: 90 };
-  const mobileSizeRange = { min: 10, max: 80, value: 45 };
+  const desktopSizeRange = { min: 20, max: 124, value: 72 };
+  const mobileSizeRange = { min: 10, max: 62, value: 36 };
   const checkerMobileQuery = window.matchMedia('(max-width: 767px)');
   let checkerIsMobile = checkerMobileQuery.matches;
   if (checkerMobileQuery.addEventListener) {
