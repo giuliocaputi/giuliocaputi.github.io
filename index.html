@@ -730,19 +730,16 @@
 
     // Parallax effect for hero section
     let ticking = false;
+    const heroSection = document.querySelector('.hero-section');
+    const heroContent = heroSection ? heroSection.querySelector('.hero-content') : null;
     window.addEventListener('scroll', () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
           const scrolled = window.scrollY;
-          const heroSection = document.querySelector('.hero-section');
 
-          if (heroSection && scrolled < window.innerHeight) {
-            const heroContent = heroSection.querySelector('.hero-content');
-
-            if (heroContent) {
-              heroContent.style.transform = `translateY(${scrolled * 0.5}px)`;
-              heroContent.style.opacity = 1 - (scrolled / window.innerHeight) * 1.5;
-            }
+          if (heroContent && scrolled < window.innerHeight) {
+            heroContent.style.transform = `translateY(${scrolled * 0.5}px)`;
+            heroContent.style.opacity = 1 - (scrolled / window.innerHeight) * 1.5;
           }
 
           ticking = false;

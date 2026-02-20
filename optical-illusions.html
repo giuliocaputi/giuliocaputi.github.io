@@ -1332,7 +1332,7 @@ function initWaterfall() {
   window.addEventListener('resize', () => {
     if (isActive) resize();
     updatePanelValue();
-  });
+  }, { passive: true });
 
   const panel = document.getElementById('panel-waterfall');
   if (panel && panel.classList.contains('active')) {
@@ -1628,7 +1628,7 @@ function initReversePhi() {
 
   stage.addEventListener('mousemove', (event) => {
     updateDirection(event.clientX, event.clientY);
-  });
+  }, { passive: true });
 
   stage.addEventListener('click', (event) => {
     updateDirection(event.clientX, event.clientY);
@@ -1656,7 +1656,7 @@ function initReversePhi() {
 
   window.addEventListener('resize', () => {
     ensureScene();
-  });
+  }, { passive: true });
 
   if (panel && panel.classList.contains('active')) {
     ensureScene({ force: true });
@@ -2023,7 +2023,7 @@ function initPovCube() {
 
   window.addEventListener('resize', () => {
     scheduleResize();
-  });
+  }, { passive: true });
 
   // Check if already active
   if (isPanelActive()) {
@@ -2332,7 +2332,7 @@ function initContrast() {
     if (isPanelActive()) {
       scheduleResize({ resetPosition: !isMobile });
     }
-  });
+  }, { passive: true });
 
   leftPicker.addEventListener('input', () => {
     updateCachedColors();
@@ -2508,7 +2508,7 @@ function initPonzo() {
       if (ponzoResizeRaf) cancelAnimationFrame(ponzoResizeRaf);
       ponzoResizeRaf = requestAnimationFrame(() => { ponzoResizeRaf = null; resize(); });
     }
-  });
+  }, { passive: true });
 
   canvas.addEventListener('click', togglePause);
 
@@ -2757,7 +2757,7 @@ function initCircles() {
   window.addEventListener('resize', () => {
     if (circlesResizeRaf) cancelAnimationFrame(circlesResizeRaf);
     circlesResizeRaf = requestAnimationFrame(() => { circlesResizeRaf = null; render(); });
-  });
+  }, { passive: true });
 
   const panel = document.getElementById('panel-circles');
   IllusionManager.onPanelChange(() => {
@@ -2986,7 +2986,7 @@ function initCheckerboard() {
       if (checkerResizeRaf) cancelAnimationFrame(checkerResizeRaf);
       checkerResizeRaf = requestAnimationFrame(() => { checkerResizeRaf = null; resize(); });
     }
-  });
+  }, { passive: true });
 
   const panel = document.getElementById('panel-checkerboard');
   if (panel && panel.classList.contains('active')) {
@@ -3094,7 +3094,7 @@ function initBlackDots() {
   window.addEventListener('resize', () => {
     if (dotsResizeRaf) cancelAnimationFrame(dotsResizeRaf);
     dotsResizeRaf = requestAnimationFrame(() => { dotsResizeRaf = null; redraw(); });
-  });
+  }, { passive: true });
 
   if (panel && panel.classList.contains('active')) {
     resize();
@@ -3263,7 +3263,7 @@ function initBumpyRoad() {
   window.addEventListener('resize', () => {
     if (roadResizeRaf) cancelAnimationFrame(roadResizeRaf);
     roadResizeRaf = requestAnimationFrame(() => { roadResizeRaf = null; redraw(); });
-  });
+  }, { passive: true });
 
   if (panel && panel.classList.contains('active')) {
     resize();
