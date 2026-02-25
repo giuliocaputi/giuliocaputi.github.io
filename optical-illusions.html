@@ -50,11 +50,16 @@
 
 /* Tabs container */
 .illusion-tabs{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
   gap: 10px;
   margin-bottom: clamp(20px, 4vw, 40px);
+}
+
+@media (max-width: 600px){
+  .illusion-tabs{
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .illusion-tab{
@@ -65,9 +70,10 @@
   border-radius: 25px;
   cursor: pointer;
   font-family: var(--font-body);
-  font-size: clamp(12px, 1.5vw, 14px);
+  font-size: clamp(14px, 1.8vw, 17px);
   transition: all 0.3s ease;
   white-space: nowrap;
+  text-align: center;
 }
 
 .illusion-tab:hover{
@@ -565,18 +571,42 @@
 }
 
 /* ============================================
-   BUMPY ROAD
+   IMPOSSIBLE CUBE
    ============================================ */
-.road-container{
+.impossible-cube-container{
   width: 100%;
   height: 100%;
-  background: #00fa00;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  touch-action: none;
+}
+
+.impossible-cube-container:active{
+  cursor: grabbing;
+}
+
+.impossible-cube-canvas{
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ============================================
+   CONFETTI SPHERES
+   ============================================ */
+.confetti-container{
+  width: 100%;
+  height: 100%;
+  background: #808080;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.road-canvas{
+.confetti-canvas{
   width: 100%;
   height: 100%;
   display: block;
@@ -685,28 +715,29 @@
 
     <!-- Tabs -->
     <div class="illusion-tabs" role="tablist">
-      <button class="illusion-tab active" role="tab" data-panel="contrast" aria-selected="true">Contrast Effect</button>
-      <button class="illusion-tab" role="tab" data-panel="waterfall" aria-selected="false">Waterfall Effect</button>
+      <button class="illusion-tab active" role="tab" data-panel="checkerboard" aria-selected="true">Tricky Lines</button>
+      <button class="illusion-tab" role="tab" data-panel="contrast" aria-selected="false">Contrast Effect</button>
       <button class="illusion-tab" role="tab" data-panel="reverse-phi" aria-selected="false">Reverse Phi</button>
       <button class="illusion-tab" role="tab" data-panel="pov-cube" aria-selected="false">Moving Cube</button>
+      <button class="illusion-tab" role="tab" data-panel="impossible-cube" aria-selected="false">Impossible Cube</button>
+      <button class="illusion-tab" role="tab" data-panel="confetti" aria-selected="false">Confetti Spheres</button>
       <button class="illusion-tab" role="tab" data-panel="longer-line" aria-selected="false">Longer Line</button>
+      <button class="illusion-tab" role="tab" data-panel="waterfall" aria-selected="false">Waterfall Effect</button>
       <button class="illusion-tab" role="tab" data-panel="circles" aria-selected="false">Circles</button>
-      <button class="illusion-tab" role="tab" data-panel="checkerboard" aria-selected="false">Tricky Lines</button>
-      <button class="illusion-tab" role="tab" data-panel="black-dots" aria-selected="false">Black Dots</button>
-      <button class="illusion-tab" role="tab" data-panel="bumpy-road" aria-selected="false">Bumpy Road</button>
+      <button class="illusion-tab" role="tab" data-panel="black-dots" aria-selected="false">Hermann Grid</button>
     </div>
 
     <!-- Panels -->
     <div class="illusion-panels">
       <!-- Contrast Effect -->
-      <div class="illusion-panel active" id="panel-contrast" role="tabpanel">
+      <div class="illusion-panel" id="panel-contrast" role="tabpanel">
         <div class="illusion-layout">
           <div class="illusion-settings-box">
             <p class="illusion-caption">As the circle moves, it appears that its color changes... but does it?</p>
             <div class="illusion-controls">
               <div class="control-group">
                 <label class="control-label">Left Color</label>
-                <input type="color" class="control-color" id="contrast-left-color" value="#06b6d4" data-accent-default>
+                <input type="color" class="control-color" id="contrast-left-color" value="#10b981" data-accent-default>
               </div>
               <div class="control-group">
                 <label class="control-label">Right Color</label>
@@ -749,7 +780,7 @@
               </div>
               <div class="control-group">
                 <label class="control-label">Second Color</label>
-                <input type="color" class="control-color" id="waterfall-color-2" value="#06b6d4" data-accent-default>
+                <input type="color" class="control-color" id="waterfall-color-2" value="#10b981" data-accent-default>
               </div>
               <div class="control-group">
                 <label class="control-label">Speed</label>
@@ -795,7 +826,7 @@
               </div>
               <div class="control-group">
                 <label class="control-label">Background Color</label>
-                <input type="color" class="control-color" id="phi-bg-color" value="#06b6d4" data-accent-default>
+                <input type="color" class="control-color" id="phi-bg-color" value="#10b981" data-accent-default>
               </div>
               <label class="control-toggle">
                 <input type="checkbox" id="phi-grayscale">
@@ -835,7 +866,7 @@
               </div>
               <div class="control-group">
                 <label class="control-label">Main Color</label>
-                <input type="color" class="control-color" id="cube-main-color" value="#06b6d4" data-accent-default>
+                <input type="color" class="control-color" id="cube-main-color" value="#10b981" data-accent-default>
               </div>
               <div class="control-group">
                 <label class="control-label">Background Color</label>
@@ -854,7 +885,37 @@
         </div>
       </div>
 
-      
+      <!-- Impossible Cube -->
+      <div class="illusion-panel" id="panel-impossible-cube" role="tabpanel">
+        <div class="illusion-layout">
+          <div class="illusion-settings-box">
+            <p class="illusion-caption">Drag left or right to rotate the cube — can you make sense of it?</p>
+            <div class="illusion-controls">
+              <div class="control-group">
+                <label class="control-label">Speed</label>
+                <input type="range" class="control-slider" id="icube-speed" min="0" max="30" step="1" value="5">
+              </div>
+              <div class="control-group">
+                <label class="control-label">Color</label>
+                <input type="color" class="control-color" id="icube-color" value="#10b981" data-accent-default>
+              </div>
+              <div class="control-group">
+                <label class="control-label">Background</label>
+                <input type="color" class="control-color" id="icube-bg" value="#000000">
+              </div>
+            </div>
+          </div>
+          <div class="illusion-canvas-container">
+            <div class="illusion-slot" data-illusion="impossible-cube"></div>
+            <template id="tpl-impossible-cube">
+              <div class="impossible-cube-container">
+                <canvas id="impossible-cube-canvas" class="impossible-cube-canvas"></canvas>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+
       <!-- Circles -->
       <div class="illusion-panel" id="panel-circles" role="tabpanel">
         <div class="illusion-layout">
@@ -867,11 +928,11 @@
               </div>
               <div class="control-group">
                 <label class="control-label">Second Color</label>
-                <input type="color" class="control-color" id="circles-color-3" value="#d7d700">
+                <input type="color" class="control-color" id="circles-color-3" value="#0000ff">
               </div>
               <div class="control-group">
                 <label class="control-label">Third Color</label>
-                <input type="color" class="control-color" id="circles-color-4" value="#0000fa">
+                <input type="color" class="control-color" id="circles-color-4" value="#ff0000">
               </div>
             </div>
           </div>
@@ -898,7 +959,7 @@
               </div>
               <div class="control-group">
                 <label class="control-label">Rails Color</label>
-                <input type="color" class="control-color" id="ponzo-rails" value="#06b6d4" data-accent-default>
+                <input type="color" class="control-color" id="ponzo-rails" value="#10b981" data-accent-default>
               </div>
               <div class="control-group">
                 <label class="control-label">Lines Color</label>
@@ -922,14 +983,14 @@
       </div>
 
       <!-- Tricky Lines -->
-      <div class="illusion-panel" id="panel-checkerboard" role="tabpanel">
+      <div class="illusion-panel active" id="panel-checkerboard" role="tabpanel">
         <div class="illusion-layout">
           <div class="illusion-settings-box">
             <p class="illusion-caption">Are the lines parallel? Click on the animation to stop/resume it.</p>
             <div class="illusion-controls">
               <div class="control-group">
                 <label class="control-label">First Color</label>
-                <input type="color" class="control-color" id="checkerboard-color-1" value="#06b6d4" data-accent-default>
+                <input type="color" class="control-color" id="checkerboard-color-1" value="#10b981" data-accent-default>
               </div>
               <div class="control-group">
                 <label class="control-label">Second Color</label>
@@ -975,7 +1036,7 @@
               </div>
               <div class="control-group">
                 <label class="control-label">Line Width</label>
-                <input type="range" class="control-slider" id="dots-line-width" min="2" max="20" step="1" value="8">
+                <input type="range" class="control-slider" id="dots-line-width" min="2" max="20" step="1" value="10">
               </div>
               <div class="control-group">
                 <label class="control-label">Line Color</label>
@@ -998,48 +1059,38 @@
         </div>
       </div>
 
-      <!-- Bumpy Road -->
-      <div class="illusion-panel" id="panel-bumpy-road" role="tabpanel">
+<!-- Confetti Spheres -->
+      <div class="illusion-panel" id="panel-confetti" role="tabpanel">
         <div class="illusion-layout">
           <div class="illusion-settings-box">
-            <p class="illusion-caption">Pretty self-explanatory.</p>
+            <p class="illusion-caption">How many colors do the spheres appear to be?</p>
             <div class="illusion-controls">
               <div class="control-group">
-                <label class="control-label">Oval Height</label>
-                <input type="range" class="control-slider" id="road-height" min="18" max="80" step="2" value="40">
+                <label class="control-label">Stripe Width</label>
+                <input type="range" class="control-slider" id="confetti-stripe" min="1" max="12" step="0.5" value="3">
               </div>
               <div class="control-group">
-                <label class="control-label">Spacing</label>
-                <input type="range" class="control-slider" id="road-spacing" min="4" max="40" step="2" value="14">
+                <label class="control-label">Base Color</label>
+                <input type="color" class="control-color" id="confetti-base" value="#d2b48c">
               </div>
-              <div class="control-group">
-                <label class="control-label">Background Color</label>
-                <input type="color" class="control-color" id="road-bg-color" value="#ffcf4d">
-              </div>
-              <div class="control-group">
-                <label class="control-label">First Color</label>
-                <input type="color" class="control-color" id="road-color-1" value="#06b6d4" data-accent-default>
-              </div>
-              <div class="control-group">
-                <label class="control-label">Second Color</label>
-                <input type="color" class="control-color" id="road-color-2" value="#000000">
-              </div>
-              <div class="control-group">
-                <label class="control-label">Third Color</label>
-                <input type="color" class="control-color" id="road-color-3" value="#ffffff">
-              </div>
+              <label class="control-toggle">
+                <input type="checkbox" id="confetti-reveal">
+                <span class="toggle-switch"></span>
+                <span class="toggle-text">Hide Stripes</span>
+              </label>
             </div>
           </div>
           <div class="illusion-canvas-container">
-            <div class="illusion-slot" data-illusion="bumpy-road"></div>
-            <template id="tpl-bumpy-road">
-              <div class="road-container">
-                <canvas id="road-canvas" class="road-canvas"></canvas>
+            <div class="illusion-slot" data-illusion="confetti"></div>
+            <template id="tpl-confetti">
+              <div class="confetti-container">
+                <canvas id="confetti-canvas" class="confetti-canvas"></canvas>
               </div>
             </template>
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </main>
@@ -3102,173 +3153,474 @@ function initBlackDots() {
   }
 }
 
-// Bumpy Road
-function initBumpyRoad() {
-  const canvas = document.getElementById('road-canvas');
+// Impossible Cube — rotating Penrose cube illusion
+function initImpossibleCube() {
+  const canvas = document.getElementById('impossible-cube-canvas');
   if (!canvas) return;
 
   const ctx = canvas.getContext('2d');
-  const heightSlider = document.getElementById('road-height');
-  const spacingSlider = document.getElementById('road-spacing');
-  const bgColorPicker = document.getElementById('road-bg-color');
-  const colorOnePicker = document.getElementById('road-color-1');
-  const colorTwoPicker = document.getElementById('road-color-2');
-  const colorThreePicker = document.getElementById('road-color-3');
-  const panel = document.getElementById('panel-bumpy-road');
-  const roadMobileQuery = window.matchMedia('(max-width: 768px)');
-  let roadIsMobile = roadMobileQuery.matches;
-  if (roadMobileQuery.addEventListener) {
-    roadMobileQuery.addEventListener('change', (e) => { roadIsMobile = e.matches; });
-  }
+  const colorPicker = document.getElementById('icube-color');
+  const bgPicker = document.getElementById('icube-bg');
+  const speedSlider = document.getElementById('icube-speed');
+  const panel = document.getElementById('panel-impossible-cube');
 
-  let dpr = window.devicePixelRatio || 1;
+  let resizeRaf = null;
+  let animId = null;
+  let angleY = 0.6;
+  const angleX = -0.55;
+
+  function isPanelActive() {
+    return panel && panel.classList.contains('active');
+  }
 
   function resize() {
     const rect = canvas.parentElement.getBoundingClientRect();
-    dpr = window.devicePixelRatio || 1;
+    const dpr = window.devicePixelRatio || 1;
     canvas.width = rect.width * dpr;
     canvas.height = rect.height * dpr;
-    canvas.style.width = `${rect.width}px`;
-    canvas.style.height = `${rect.height}px`;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
-  function buildWidths(baseHeight) {
-    const minWidth = baseHeight * 0.25;
-    const maxWidth = baseHeight * 0.85;
-    const widths = [];
-    for (let i = 0; i < 4; i += 1) {
-      const t = i / 3;
-      widths.push(minWidth + (maxWidth - minWidth) * t);
-    }
-    if (widths.length >= 4) {
-      widths[2] *= 0.94;
-      widths[3] *= 0.9;
-      if (widths[3] < widths[2]) widths[3] = widths[2];
-    }
-    return widths.concat([...widths].reverse());
+  function hexToRgb(hex) {
+    return [parseInt(hex.slice(1,3),16), parseInt(hex.slice(3,5),16), parseInt(hex.slice(5,7),16)];
+  }
+  function clampByte(v) { return Math.max(0, Math.min(255, Math.round(v))); }
+  function shade(rgb, amt) {
+    return `rgb(${clampByte(rgb[0]+amt)},${clampByte(rgb[1]+amt)},${clampByte(rgb[2]+amt)})`;
   }
 
-  function drawOval(x, y, ovalWidth, ovalHeight, fillColor, rightStroke, leftStroke, strokeWidth) {
-    const radiusX = ovalWidth * 0.5;
-    const radiusY = ovalHeight * 0.5;
+  function rotate3D(p, ay, ax) {
+    const cy = Math.cos(ay), sy = Math.sin(ay);
+    const x  = p[0] * cy + p[2] * sy;
+    const y  = p[1];
+    const z  = -p[0] * sy + p[2] * cy;
+    const cx2 = Math.cos(ax), sx2 = Math.sin(ax);
+    return [x, y * cx2 - z * sx2, y * sx2 + z * cx2];
+  }
 
-    ctx.save();
-    ctx.translate(x, y);
-
+  // Fill a convex quad with four 2D corner points.
+  function fillQuad(a, b, c, d, color) {
     ctx.beginPath();
-    ctx.ellipse(0, 0, radiusX, radiusY, 0, 0, Math.PI * 2);
-    ctx.fillStyle = fillColor;
+    ctx.moveTo(a[0], a[1]);
+    ctx.lineTo(b[0], b[1]);
+    ctx.lineTo(c[0], c[1]);
+    ctx.lineTo(d[0], d[1]);
+    ctx.closePath();
+    ctx.fillStyle = color;
     ctx.fill();
-
-    ctx.lineWidth = strokeWidth;
-    ctx.lineCap = 'butt';
-
-    ctx.beginPath();
-    ctx.strokeStyle = rightStroke;
-    ctx.ellipse(0, 0, radiusX, radiusY, 0, -Math.PI / 2, Math.PI / 2);
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.strokeStyle = leftStroke;
-    ctx.ellipse(0, 0, radiusX, radiusY, 0, Math.PI / 2, Math.PI * 1.5);
-    ctx.stroke();
-
-    ctx.restore();
   }
 
-  function draw() {
-    if (panel && !panel.classList.contains('active')) return;
-    const baseHeight = parseInt(heightSlider.value, 10);
-    const spacing = parseInt(spacingSlider.value, 10);
-    const bgColor = bgColorPicker.value;
-    const colorOne = colorOnePicker.value;
-    const colorTwo = colorTwoPicker.value;
-    const colorThree = colorThreePicker.value;
-    const width = canvas.width / dpr;
-    const height = canvas.height / dpr;
-    const isMobile = roadIsMobile;
-    const shouldRotate = isMobile;
-    const logicalWidth = shouldRotate ? height : width;
-    const logicalHeight = shouldRotate ? width : height;
+  // Project a single 3D point to 2D canvas coordinates.
+  function pt(p3, scale, cx, cy) {
+    const r = rotate3D(p3, angleY, angleX);
+    return [cx + r[0] * scale, cy + r[1] * scale];
+  }
 
-    ctx.fillStyle = bgColor;
-    ctx.fillRect(0, 0, width, height);
+  // Draw a shaded sphere at a 3D position. Radius r is in pixels.
+  function drawSphere(p3, r, scale, cx, cy, rgb) {
+    const [px, py] = pt(p3, scale, cx, cy);
+    // Sphere is shaded top-bright / bottom-dark, centered exactly on the vertex.
+    // Inner circle at center (r=0) fades outward — no positional offset so it reads as centered.
+    const grad = ctx.createRadialGradient(px, py - r*0.25, 0, px, py, r);
+    grad.addColorStop(0,   shade(rgb,  65));
+    grad.addColorStop(0.4, shade(rgb,  20));
+    grad.addColorStop(1,   shade(rgb, -70));
+    ctx.beginPath();
+    ctx.arc(px, py, r, 0, Math.PI * 2);
+    ctx.fillStyle = grad;
+    ctx.fill();
+  }
 
-    const rows = 10;
-    const baseWidths = buildWidths(baseHeight);
-    const sectionCols = baseWidths.length;
-    const cols = sectionCols * 3;
-    const widths = Array.from({ length: cols }, (_, index) => baseWidths[index % sectionCols]);
-    const strokeWidth = Math.max(1, baseHeight * 0.1);
-    const sectionGap = Math.max(0, strokeWidth);
-    const spacingAfter = Array.from({ length: cols - 1 }, (_, index) =>
-      (index + 1) % sectionCols === 0 ? sectionGap : spacing
+  // Draw a square-section beam from 3D point a3 to b3.
+  // hw: beam half-width in 3D units. Cube spans -0.5 to 0.5.
+  function drawBar(a3, b3, hw, scale, cx, cy, rgb) {
+    const dx = b3[0]-a3[0], dy = b3[1]-a3[1], dz = b3[2]-a3[2];
+    const len = Math.hypot(dx, dy, dz) || 1;
+    const ux = dx/len, uy = dy/len, uz = dz/len;
+
+    // Build two orthogonal cross-section axes perpendicular to the beam.
+    // Axis A: cross(beamDir, worldY=(0,1,0)), fall back to cross(beamDir, worldX) for vertical beams.
+    let ax, ay, az;
+    if (Math.abs(uy) < 0.95) {
+      ax = -uz; ay = 0; az = ux;  // cross(u, (0,1,0))
+    } else {
+      ax = 0; ay = uz; az = -uy;  // cross(u, (1,0,0))
+    }
+    const alen = Math.hypot(ax, ay, az) || 1;
+    ax /= alen; ay /= alen; az /= alen;
+
+    // Axis B: cross(A, beamDir) — the other cross-section direction
+    const bx = ay*uz - az*uy;
+    const by = az*ux - ax*uz;
+    const bz = ax*uy - ay*ux;
+
+    // 8 corners: start face (s=a3) and end face (s=b3)
+    // corners[0-3]: start face in order (+A+B, -A+B, -A-B, +A-B)
+    // corners[4-7]: same for end face
+    function corner(base, sa, sb) {
+      return [base[0] + (sa*ax + sb*bx)*hw,
+              base[1] + (sa*ay + sb*by)*hw,
+              base[2] + (sa*az + sb*bz)*hw];
+    }
+    const c = [
+      pt(corner(a3,  1,  1), scale, cx, cy),  // 0 start +A+B
+      pt(corner(a3, -1,  1), scale, cx, cy),  // 1 start -A+B
+      pt(corner(a3, -1, -1), scale, cx, cy),  // 2 start -A-B
+      pt(corner(a3,  1, -1), scale, cx, cy),  // 3 start +A-B
+      pt(corner(b3,  1,  1), scale, cx, cy),  // 4 end +A+B
+      pt(corner(b3, -1,  1), scale, cx, cy),  // 5 end -A+B
+      pt(corner(b3, -1, -1), scale, cx, cy),  // 6 end -A-B
+      pt(corner(b3,  1, -1), scale, cx, cy),  // 7 end +A-B
+    ];
+
+    // Each beam has two axis pairs: (A+, A-) and (B+, B-).
+    // Opposite faces in each pair get the SAME brightness — one pair bright, the other dark.
+    // Which axis pair is bright is decided by which axis aligns more with world-up (0,-1,0),
+    // using the world-space (pre-rotation) axes — stable throughout Y-rotation.
+    // For vertical beams where ay≈0, use az as tiebreaker.
+    const aUpAlign = Math.abs(ay) > 0.01 ? -ay : -az;
+    const bUpAlign = Math.abs(by) > 0.01 ? -by : -bz;
+    const aBright = aUpAlign >= bUpAlign ? 50 : -55;
+    const bBright = aUpAlign >= bUpAlign ? -55 : 50;
+
+    function faceCamZ(nx, ny, nz) {
+      return rotate3D([nx, ny, nz], angleY, angleX)[2];
+    }
+
+    // A pair: both faces get aBright. B pair: both faces get bBright.
+    const faces = [
+      { q: [c[0], c[3], c[7], c[4]], camZ: faceCamZ( ax,  ay,  az), bright: aBright },  // A+
+      { q: [c[1], c[2], c[6], c[5]], camZ: faceCamZ(-ax, -ay, -az), bright: aBright },  // A-
+      { q: [c[0], c[1], c[5], c[4]], camZ: faceCamZ( bx,  by,  bz), bright: bBright },  // B+
+      { q: [c[3], c[2], c[6], c[7]], camZ: faceCamZ(-bx, -by, -bz), bright: bBright },  // B-
+    ];
+
+    // Sort: draw back faces first, front faces last
+    faces.sort((a, b) => a.camZ - b.camZ);
+    for (const f of faces) {
+      fillQuad(f.q[0], f.q[1], f.q[2], f.q[3], shade(rgb, f.bright));
+    }
+  }
+
+  function render() {
+    const dpr = window.devicePixelRatio || 1;
+    const w = canvas.width / dpr;
+    const h = canvas.height / dpr;
+    ctx.fillStyle = bgPicker.value;
+    ctx.fillRect(0, 0, w, h);
+
+    const rgb = hexToRgb(colorPicker.value);
+    const dim = Math.min(w, h);
+    const scale = dim * 0.52;
+    const hw = 0.028;  // beam half-width in 3D units (cube spans -0.5 to 0.5)
+
+    // Unit cube vertices in 3D (before rotation)
+    const V = [
+      [-0.5, -0.5,  0.5],  // 0 top-front-left
+      [ 0.5, -0.5,  0.5],  // 1 top-front-right
+      [ 0.5, -0.5, -0.5],  // 2 top-back-right
+      [-0.5, -0.5, -0.5],  // 3 top-back-left
+      [-0.5,  0.5,  0.5],  // 4 bottom-front-left
+      [ 0.5,  0.5,  0.5],  // 5 bottom-front-right
+      [ 0.5,  0.5, -0.5],  // 6 bottom-back-right
+      [-0.5,  0.5, -0.5],  // 7 bottom-back-left
+    ];
+
+    const cx = w / 2, cy = h / 2;
+
+    const bar = (i, j) => drawBar(V[i], V[j], hw, scale, cx, cy, rgb);
+    const sr = hw * scale * 2.2;
+
+    const inset = 0.02;
+    const sphere = (i) => {
+      const v = V[i];
+      drawSphere([v[0]*(1-inset), v[1]*(1-inset), v[2]*(1-inset)], sr, scale, cx, cy, rgb);
+    };
+
+    // Project a vertex to 2D (for crossing detection)
+    function proj2(i) {
+      const r = rotate3D(V[i], angleY, angleX);
+      return [r[0], r[1]];
+    }
+
+    // Find 2D intersection of segments a→b and c→d; returns t along a→b, or null
+    function crossing(a, b, c, d) {
+      const p=proj2(a), q=proj2(b), r=proj2(c), s=proj2(d);
+      const dx1=q[0]-p[0], dy1=q[1]-p[1];
+      const dx2=s[0]-r[0], dy2=s[1]-r[1];
+      const den = dx1*dy2 - dy1*dx2;
+      if (Math.abs(den) < 1e-10) return null;
+      const t = ((r[0]-p[0])*dy2 - (r[1]-p[1])*dx2) / den;
+      const u = ((r[0]-p[0])*dy1 - (r[1]-p[1])*dx1) / den;
+      return (t>0.05 && t<0.95 && u>0.05 && u<0.95) ? t : null;
+    }
+
+    // Depth of each vertex after rotation (higher = closer to camera)
+    const depth = V.map((v) => rotate3D(v, angleY, angleX)[2]);
+
+    // All 12 edges sorted back-to-front by average vertex depth
+    const edges = [[0,1],[1,2],[2,3],[0,3],[4,5],[5,6],[6,7],[4,7],[0,4],[1,5],[2,6],[3,7]];
+    edges.sort((e1, e2) => (depth[e1[0]]+depth[e1[1]]) - (depth[e2[0]]+depth[e2[1]]));
+
+    // Find the frontmost vertical edge (highest average depth).
+    // This is the edge where the impossible swap should be applied.
+    const verticals = [[0,4],[1,5],[2,6],[3,7]];
+    const swapEdge = verticals.reduce((best, e) =>
+      (depth[e[0]]+depth[e[1]]) > (depth[best[0]]+depth[best[1]]) ? e : best
     );
+    const [sv0, sv1] = swapEdge;
+    const isSwapEdge = ([a,b]) => (a===sv0&&b===sv1)||(a===sv1&&b===sv0);
 
-    const gridWidth = widths.reduce((sum, value) => sum + value, 0) +
-      spacingAfter.reduce((sum, value) => sum + value, 0);
-    const gridHeight = rows * baseHeight + spacing * (rows - 1);
-
-    const padding = shouldRotate ? Math.max(2, strokeWidth) : Math.max(12, Math.min(logicalWidth, logicalHeight) * 0.04);
-    const availableWidth = Math.max(0, logicalWidth - padding * 2);
-    const availableHeight = Math.max(0, logicalHeight - padding * 2);
-
-    let scale = Math.min(availableWidth / gridWidth, availableHeight / gridHeight);
-    if (!shouldRotate) scale = Math.min(scale, 1);
-    if (!isFinite(scale) || scale <= 0) scale = 1;
-
-    const offsetX = (logicalWidth - gridWidth * scale) / 2;
-    const offsetY = (logicalHeight - gridHeight * scale) / 2;
-
-    ctx.save();
-    if (shouldRotate) {
-      ctx.translate(width / 2, height / 2);
-      ctx.rotate(Math.PI / 2);
-      ctx.translate(-logicalWidth / 2, -logicalHeight / 2);
-    }
-    ctx.translate(offsetX, offsetY);
-    ctx.scale(scale, scale);
-
-    for (let row = 0; row < rows; row += 1) {
-      const centerY = row * (baseHeight + spacing) + baseHeight / 2;
-      let cursorX = 0;
-      for (let col = 0; col < cols; col += 1) {
-        const ovalWidth = widths[col];
-        const centerX = cursorX + ovalWidth / 2;
-        const sectionIndex = Math.floor(col / sectionCols);
-        const rightStroke = sectionIndex === 1 ? colorThree : colorTwo;
-        const leftStroke = sectionIndex === 1 ? colorTwo : colorThree;
-        drawOval(centerX, centerY, ovalWidth, baseHeight, colorOne, rightStroke, leftStroke, strokeWidth);
-        const gap = col < spacingAfter.length ? spacingAfter[col] : 0;
-        cursorX += ovalWidth + gap;
-      }
+    // Find which edge the swap vertical crosses in 2D projection.
+    let swapPartner = -1;
+    for (let i = 0; i < edges.length; i++) {
+      const [a, b] = edges[i];
+      if (a===sv0||b===sv0||a===sv1||b===sv1) continue; // skip if shares vertex
+      if (crossing(sv0, sv1, a, b) !== null) { swapPartner = i; break; }
     }
 
-    ctx.restore();
+    // Build draw list: remove the swap edge, then reinsert it just before its crossing
+    // partner (impossible effect) or at its natural depth position (no crossing).
+    const naturalIdx = edges.findIndex(isSwapEdge);
+    const drawList = edges.filter(e => !isSwapEdge(e));
+
+    if (swapPartner === -1) {
+      drawList.splice(naturalIdx, 0, swapEdge);
+    } else {
+      const partnerInList = swapPartner > naturalIdx ? swapPartner - 1 : swapPartner;
+      drawList.splice(partnerInList, 0, swapEdge);
+    }
+
+    drawList.forEach(([a, b]) => bar(a, b));
+
+    // Spheres last
+    const sphereOrder = [0,1,2,3,4,5,6,7].sort((a,b) => depth[a]-depth[b]);
+    sphereOrder.forEach(i => sphere(i));
   }
 
-  function redraw() {
+  let isDragging = false;
+  let lastX = 0;
+
+  function loop() {
+    if (!isDragging) angleY += parseFloat(speedSlider.value) * 0.0003;
+    render();
+    animId = requestAnimationFrame(loop);
+  }
+
+  function start() {
+    if (animId) return;
     resize();
-    draw();
+    loop();
   }
 
-  heightSlider.addEventListener('input', draw);
-  spacingSlider.addEventListener('input', draw);
-  bgColorPicker.addEventListener('input', draw);
-  colorOnePicker.addEventListener('input', draw);
-  colorTwoPicker.addEventListener('input', draw);
-  colorThreePicker.addEventListener('input', draw);
-  let roadResizeRaf = null;
+  function stop() {
+    if (animId) { cancelAnimationFrame(animId); animId = null; }
+  }
+
+  // Mouse drag
+  canvas.addEventListener('mousedown', (e) => { isDragging = true; lastX = e.clientX; });
+  window.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    angleY += (e.clientX - lastX) * 0.01;
+    lastX = e.clientX;
+  });
+  window.addEventListener('mouseup', () => { isDragging = false; });
+
+  // Touch drag
+  canvas.addEventListener('touchstart', (e) => { isDragging = true; lastX = e.touches[0].clientX; }, { passive: true });
+  window.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    angleY += (e.touches[0].clientX - lastX) * 0.01;
+    lastX = e.touches[0].clientX;
+  }, { passive: true });
+  window.addEventListener('touchend', () => { isDragging = false; });
+
+  IllusionManager.onPanelChange(() => {
+    if (isPanelActive()) { start(); } else { stop(); }
+  });
+
   window.addEventListener('resize', () => {
-    if (roadResizeRaf) cancelAnimationFrame(roadResizeRaf);
-    roadResizeRaf = requestAnimationFrame(() => { roadResizeRaf = null; redraw(); });
+    if (!isPanelActive()) return;
+    if (resizeRaf) cancelAnimationFrame(resizeRaf);
+    resizeRaf = requestAnimationFrame(() => { resizeRaf = null; resize(); });
   }, { passive: true });
 
-  if (panel && panel.classList.contains('active')) {
-    resize();
-    draw();
+  colorPicker.addEventListener('input', render);
+  bgPicker.addEventListener('input', render);
+
+  if (isPanelActive()) { start(); }
+}
+
+// Confetti Spheres — Munker-White color assimilation illusion
+function initConfetti() {
+  const canvas = document.getElementById('confetti-canvas');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  const stripeSlider = document.getElementById('confetti-stripe');
+  const basePicker = document.getElementById('confetti-base');
+  const revealToggle = document.getElementById('confetti-reveal');
+  const panel = document.getElementById('panel-confetti');
+
+  let resizeRaf = null;
+
+  // Stripe colors: blue, green, red
+  const stripeColors = ['#0000ff', '#00ff00', '#ff0000'];
+
+  // Positions and color assignments randomised once per page load
+  const positionSeed = Math.random();
+  const colorSeed = Math.random();
+
+  function isPanelActive() {
+    return panel && panel.classList.contains('active');
   }
+
+  function getAccentColor() {
+    return getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+  }
+
+  function resize() {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function hexToRgb(hex) {
+    return [parseInt(hex.slice(1,3),16), parseInt(hex.slice(3,5),16), parseInt(hex.slice(5,7),16)];
+  }
+
+  function clampByte(v) { return Math.max(0, Math.min(255, Math.round(v))); }
+
+  // Mulberry32 seeded PRNG
+  function makeRng(seed) {
+    let s = (seed * 4294967296) >>> 0;
+    return function() {
+      s += 0x6D2B79F5;
+      let t = Math.imul(s ^ (s >>> 15), 1 | s);
+      t = t + Math.imul(t ^ (t >>> 7), 61 | t) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  // Assign each stripe color to exactly 3 spheres (random shuffle)
+  function getSphereColorAssignment() {
+    const rng = makeRng(colorSeed);
+    // Start with [0,0,0,1,1,1,2,2,2] then shuffle
+    const assignment = [0,0,0,1,1,1,2,2,2];
+    for (let i = assignment.length - 1; i > 0; i--) {
+      const j = Math.floor(rng() * (i + 1));
+      [assignment[i], assignment[j]] = [assignment[j], assignment[i]];
+    }
+    return assignment;
+  }
+
+  // Place 9 non-overlapping spheres randomly
+  function getSpherePositions(w, h, radius) {
+    const rng = makeRng(positionSeed);
+    const margin = radius * 1.15;
+    const minDist = radius * 2.3;
+    const positions = [];
+
+    while (positions.length < 9) {
+      let placed = false;
+      for (let attempt = 0; attempt < 500 && !placed; attempt++) {
+        const x = margin + rng() * (w - margin * 2);
+        const y = margin + rng() * (h - margin * 2);
+        if (!positions.some(p => Math.hypot(x - p.x, y - p.y) < minDist)) {
+          positions.push({ x, y });
+          placed = true;
+        }
+      }
+      // Fallback: place without overlap check if stuck
+      if (!placed) positions.push({ x: margin + rng() * (w - margin * 2), y: margin + rng() * (h - margin * 2) });
+    }
+    return positions;
+  }
+
+  function drawSphere(cx, cy, radius, baseRgb) {
+    const hlX = cx - radius * 0.3;
+    const hlY = cy - radius * 0.35;
+    const grad = ctx.createRadialGradient(hlX, hlY, radius * 0.05, cx, cy, radius);
+    grad.addColorStop(0,    `rgb(${clampByte(baseRgb[0]+70)},${clampByte(baseRgb[1]+70)},${clampByte(baseRgb[2]+70)})`);
+    grad.addColorStop(0.65, `rgb(${baseRgb[0]},${baseRgb[1]},${baseRgb[2]})`);
+    grad.addColorStop(1,    `rgb(${clampByte(baseRgb[0]-55)},${clampByte(baseRgb[1]-55)},${clampByte(baseRgb[2]-55)})`);
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+    ctx.fillStyle = grad;
+    ctx.fill();
+  }
+
+  function render() {
+    const dpr = window.devicePixelRatio || 1;
+    const w = canvas.width / dpr;
+    const h = canvas.height / dpr;
+    const baseRgb = hexToRgb(basePicker.value);
+    const stripeW = parseFloat(stripeSlider.value);
+    const hideStripes = revealToggle.checked;
+    const radius = Math.min(w, h) * 0.10;
+
+    ctx.clearRect(0, 0, w, h);
+
+    if (hideStripes) {
+      ctx.fillStyle = getAccentColor();
+      ctx.fillRect(0, 0, w, h);
+    }
+
+    const positions = getSpherePositions(w, h, radius);
+    // sphereColor[i] = index into stripeColors of the color that goes OVER sphere i
+    const sphereColor = getSphereColorAssignment();
+
+    if (!hideStripes) {
+      // 1. Draw all stripes across the full canvas
+      for (let y = 0; y < h; y += stripeW) {
+        const colorIdx = Math.floor(y / stripeW) % stripeColors.length;
+        ctx.fillStyle = stripeColors[colorIdx];
+        ctx.fillRect(0, y, w, stripeW);
+      }
+
+      // 2. For each sphere: redraw it, then overdraw its assigned color on top
+      positions.forEach((pos, i) => {
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(pos.x, pos.y, radius, 0, Math.PI * 2);
+        ctx.clip();
+
+        drawSphere(pos.x, pos.y, radius, baseRgb);
+
+        // Overdraw the assigned stripe color on top within this sphere
+        const assignedColor = sphereColor[i];
+        ctx.fillStyle = stripeColors[assignedColor];
+        for (let y = 0; y < h; y += stripeW) {
+          if (Math.floor(y / stripeW) % stripeColors.length === assignedColor) {
+            ctx.fillRect(0, y, w, stripeW);
+          }
+        }
+        ctx.restore();
+      });
+    } else {
+      // No stripes: just draw spheres
+      positions.forEach(pos => drawSphere(pos.x, pos.y, radius, baseRgb));
+    }
+  }
+
+  IllusionManager.onPanelChange(() => {
+    if (isPanelActive()) { resize(); render(); }
+  });
+
+  window.addEventListener('resize', () => {
+    if (!isPanelActive()) return;
+    if (resizeRaf) cancelAnimationFrame(resizeRaf);
+    resizeRaf = requestAnimationFrame(() => { resizeRaf = null; resize(); render(); });
+  }, { passive: true });
+
+  stripeSlider.addEventListener('input', render);
+  basePicker.addEventListener('input', render);
+  revealToggle.addEventListener('change', render);
+  document.addEventListener('accentchange', () => { if (isPanelActive()) render(); });
+
+  if (isPanelActive()) { resize(); render(); }
 }
 
 const IllusionManager = (function() {
@@ -3277,11 +3629,12 @@ const IllusionManager = (function() {
     'waterfall': { templateId: 'tpl-waterfall', init: initWaterfall },
     'reverse-phi': { templateId: 'tpl-reverse-phi', init: initReversePhi, unmountOnHide: true },
     'pov-cube': { templateId: 'tpl-pov-cube', init: initPovCube },
+    'impossible-cube': { templateId: 'tpl-impossible-cube', init: initImpossibleCube },
     'longer-line': { templateId: 'tpl-longer-line', init: initPonzo },
     'circles': { templateId: 'tpl-circles', init: initCircles },
     'checkerboard': { templateId: 'tpl-checkerboard', init: initCheckerboard },
     'black-dots': { templateId: 'tpl-black-dots', init: initBlackDots },
-    'bumpy-road': { templateId: 'tpl-bumpy-road', init: initBumpyRoad }
+    'confetti': { templateId: 'tpl-confetti', init: initConfetti }
   };
 
   const state = {};

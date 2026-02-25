@@ -40,9 +40,9 @@
 
 /* Tabs on mobile phone (+ general info) */
 :root{
-  --accent:#06b6d4; --text:#f6f7fb; --muted:#b7bbc7;  /* Colours */
-  --accent-rgb: 6, 182, 212;                          /* for rgba() usage */
-  --accent2-rgb: 59, 130, 246;                        /* secondary glow color */
+  --accent:#10b981; --text:#f6f7fb; --muted:#b7bbc7;  /* Colours */
+  --accent-rgb: 16, 185, 129;                         /* for rgba() usage */
+  --accent2-rgb: 13, 148, 136;                        /* secondary glow color */
   --extrude-1: color-mix(in srgb, var(--accent) 42%, black);
   --extrude-2: color-mix(in srgb, var(--accent) 35%, black);
   --extrude-3: color-mix(in srgb, var(--accent) 29%, black);
@@ -580,7 +580,7 @@ main{padding:16px var(--wrap-pad) 48px}
   opacity: 0;
   transform: translateY(40px) scale(0.95);
   will-change: transform, opacity;
-  contain: layout style;
+  contain: layout style paint;
 }
 
 /* Card visible state (triggered by scroll) */
@@ -889,6 +889,7 @@ main{padding:16px var(--wrap-pad) 48px}
               opacity 600ms ease;
   padding: clamp(24px, 4vw, 32px);
   will-change: transform, opacity;
+  contain: layout style paint;
 }
 
 #drawer[aria-hidden="false"]{
@@ -1655,6 +1656,8 @@ body.modal-open { overflow:hidden; }
 .subsection{
   margin-bottom: clamp(120px, 20vh, 200px);
   perspective: 1000px;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
 }
 
 .subsection-header{

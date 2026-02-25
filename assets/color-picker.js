@@ -9,10 +9,12 @@
     { name: 'Emerald', hex: '#10b981', rgb: '16, 185, 129',  rgb2: '13, 148, 136' },
     { name: 'Coral',   hex: '#ff6b6b', rgb: '255, 107, 107', rgb2: '225, 29, 72' },
     { name: 'Lavender',hex: '#a855f7', rgb: '168, 85, 247',  rgb2: '124, 58, 237' },
-    { name: 'Cyan',    hex: '#06b6d4', rgb: '6, 182, 212',   rgb2: '59, 130, 246' }
+    { name: 'Cyan',    hex: '#06b6d4', rgb: '6, 182, 212',   rgb2: '59, 130, 246' },
+    { name: 'Charcoal',hex: '#6B7280', rgb: '107, 114, 128', rgb2: '75, 85, 99' },
+    { name: 'Silver',  hex: '#94A3B8', rgb: '148, 163, 184', rgb2: '100, 116, 139' }
   ];
 
-  var DEFAULT_INDEX = 6;
+  var DEFAULT_INDEX = 3;
   var stored = sessionStorage.getItem('accent-index');
   var activeIndex = stored !== null ? parseInt(stored, 10) : DEFAULT_INDEX;
   if (activeIndex < 0 || activeIndex >= PALETTE.length) activeIndex = DEFAULT_INDEX;
