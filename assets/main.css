@@ -1656,8 +1656,6 @@ body.modal-open { overflow:hidden; }
 .subsection{
   margin-bottom: clamp(120px, 20vh, 200px);
   perspective: 1000px;
-  content-visibility: auto;
-  contain-intrinsic-size: auto 600px;
 }
 
 .subsection-header{
@@ -1969,9 +1967,11 @@ body.modal-open { overflow:hidden; }
   display: flex;
   align-items: center;
   gap: 10px;
+  pointer-events: none;
 }
 
 .color-picker-toggle{
+  pointer-events: auto;
   width: 36px;
   height: 36px;
   border-radius: 50%;
