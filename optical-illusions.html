@@ -19,7 +19,7 @@
 /* Optical Illusions page styles */
 .illusions-container{
   width: 100%;
-  max-width: 1200px;
+  max-width: 1600px;
   margin: 0 auto;
   padding: clamp(20px, 4vw, 40px) var(--wrap-pad);
 }
@@ -131,7 +131,7 @@
 
 @media (min-width: 768px){
   .illusion-layout{
-    --illusion-box-h: 520px;
+    --illusion-box-h: clamp(520px, 50vh, 800px);
     flex-direction: row;
     gap: 20px;
     align-items: stretch;
@@ -889,7 +889,7 @@
       <div class="illusion-panel" id="panel-impossible-cube" role="tabpanel">
         <div class="illusion-layout">
           <div class="illusion-settings-box">
-            <p class="illusion-caption">Drag left or right to rotate the cube — can you make sense of it?</p>
+            <p class="illusion-caption">Drag left or right to rotate the cube. Can you make sense of it?</p>
             <div class="illusion-controls">
               <div class="control-group">
                 <label class="control-label">Speed</label>
