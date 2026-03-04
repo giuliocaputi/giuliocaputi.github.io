@@ -727,25 +727,8 @@
     }
 
     // Parallax effect for hero section
-    let ticking = false;
     const heroSection = document.querySelector('.hero-section');
     const heroContent = heroSection ? heroSection.querySelector('.hero-content') : null;
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const scrolled = window.scrollY;
-
-          if (heroContent && scrolled < window.innerHeight) {
-            heroContent.style.transform = `translateY(${scrolled * 0.5}px)`;
-            heroContent.style.opacity = 1 - (scrolled / window.innerHeight) * 1.5;
-          }
-
-          ticking = false;
-        });
-
-        ticking = true;
-      }
-    }, { passive: true });
 
     // Section navigation active state tracking
     const sections = document.querySelectorAll('#hero, #work, #education, #other');
@@ -800,15 +783,25 @@
       }
     }
 
-    // Update on scroll (throttled via rAF to avoid redundant getBoundingClientRect calls)
-    let sectionNavTicking = false;
+    // Consolidated scroll handler: parallax + section nav in one rAF
+    let scrollTicking = false;
     window.addEventListener('scroll', () => {
-      if (!sectionNavTicking) {
+      if (!scrollTicking) {
         window.requestAnimationFrame(() => {
+          const scrolled = window.scrollY;
+
+          // Parallax (skip when hero is off-screen)
+          if (heroContent && scrolled < window.innerHeight) {
+            heroContent.style.transform = `translateY(${scrolled * 0.5}px)`;
+            heroContent.style.opacity = 1 - (scrolled / window.innerHeight) * 1.5;
+          }
+
+          // Section nav
           updateActiveSection();
-          sectionNavTicking = false;
+
+          scrollTicking = false;
         });
-        sectionNavTicking = true;
+        scrollTicking = true;
       }
     }, { passive: true });
     updateActiveSection(); // Initial call

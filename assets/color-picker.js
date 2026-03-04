@@ -13,7 +13,7 @@
     { name: 'Steel',   hex: '#B0C4DE', rgb: '176, 196, 222', rgb2: '130, 155, 195' }
   ];
 
-  var DEFAULT_INDEX = 3;
+  var DEFAULT_INDEX = 7;
   var stored = sessionStorage.getItem('accent-index');
   var activeIndex = stored !== null ? parseInt(stored, 10) : DEFAULT_INDEX;
   if (activeIndex < 0 || activeIndex >= PALETTE.length) activeIndex = DEFAULT_INDEX;

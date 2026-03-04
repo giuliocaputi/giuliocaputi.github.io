@@ -1142,6 +1142,8 @@ function initWaterfall() {
   let increment = -parseFloat(speedSlider.value);
   let animationId = null;
   let isActive = false;
+  let lastWaterfallFrame = 0;
+  const waterfallFrameInterval = 33;
 
   function resize() {
     const rect = canvas.parentElement.getBoundingClientRect();
@@ -1308,8 +1310,12 @@ function initWaterfall() {
     }
   }
 
-  function loop() {
+  function loop(now) {
     if (!isActive) return;
+    animationId = requestAnimationFrame(loop);
+    if (now - lastWaterfallFrame < waterfallFrameInterval) return;
+    lastWaterfallFrame = now;
+
     const panelCount = getPanelCount();
     const originalOffset = animationOffset;
 
@@ -1332,11 +1338,10 @@ function initWaterfall() {
       ctx.restore();
     }
     animationOffset = originalOffset;
-    animationOffset += increment;
+    animationOffset += increment * 2;
     if (animationOffset >= stripeWidth * 2.5 || animationOffset <= -stripeWidth * 2.5) {
       animationOffset = 0;
     }
-    animationId = requestAnimationFrame(loop);
   }
 
   speedSlider.addEventListener('input', () => {
@@ -1395,7 +1400,7 @@ function initWaterfall() {
   updatePanelValue();
 }
 
-// Reverse Phi Effect - DOM shifters with directional striping
+// Reverse Phi Effect
 function initReversePhi() {
   const container = document.getElementById('reverse-phi-container');
   const stage = document.getElementById('reverse-phi-stage');
@@ -1415,6 +1420,8 @@ function initReversePhi() {
   let speedValue = parseInt(speedSlider.value, 10);
   let angleDeg = 0;
   const baseRepeater = 900;
+  let lastPhiFrame = 0;
+  const phiFrameInterval = 22;
   const mobileQuery = window.matchMedia('(max-width: 767px)');
   let isMobile = mobileQuery.matches;
   let mobileDefaultsApplied = false;
@@ -1670,11 +1677,13 @@ function initReversePhi() {
     });
   }
 
-  function loop() {
+  function loop(now) {
+    animationId = requestAnimationFrame(loop);
+    if (now - lastPhiFrame < phiFrameInterval) return;
+    lastPhiFrame = now;
     rotation += 1;
     const phase = ((rotation * speedValue) % baseRepeater) / baseRepeater;
     applyColors(phase);
-    animationId = requestAnimationFrame(loop);
   }
 
   stage.addEventListener('mousemove', (event) => {
@@ -1774,6 +1783,7 @@ function initPovCube() {
   let cubeX = 0, cubeY = 0;
   let velocityX = 2, velocityY = 1.5;
   let isPaused = false;
+  let cellsDirty = null; // Uint8Array for marking cells to flip (avoids string Set)
 
   function getCubeSize() {
     return parseInt(cubeSizeSlider.value);
@@ -1853,6 +1863,7 @@ function initPovCube() {
     cellSize = getCellSize();
     cols = Math.ceil(canvas.width / cellSize);
     rows = Math.ceil(canvas.height / cellSize);
+    cellsDirty = new Uint8Array(cols * rows);
 
     // Initialize cube position near center
     cubeX = 0;
@@ -2021,23 +2032,30 @@ function initPovCube() {
     const projected = rotated.map(project);
 
     // Get all cells on cube edges and flip them
-    const cellsToFlip = new Set();
+    cellsDirty.fill(0);
     edges.forEach(([i, j]) => {
       const cells = getCellsOnLine(
         projected[i][0], projected[i][1],
         projected[j][0], projected[j][1]
       );
-      cells.forEach(([x, y]) => cellsToFlip.add(`${x},${y}`));
+      cells.forEach(([x, y]) => {
+        if (x >= 0 && x < cols && y >= 0 && y < rows) {
+          cellsDirty[y * cols + x] = 1;
+        }
+      });
     });
 
-    // Flip the cells on edges and redraw only those cells
-    cellsToFlip.forEach(key => {
-      const [x, y] = key.split(',').map(Number);
-      if (grid[y] && grid[y][x] !== undefined) {
-        grid[y][x] = 1 - grid[y][x]; // Flip: 0->1 or 1->0
-        drawCell(x, y);
+    // Flip marked cells and redraw them
+    for (let k = 0; k < cellsDirty.length; k++) {
+      if (cellsDirty[k]) {
+        const x = k % cols;
+        const y = (k - x) / cols;
+        if (grid[y] && grid[y][x] !== undefined) {
+          grid[y][x] = 1 - grid[y][x];
+          drawCell(x, y);
+        }
       }
-    });
+    }
 
     // Update rotation angle
     angle += getRotationSpeed();
@@ -2529,13 +2547,18 @@ function initPonzo() {
     drawHighlightBars({ leftStart, rightStart, leftEnd, rightEnd, height });
 
     if (!isPaused) {
-      phase += speed * 0.01;
+      phase += speed * 2.0;
     }
   }
 
-  function animate() {
-    render();
+  let lastFrameTime = 0;
+  const frameInterval = 33; // ~30fps
+
+  function animate(now) {
     animationId = requestAnimationFrame(animate);
+    if (now - lastFrameTime < frameInterval) return;
+    lastFrameTime = now;
+    render();
   }
 
   function togglePause() {
@@ -2838,6 +2861,8 @@ function initCheckerboard() {
   let animationId = null;
   let isPaused = false;
   let mobileDefaultsApplied = false;
+  let lastCheckerFrame = 0;
+  const checkerFrameInterval = 33;
   const microAngles = [1, -1, 1, 1, -1, 1, -1, -1, 1, -1, 1];
   let basePattern = null;
   let microPatternVertical = null;
@@ -2968,7 +2993,11 @@ function initCheckerboard() {
     };
   }
 
-  function draw() {
+  function draw(now) {
+    animationId = requestAnimationFrame(draw);
+    if (now - lastCheckerFrame < checkerFrameInterval) return;
+    lastCheckerFrame = now;
+
     applySizeDefaults();
     const cellW = parseInt(sizeSlider.value, 10);
     const isVertical = orientationSelect.value === 'vertical';
@@ -2997,8 +3026,6 @@ function initCheckerboard() {
     ctx.fillStyle = microPattern;
     ctx.fillRect(-patternWidth, -patternHeight, canvas.width + patternWidth * 2, canvas.height + patternHeight * 2);
     ctx.restore();
-
-    animationId = requestAnimationFrame(draw);
   }
 
   function start() {
@@ -3400,11 +3427,18 @@ function initImpossibleCube() {
 
   let isDragging = false;
   let lastX = 0;
+  let lastIcubeFrame = 0;
+  const icubeFrameInterval = 33; // ~30fps when auto-rotating
 
-  function loop() {
-    if (!isDragging) angleY += parseFloat(speedSlider.value) * 0.0003;
-    render();
+  function loop(now) {
     animId = requestAnimationFrame(loop);
+    // When dragging, render every frame for responsiveness; otherwise cap at 30fps
+    if (!isDragging) {
+      if (now - lastIcubeFrame < icubeFrameInterval) return;
+      angleY += parseFloat(speedSlider.value) * 0.0003;
+    }
+    lastIcubeFrame = now;
+    render();
   }
 
   function start() {

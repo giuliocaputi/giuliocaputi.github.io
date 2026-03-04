@@ -40,9 +40,9 @@
 
 /* Tabs on mobile phone (+ general info) */
 :root{
-  --accent:#10b981; --text:#f6f7fb; --muted:#b7bbc7;  /* Colours */
-  --accent-rgb: 16, 185, 129;                         /* for rgba() usage */
-  --accent2-rgb: 13, 148, 136;                        /* secondary glow color */
+  --accent:#B0C4DE; --text:#f6f7fb; --muted:#b7bbc7;  /* Colours */
+  --accent-rgb: 176, 196, 222;                        /* for rgba() usage */
+  --accent2-rgb: 130, 155, 195;                       /* secondary glow color */
   --extrude-1: color-mix(in srgb, var(--accent) 42%, black);
   --extrude-2: color-mix(in srgb, var(--accent) 35%, black);
   --extrude-3: color-mix(in srgb, var(--accent) 29%, black);
@@ -151,66 +151,46 @@ body::after{
 /* Stars + deep gradient (CSS-only) */
 /* NOTE: No filter animations on body - they break position:fixed for children */
 body.bg-stars{
-  /* --- Less patterned stars: 4 staggered layers + base gradient --- */
+  /* Base gradient only — star dots live on the fixed .bg-twinkle-layer */
   background-image:
-    radial-gradient(rgba(255,255,255,.90) 1px, transparent 1.1px),   /* sharp */
-    radial-gradient(rgba(255,255,255,.70) 1px, transparent 1.15px),  /* mid */
-    radial-gradient(rgba(255,255,255,.45) .8px, transparent .95px),  /* soft */
-    radial-gradient(rgba(255,255,255,.30) .6px, transparent .85px),  /* faint */
-    radial-gradient(120% 120% at 50% 110%, #140f1c 0%, #0c0b10 60%, #09090b 100%); /* base */
-  background-size:
-    233px 233px, 271px 271px, 319px 319px, 389px 389px, auto;  /* non-multiples */
-  background-position:
-    23px 41px, 102px 11px, 77px 163px, 12px 124px, center;     /* irregular offsets */
-  background-repeat:
-    repeat, repeat, repeat, repeat, no-repeat;
-  background-attachment:
-    scroll, scroll, scroll, scroll, scroll; /* mobile-friendly */
-  animation: stars-drift 12s ease-in-out infinite alternate;
+    radial-gradient(120% 120% at 50% 110%, #140f1c 0%, #0c0b10 60%, #09090b 100%);
+  background-size: auto;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
-/* Separate layer for twinkle effect (has filter, so must be isolated) */
+/* Fixed layer for all star dots + twinkle effect */
 .bg-twinkle-layer{
   position: fixed;
   inset: 0;
   z-index: -3;
   pointer-events: none;
-  will-change: filter;
   background-image:
     radial-gradient(rgba(255,255,255,.90) 1px, transparent 1.1px),
     radial-gradient(rgba(255,255,255,.70) 1px, transparent 1.15px),
     radial-gradient(rgba(255,255,255,.45) .8px, transparent .95px),
-    radial-gradient(rgba(255,255,255,.30) .6px, transparent .85px),
-    radial-gradient(120% 120% at 50% 110%, #140f1c 0%, #0c0b10 60%, #09090b 100%);
+    radial-gradient(rgba(255,255,255,.30) .6px, transparent .85px);
   background-size:
-    233px 233px, 271px 271px, 319px 319px, 389px 389px, auto;
+    233px 233px, 271px 271px, 319px 319px, 389px 389px;
   background-position:
-    23px 41px, 102px 11px, 77px 163px, 12px 124px, center;
+    23px 41px, 102px 11px, 77px 163px, 12px 124px;
   background-repeat:
-    repeat, repeat, repeat, repeat, no-repeat;
+    repeat, repeat, repeat, repeat;
   animation: stars-drift 12s ease-in-out infinite alternate, stars-twinkle 8s ease-in-out infinite;
 }
 
 /* Stars drift and movement */
 @keyframes stars-drift{
-  0%{ background-position: 23px 41px, 102px 11px, 77px 163px, 12px 124px, center; }
-  100%{ background-position: 63px 81px, 142px 51px, 117px 203px, 52px 164px, center; }
+  0%{ background-position: 23px 41px, 102px 11px, 77px 163px, 12px 124px; }
+  100%{ background-position: 63px 81px, 142px 51px, 117px 203px, 52px 164px; }
 }
 
-/* Stars glow and fade effect */
+/* Stars glow and fade effect (opacity-based for GPU efficiency) */
 @keyframes stars-twinkle{
-  0%, 100%{
-    filter: brightness(1) contrast(1);
-  }
-  25%{
-    filter: brightness(1.15) contrast(1.1) drop-shadow(0 0 2px rgba(255,255,255,0.3));
-  }
-  50%{
-    filter: brightness(0.85) contrast(0.95);
-  }
-  75%{
-    filter: brightness(1.1) contrast(1.05) drop-shadow(0 0 1px rgba(255,255,255,0.2));
-  }
+  0%, 100%{ opacity: 1; }
+  25%{ opacity: 0.85; }
+  50%{ opacity: 0.65; }
+  75%{ opacity: 0.9; }
 }
 
 /* Glassy glow blobs (below vignette, above stars) */
@@ -220,7 +200,7 @@ body.bg-stars::before{
   inset: -30% -30%;
   z-index: -1;
   pointer-events: none;
-  filter: blur(70px) saturate(115%);
+  filter: blur(20px);
   background:
     radial-gradient(30% 30% at 15% 25%, rgba(var(--accent-rgb),.35), transparent 70%),  /* top-left */
     radial-gradient(35% 35% at 70% 30%, rgba(var(--accent2-rgb),.28), transparent 70%),  /* top-right */
@@ -237,12 +217,11 @@ body.bg-stars::before{
   to  { transform: translate3d(-2%,1%,0) scale(1.02); }
 }
 @media (prefers-reduced-motion: reduce){
-  body.bg-stars{ animation: none; }
   body.bg-stars::before{ animation: none; }
   .bg-twinkle-layer{ animation: none; }
 }
 @media (max-width: 640px){
-  body.bg-stars::before{ filter: blur(60px); }
+  body.bg-stars::before{ filter: blur(20px); }
 }
 
 /* === End of Background === */
@@ -344,16 +323,15 @@ body.bg-stars::before{
   -webkit-backdrop-filter: blur(20px);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-              backdrop-filter 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   z-index: 96;
 }
 
 #nav-backdrop[aria-hidden="false"]{
   opacity: 1;
   pointer-events: auto;
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 /* Animated gradient overlay */
@@ -559,8 +537,8 @@ main{padding:16px var(--wrap-pad) 48px}
 /* Cards - Glassmorphic minimal design */
 .card{
   background: rgba(255,255,255,.03);
-  backdrop-filter: blur(20px) saturate(150%);
-  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  backdrop-filter: blur(4px) saturate(150%);
+  -webkit-backdrop-filter: blur(4px) saturate(150%);
   border: 1px solid rgba(255,255,255,.08);
   border-radius: 20px;
   padding: clamp(24px, 3vw, 32px);
@@ -736,30 +714,19 @@ main{padding:16px var(--wrap-pad) 48px}
   text-shadow:
     /* White/light outline for the front face */
     -1px -1px 0 rgba(255,255,255,0.3),
-    1px -1px 0 rgba(255,255,255,0.3),
-    -1px 1px 0 rgba(255,255,255,0.2),
     1px 1px 0 rgba(255,255,255,0.2),
-    /* 3D extrusion - deep solid layers going down-right */
+    /* 3D extrusion - solid layers going down-right */
     2px 2px 0 var(--extrude-1),
-    3px 3px 0 var(--extrude-1),
     4px 4px 0 var(--extrude-2),
-    5px 5px 0 var(--extrude-2),
     6px 6px 0 var(--extrude-3),
-    7px 7px 0 var(--extrude-3),
     8px 8px 0 var(--extrude-4),
-    9px 9px 0 var(--extrude-4),
     10px 10px 0 var(--extrude-5),
-    11px 11px 0 var(--extrude-5),
     12px 12px 0 var(--extrude-6),
-    13px 13px 0 var(--extrude-6),
     14px 14px 0 var(--extrude-7),
-    15px 15px 0 var(--extrude-7),
     /* Shadow at the end of extrusion */
     16px 16px 8px rgba(0,0,0,0.5),
-    18px 18px 15px rgba(0,0,0,0.3),
     /* Glow around text */
-    0 0 15px rgba(var(--accent-rgb),0.6),
-    0 0 30px rgba(var(--accent-rgb),0.4);
+    0 0 15px rgba(var(--accent-rgb),0.6);
 }
 
 /* Glow animation for category cards — only animates opacity (compositor-friendly) */
@@ -836,8 +803,8 @@ main{padding:16px var(--wrap-pad) 48px}
 /* Lighter backdrop-filter on mobile for smoother scrolling */
 @media (max-width:640px){
   .card{
-    backdrop-filter: blur(8px) saturate(130%);
-    -webkit-backdrop-filter: blur(8px) saturate(130%);
+    backdrop-filter: blur(4px) saturate(130%);
+    -webkit-backdrop-filter: blur(4px) saturate(130%);
   }
 }
 
@@ -859,7 +826,7 @@ main{padding:16px var(--wrap-pad) 48px}
   -webkit-backdrop-filter: blur(8px);
   opacity: 0;
   pointer-events: none;
-  transition: opacity .4s ease, backdrop-filter .4s ease;
+  transition: opacity .4s ease;
   z-index: 70;
 }
 
@@ -1152,12 +1119,12 @@ main{padding:16px var(--wrap-pad) 48px}
   85%{
     opacity: 1;
     transform: translateX(-50%) scale(3.5);
-    filter: blur(80px);
+    filter: blur(50px);
   }
   100%{
     opacity: 0;
     transform: translateX(-50%) scale(5);
-    filter: blur(100px);
+    filter: blur(60px);
   }
 }
 
