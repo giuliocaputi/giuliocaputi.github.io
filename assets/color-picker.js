@@ -3,17 +3,17 @@
   'use strict';
 
   var PALETTE = [
-    { name: 'Pink',    hex: '#ed18c6', rgb: '237, 24, 198', rgb2: '161, 69, 255' },
-    { name: 'Blue',    hex: '#1e90ff', rgb: '30, 144, 255',  rgb2: '99, 102, 241' },
+    { name: 'Steel',   hex: '#B0C4DE', rgb: '176, 196, 222', rgb2: '130, 155, 195' },
+    { name: 'Coral',   hex: '#ff6b6b', rgb: '255, 107, 107', rgb2: '225, 29, 72' },
     { name: 'Gold',    hex: '#f5a623', rgb: '245, 166, 35',  rgb2: '220, 138, 0' },
     { name: 'Emerald', hex: '#10b981', rgb: '16, 185, 129',  rgb2: '13, 148, 136' },
-    { name: 'Coral',   hex: '#ff6b6b', rgb: '255, 107, 107', rgb2: '225, 29, 72' },
-    { name: 'Lavender',hex: '#a855f7', rgb: '168, 85, 247',  rgb2: '124, 58, 237' },
     { name: 'Cyan',    hex: '#06b6d4', rgb: '6, 182, 212',   rgb2: '59, 130, 246' },
-    { name: 'Steel',   hex: '#B0C4DE', rgb: '176, 196, 222', rgb2: '130, 155, 195' }
+    { name: 'Blue',    hex: '#1e90ff', rgb: '30, 144, 255',  rgb2: '99, 102, 241' },
+    { name: 'Lavender',hex: '#a855f7', rgb: '168, 85, 247',  rgb2: '124, 58, 237' },
+    { name: 'Pink',    hex: '#ed18c6', rgb: '237, 24, 198',  rgb2: '161, 69, 255' }
   ];
 
-  var DEFAULT_INDEX = 7;
+  var DEFAULT_INDEX = 0;
   var stored = sessionStorage.getItem('accent-index');
   var activeIndex = stored !== null ? parseInt(stored, 10) : DEFAULT_INDEX;
   if (activeIndex < 0 || activeIndex >= PALETTE.length) activeIndex = DEFAULT_INDEX;

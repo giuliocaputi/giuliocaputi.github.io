@@ -1067,7 +1067,7 @@
             <div class="illusion-controls">
               <div class="control-group">
                 <label class="control-label">Stripe Width</label>
-                <input type="range" class="control-slider" id="confetti-stripe" min="1" max="12" step="0.5" value="3">
+                <input type="range" class="control-slider" id="confetti-stripe" min="1" max="12" step="0.5" value="2.5">
               </div>
               <div class="control-group">
                 <label class="control-label">Base Color</label>
@@ -2323,7 +2323,7 @@ function initContrast() {
     }
     if (isMobile && !mobileDefaultApplied) {
       sizeSlider.value = '80';
-      speedSlider.value = '28';
+      speedSlider.value = '20';
       mobileDefaultApplied = true;
     }
   }
@@ -2480,7 +2480,7 @@ function initPonzo() {
     const count = 14;
     const depthBias = 1.7;
     for (let i = 0; i < count; i += 1) {
-      const raw = (i / count + phase * speed) % 1;
+      const raw = (i / count + phase) % 1;
       const t = 1 - raw;
       const eased = Math.pow(t, depthBias);
       const y = lerp(leftEnd.y, leftStart.y, eased);
@@ -2547,7 +2547,7 @@ function initPonzo() {
     drawHighlightBars({ leftStart, rightStart, leftEnd, rightEnd, height });
 
     if (!isPaused) {
-      phase += speed * 2.0;
+      phase += speed * 2.0 / 3.0;
     }
   }
 
@@ -3006,7 +3006,8 @@ function initCheckerboard() {
 
     if (!isPaused) {
       const axisSize = cellW;
-      offset = (offset - speed) % axisSize;
+      const effectiveSpeed = checkerIsMobile ? speed : speed * 2;
+      offset = (offset - effectiveSpeed) % axisSize;
       if (offset > 0) offset -= axisSize;
     }
 
