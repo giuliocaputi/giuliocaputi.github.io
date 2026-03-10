@@ -2547,7 +2547,7 @@ function initPonzo() {
     drawHighlightBars({ leftStart, rightStart, leftEnd, rightEnd, height });
 
     if (!isPaused) {
-      phase += speed * 2.0 / 3.0;
+      phase += speed * 2.0 / 3.0 * 0.5;
     }
   }
 
@@ -3006,7 +3006,7 @@ function initCheckerboard() {
 
     if (!isPaused) {
       const axisSize = cellW;
-      const effectiveSpeed = checkerIsMobile ? speed : speed * 2;
+      const effectiveSpeed = (checkerIsMobile ? speed : speed * 2) * 0.95;
       offset = (offset - effectiveSpeed) % axisSize;
       if (offset > 0) offset -= axisSize;
     }
@@ -3104,7 +3104,7 @@ function initBlackDots() {
   }
 
   function draw() {
-    const grid = parseInt(gridSlider.value, 10);
+    const grid = parseInt(gridSlider.value, 10) * (dotsIsMobile ? 0.8 : 1);
     const lineWidth = parseInt(lineWidthSlider.value, 10);
     const lineColor = lineColorPicker.value;
     const bgColor = bgColorPicker.value;

@@ -274,6 +274,7 @@ body.bg-stars::before{
 }
 
 .nav a:hover{opacity:1}
+.nav a.active{color:var(--accent);opacity:1}
 .nav a.active::after{
   content:"";position:absolute;left:0;right:0;bottom:-10px;height:3px;
   background:var(--accent);border-radius:3px;
