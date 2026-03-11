@@ -2547,7 +2547,7 @@ function initPonzo() {
     drawHighlightBars({ leftStart, rightStart, leftEnd, rightEnd, height });
 
     if (!isPaused) {
-      phase += speed * 2.0 / 3.0 * 0.5;
+      phase += speed / 100;
     }
   }
 

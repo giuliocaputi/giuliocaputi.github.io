@@ -468,10 +468,10 @@ body.drawer-open #nav-backdrop::before{
 /* Highlight the current page */
 #nav-drawer .nav-list a[aria-current="page"]{
   color: var(--accent);
-}
-
-#nav-drawer .nav-list a[aria-current="page"]::after{
-  transform: scaleX(1);
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-underline-offset: 8px;
+  text-decoration-thickness: 3px;
 }
 
 .nav-close{
