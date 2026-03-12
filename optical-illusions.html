@@ -1682,7 +1682,7 @@ function initReversePhi() {
     if (now - lastPhiFrame < phiFrameInterval) return;
     lastPhiFrame = now;
     rotation += 1;
-    const phase = ((rotation * speedValue) % baseRepeater) / baseRepeater;
+    const phase = ((rotation * speedValue * 1.4) % baseRepeater) / baseRepeater;
     applyColors(phase);
   }
 
