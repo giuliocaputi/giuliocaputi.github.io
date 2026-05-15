@@ -229,7 +229,7 @@ body.bg-stars::before{
 
 
 /* Header */
-.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size: var(--brand-fs);line-height:1.1}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size: var(--brand-fs);line-height:1.1;color:inherit;text-decoration:none}
 
 .avatar{ /* this is the photo of me */
   width: var(--avatar-size, 48px);
@@ -886,6 +886,104 @@ main{padding:16px var(--wrap-pad) 48px}
 #drawer-close{
   position:absolute;top:8px;right:10px;border:none;background:transparent;
   color:#fff;font-size:24px;cursor:pointer;line-height:1
+}
+
+/* Work Experience: 2-column grid override (only 2 cards in this section) */
+@media (min-width:641px){
+  .work-grid{ --cols:2; }
+
+  /* Point72 card: more breathing room between the three areas (desktop only).
+     margin-top:auto on the first meta pushes the meta block to the bottom of
+     the card, so the leftover slack distributes between role and meta naturally. */
+  .card[data-key="point72"] .title{
+    gap: 28px;            /* between "Point72" and "Quantitative Researcher" */
+    margin-bottom: 0;
+  }
+  .card[data-key="point72"] .meta:first-of-type{
+    margin-top: auto;     /* push location + dates block to the bottom */
+  }
+
+  /* Previous Internships card: tighter mini-row spacing (desktop only) */
+  .card[data-key="previousInternships"] .internship-rows{
+    margin-top: 0;
+  }
+  .card[data-key="previousInternships"] .internship-row{
+    padding: 4px 0;
+  }
+}
+
+/* "Previous Internships" card: stacked mini-rows with inline mini-logos */
+.internship-rows{
+  display:flex;
+  flex-direction:column;
+  margin-top:4px;
+}
+.internship-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:14px 0;
+  border-top:1px solid rgba(255,255,255,.06);
+}
+.internship-row:first-child{ border-top:none; }
+.internship-row-text{
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+  flex:1 1 auto;
+  min-width:0;
+}
+.internship-row .row-company{
+  color:var(--text);
+  font-weight:700;
+  font-size:clamp(17px, 1.8vw, 19px);
+  letter-spacing:-0.2px;
+}
+.internship-row .row-meta{
+  color:var(--muted);
+  font-size:clamp(13px, 1.4vw, 15px);
+  opacity:.85;
+}
+.internship-row .mini-logo{
+  flex:none;
+  width:clamp(44px, 5vw, 56px);
+  aspect-ratio:1;
+  background-color:var(--accent);
+  -webkit-mask-size:contain;
+  mask-size:contain;
+  -webkit-mask-repeat:no-repeat;
+  mask-repeat:no-repeat;
+  -webkit-mask-position:center;
+  mask-position:center;
+  opacity:.55;
+  transition:opacity .4s ease, transform .4s ease;
+}
+.card:hover .internship-row .mini-logo{
+  opacity:.75;
+  transform:scale(1.05);
+}
+
+/* Drawer sub-sections (Point72 / Previous Internships dual-content drawers) */
+.drawer-subsection{ margin:6px 0 4px; }
+.drawer-subsection-title{
+  color:var(--accent);
+  font-weight:700;
+  font-size:calc(var(--drawer-meta-fs) * 0.95);
+  margin:0 0 4px;
+  letter-spacing:.2px;
+}
+.drawer-subsection-meta{
+  color:var(--muted);
+  font-size:calc(var(--drawer-meta-fs) * 0.78);
+  margin:0 0 10px;
+  font-style:italic;
+  opacity:.9;
+}
+.drawer-divider{
+  border:none;
+  border-top:1px solid rgba(255,255,255,.1);
+  margin:20px 0;
 }
 
 

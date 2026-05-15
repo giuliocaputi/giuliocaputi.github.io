@@ -154,7 +154,7 @@
   <!-- LEFT: photo + brand -->
   <div class="left">
     <img class="avatar" src="assets/img/giulio.jpg" alt="Giulio Caputi" width="110" height="110" fetchpriority="high">
-    <div class="brand"><span class="dot"></span><span>Giulio Caputi</span></div>
+    <a href="index.html" class="brand"><span class="dot"></span><span>Giulio Caputi</span></a>
   </div>
 
   <!-- CENTER (desktop/tablet only): inline nav -->
@@ -214,38 +214,39 @@
             </button>
           </div>
           <div class="subsection-cards">
-            <div class="grid">
+            <div class="grid work-grid">
               <article class="card" data-key="point72" tabindex="0" role="button" aria-label="Open details for Point72">
                 <div class="age">age 22 onwards</div>
                 <h3 class="title">
                   <span class="company">Point72</span>
-                  <span class="role">Quantitative Researcher (Intern)</span>
+                  <span class="role">Quantitative Researcher</span>
                 </h3>
                 <div class="meta">London, UK</div>
                 <div class="meta">Sep 2025 - present</div>
                 <div class="logo" style="-webkit-mask-image:url(assets/img/point72_logo.png);mask-image:url(assets/img/point72_logo.png)" role="img" aria-label="Point72 logo"></div>
               </article>
 
-              <article class="card" data-key="amazon" tabindex="0" role="button" aria-label="Open details for Amazon">
+              <article class="card" data-key="previousInternships" tabindex="0" role="button" aria-label="Open details for Previous Internships">
                 <div class="age">age 20</div>
                 <h3 class="title">
-                  <span class="company">Amazon</span>
-                  <span class="role">Business Intelligence Engineer (Intern)</span>
+                  <span class="company">Previous Internships</span>
                 </h3>
-                <div class="meta">Luxembourg, Luxembourg</div>
-                <div class="meta">Jun 2023 - Nov 2023 (6 months)</div>
-                <div class="logo" style="-webkit-mask-image:url(assets/img/amazon_logo.png);mask-image:url(assets/img/amazon_logo.png)" role="img" aria-label="Amazon logo"></div>
-              </article>
-
-              <article class="card" data-key="deloitte" tabindex="0" role="button" aria-label="Open details for Deloitte">
-                <div class="age">age 20</div>
-                <h3 class="title">
-                  <span class="company">Deloitte</span>
-                  <span class="role">Cyber Security Analyst (Intern)</span>
-                </h3>
-                <div class="meta">Milan, Italy</div>
-                <div class="meta">Jan 2023 - Apr 2023 (3 months)</div>
-                <div class="logo" style="-webkit-mask-image:url(assets/img/deloitte_logo.png);mask-image:url(assets/img/deloitte_logo.png)" role="img" aria-label="Deloitte logo"></div>
+                <div class="internship-rows">
+                  <div class="internship-row">
+                    <div class="internship-row-text">
+                      <span class="row-company">Amazon</span>
+                      <span class="row-meta">BI Engineer · Jun-Nov 2023</span>
+                    </div>
+                    <div class="mini-logo" style="-webkit-mask-image:url(assets/img/amazon_logo.png);mask-image:url(assets/img/amazon_logo.png)" role="img" aria-label="Amazon logo"></div>
+                  </div>
+                  <div class="internship-row">
+                    <div class="internship-row-text">
+                      <span class="row-company">Deloitte</span>
+                      <span class="row-meta">Cyber Security · Jan-Apr 2023</span>
+                    </div>
+                    <div class="mini-logo" style="-webkit-mask-image:url(assets/img/deloitte_logo.png);mask-image:url(assets/img/deloitte_logo.png)" role="img" aria-label="Deloitte logo"></div>
+                  </div>
+                </div>
               </article>
             </div>
           </div>
@@ -366,33 +367,60 @@
     // Detail content map
     const DETAILS = {
       point72: {
-        title: "Point72 — Quantitative Researcher (Intern)",
-        meta: "London, UK &nbsp;&nbsp; • &nbsp;&nbsp; <em>Sep 2025 – Mar 2026 (expected)</em>",
+        title: "Point72 — Quantitative Researcher",
+        meta: "London, UK &nbsp;&nbsp; • &nbsp;&nbsp; <em>Sep 2025 – present</em>",
+        bodyHtml: true,
         body: `
-        Developed and brought to production a market-neutral systematic equity strategy, built independently from raw data, with 
-        Sharpe of ~3 on alpha returns. Handled research, signal design, and the unglamorous bits in between, 
-        with a persistent preference for letting the code do the heavy lifting. Obtained a return offer for a full-time role starting in May 2026.
+          <div class="drawer-subsection">
+            <h3 class="drawer-subsection-title">Quantitative Researcher</h3>
+            <div class="drawer-subsection-meta">May 2026 – present</div>
+            <p>
+              Returned full-time after the internship to keep building and iterating on systematic equity strategies.
+              The work spans signal research, model design, and the assorted plumbing nobody puts on a slide — with
+              an ongoing preference for letting the code do the heavy lifting.
+            </p>
+          </div>
+          <hr class="drawer-divider">
+          <div class="drawer-subsection">
+            <h3 class="drawer-subsection-title">Quantitative Researcher (Intern)</h3>
+            <div class="drawer-subsection-meta">Sep 2025 – Mar 2026</div>
+            <p>
+              Developed and brought to production a market-neutral systematic equity strategy, built independently from raw data,
+              with Sharpe of ~3 on alpha returns. Handled research, signal design, and the unglamorous bits in between,
+              with a persistent preference for letting the code do the heavy lifting.
+            </p>
+          </div>
         `
       },
-      amazon: {
-        title: "Amazon — Business Intelligence Engineer (Intern)",
-        meta: "Luxembourg, Luxembourg &nbsp;&nbsp; • &nbsp;&nbsp; <em>Jun 2023 – Nov 2023</em>",
+      previousInternships: {
+        title: "Previous Internships",
+        meta: "",
+        bodyHtml: true,
         body: `
-        I applied Bayesian Optimization to improve the performance of database systems, which are large black-box programs with 100+ inputs and the charming feature that a 
-        single evaluation can take hours. That makes brute-force and gradient-based approaches quite optimistic. This work became the core of my BSc thesis. 
-        The schedule wasn’t ideal: the internship lasted six months, three of those overlapped with term time while I was in another country.
-        `
-      },
-      deloitte: {
-        title: "Deloitte — Cyber Security Analyst (Intern)",
-        meta: "Milan, Italy &nbsp;&nbsp; • &nbsp;&nbsp; <em>Jan 2023 – Apr 2023</em>",
-        body: `
-        I did my first internship in consulting because I thought I could sample broadly across companies and 
-        sectors before choosing my lane. Plot twist: that was utopistic. I picked the most STEM-ish role 
-        I could find, but my real superpowers quickly became Excel and PowerPoint. Quite useless. It was meant 
-        to be a six-month internship, but I left after three. The upside: (i) clarity about what I don’t want to do, 
-        and (ii) better work ethic (pulling ~40 hours a week during my bachelor’s wasn’t exactly spa day, but it 
-        was probably the most valuable part).
+          <div class="drawer-subsection">
+            <h3 class="drawer-subsection-title">Amazon — Business Intelligence Engineer (Intern)</h3>
+            <div class="drawer-subsection-meta">Luxembourg &nbsp;•&nbsp; Jun 2023 – Nov 2023</div>
+            <p>
+              I applied Bayesian Optimization to improve the performance of database systems, which are large black-box programs
+              with 100+ inputs and the charming feature that a single evaluation can take hours. That makes brute-force and
+              gradient-based approaches quite optimistic. This work became the core of my BSc thesis.
+              The schedule wasn’t ideal: the internship lasted six months, three of those overlapped with term time while I
+              was in another country.
+            </p>
+          </div>
+          <hr class="drawer-divider">
+          <div class="drawer-subsection">
+            <h3 class="drawer-subsection-title">Deloitte — Cyber Security Analyst (Intern)</h3>
+            <div class="drawer-subsection-meta">Milan, Italy &nbsp;•&nbsp; Jan 2023 – Apr 2023</div>
+            <p>
+              I did my first internship in consulting because I thought I could sample broadly across companies and
+              sectors before choosing my lane. Plot twist: that was utopistic. I picked the most STEM-ish role
+              I could find, but my real superpowers quickly became Excel and PowerPoint. Quite useless. It was meant
+              to be a six-month internship, but I left after three. The upside: (i) clarity about what I don’t want to do,
+              and (ii) better work ethic (pulling ~40 hours a week during my bachelor’s wasn’t exactly spa day, but it
+              was probably the most valuable part).
+            </p>
+          </div>
         `
       },
       oxford: {
@@ -484,7 +512,7 @@
         title: "Hobbies",
         meta: "",
         body: `
-        I hit the gym 4x/week and listen to 
+        I hit the gym for strength and hypertrophy training. I also listen to 
         plenty of <span class="accent">music</span> (mainly <span class="accent">trap/rap</span>, <span class="accent">lo-fi</span>, 
         and <span class="accent">contemporary classical</span>, with occasional genre detours). I enjoy <span class="accent">playing poker</span>,  
         <span class="accent">building websites</span> (this one is a good example), and solving logic/maths riddles (a hobby I picked up while preparing for interviews). 
@@ -514,9 +542,13 @@
       if(!d) return;
       titleEl.textContent = d.title;
       metaEl.innerHTML = d.meta;
-      bodyEl.innerHTML = d.body
-        ? '<p>' + d.body.replace(/\n{2,}/g, '</p><p>') + '</p>'
-        : d.bullets.map(b => '<p>'+b+'</p>').join('');
+      if (d.bodyHtml) {
+        bodyEl.innerHTML = d.body;
+      } else {
+        bodyEl.innerHTML = d.body
+          ? '<p>' + d.body.replace(/\n{2,}/g, '</p><p>') + '</p>'
+          : d.bullets.map(b => '<p>'+b+'</p>').join('');
+      }
       drawer.setAttribute('aria-hidden', 'false');
       backdrop.setAttribute('aria-hidden', 'false');
       document.body.classList.add('drawer-open');
