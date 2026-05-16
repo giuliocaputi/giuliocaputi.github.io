@@ -100,6 +100,15 @@
   }
 }
 
+/* Tighter columns on small tablets / landscape phones so the 3-column grid
+   doesn't crush card content (logo overlapping title) between 641px and 900px */
+@media (min-width:641px) and (max-width:900px){
+  :root{
+    --col-gap: 24px;
+    --wrap-pad: 20px;
+  }
+}
+
 /* Layout normalisation */
 *, *::before, *::after { box-sizing: border-box; }
 
@@ -532,7 +541,7 @@ body.drawer-open{overflow:hidden}
 
 /* Layout */
 main{padding:16px var(--wrap-pad) 48px}
-.wrap{width:min(var(--maxw), calc(100vw - 2*var(--wrap-pad)));margin:0 auto}
+.wrap{max-width: var(--maxw); width: 100%; margin: 0 auto}
 .grid{display:grid;grid-template-columns:repeat(var(--cols),1fr);column-gap:var(--col-gap);row-gap:var(--row-gap);align-items:stretch}
 
 /* Cards - Glassmorphic minimal design */
@@ -816,6 +825,12 @@ main{padding:16px var(--wrap-pad) 48px}
     bottom: 20px;
     width: clamp(90px, 10vw, 105px);
   }
+}
+
+/* In the 641–900px range the cards are narrower, so keep the logo
+   smaller so it doesn't crowd the title text. */
+@media (min-width:641px) and (max-width:900px){
+  .logo{ width: clamp(70px, 11vw, 90px); }
 }
 
 /* Drawer - glassmorphic design */
@@ -1906,8 +1921,9 @@ body.modal-open { overflow:hidden; }
   z-index: 1000;
   display: flex;
   will-change: transform;
-  /* Mobile: horizontal at top */
-  top: 80px;
+  /* Mobile: horizontal at top — sits below the sticky header so the
+     two don't overlap on shorter mobile viewports */
+  top: clamp(110px, 14vw, 130px);
   left: 50%;
   transform: translateX(-50%);
   flex-direction: row;

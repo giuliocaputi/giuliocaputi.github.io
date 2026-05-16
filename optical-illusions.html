@@ -56,6 +56,12 @@
   margin-bottom: clamp(20px, 4vw, 40px);
 }
 
+@media (max-width: 900px){
+  .illusion-tabs{
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 @media (max-width: 600px){
   .illusion-tabs{
     grid-template-columns: repeat(2, 1fr);
@@ -681,7 +687,7 @@
 <header class="header">
   <div class="left">
     <img class="avatar" src="assets/img/giulio.jpg" alt="Giulio Caputi" width="110" height="110" fetchpriority="high">
-    <div class="brand"><span class="dot"></span><span>Giulio Caputi</span></div>
+    <a href="index.html" class="brand"><span class="dot"></span><span>Giulio Caputi</span></a>
   </div>
   <nav class="nav" aria-label="Primary">
     <a href="index.html">Home</a>
